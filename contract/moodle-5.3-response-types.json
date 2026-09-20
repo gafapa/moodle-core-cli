@@ -652,23 +652,6 @@
         }
       ]
     },
-    "tool_moodlenet_verify_webfinger": {
-      "result": "boolean",
-      "message": "string",
-      "domain?": "string"
-    },
-    "tool_moodlenet_search_courses": {
-      "courses": [
-        {
-          "id": "integer",
-          "fullname": "string",
-          "hidden": "integer",
-          "viewurl": "string",
-          "coursecategory": "string",
-          "courseimage": "string"
-        }
-      ]
-    },
     "tool_policy_get_policy_version": {
       "result": {
         "policy?": {
@@ -765,6 +748,7 @@
     },
     "tool_xmldb_invoke_move_action": "null",
     "aiplacement_courseassist_summarise_text": "object",
+    "aiplacement_courseassist_explain_text": "object",
     "aiplacement_editor_generate_image": "object",
     "aiplacement_editor_generate_text": "object",
     "auth_email_get_signup_settings": {
@@ -2156,6 +2140,23 @@
       }
     ],
     "core_courseformat_get_state": "string",
+    "core_courseformat_get_section_content_items": {
+      "content_items": [
+        {}
+      ]
+    },
+    "core_courseformat_get_overview_information": {},
+    "core_courseformat_log_view_overview_information": {
+      "status": "boolean",
+      "warnings": [
+        {
+          "item": "string",
+          "itemid": "integer",
+          "warningcode": "string",
+          "message": "string"
+        }
+      ]
+    },
     "core_courseformat_new_module": "string",
     "core_courseformat_update_course": "string",
     "core_courseformat_create_module": "string",
@@ -2524,6 +2525,17 @@
       "id": "integer",
       "area": "string",
       "status": "boolean"
+    },
+    "core_course_view_module_instance_list": {
+      "status": "boolean",
+      "warnings": [
+        {
+          "item": "string",
+          "itemid": "integer",
+          "warningcode": "string",
+          "message": "string"
+        }
+      ]
     },
     "core_enrol_get_course_enrolment_methods": [
       {
@@ -3018,26 +3030,6 @@
         }
       ]
     },
-    "core_grades_get_enrolled_users_for_search_widget": {
-      "users": [
-        {
-          "id": "string",
-          "profileimage?": "string",
-          "url?": "string",
-          "fullname?": "string",
-          "email?": "string",
-          "active": "boolean"
-        }
-      ],
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    },
     "core_grades_get_enrolled_users_for_selector": {
       "users": [
         {
@@ -3087,23 +3079,6 @@
               "value": "string"
             }
           ]
-        }
-      ],
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    },
-    "core_grades_get_groups_for_search_widget": {
-      "groups": [
-        {
-          "id": "string",
-          "name": "string",
-          "groupimageurl?": "string"
         }
       ],
       "warnings": [
@@ -4022,6 +3997,7 @@
       }
     ],
     "core_message_get_unread_notification_count": "integer",
+    "core_message_set_default_notification": "object",
     "core_my_view_page": {
       "status": "boolean",
       "warnings": [
@@ -4155,13 +4131,6 @@
         }
       ]
     },
-    "core_output_load_fontawesome_icon_map": [
-      {
-        "component": "string",
-        "pix": "string",
-        "to": "string"
-      }
-    ],
     "core_output_load_fontawesome_icon_system_map": [
       {
         "component": "string",
@@ -5062,6 +5031,8 @@
       "canmovecategories": "boolean"
     },
     "core_customfield_create_category": "integer",
+    "core_customfield_convert_category": "boolean",
+    "core_customfield_toggle_shared": "boolean",
     "core_h5p_get_trusted_h5p_file": {
       "files": [
         {
@@ -5239,74 +5210,6 @@
     "core_admin_set_plugin_state": {},
     "core_admin_set_plugin_order": {},
     "core_admin_set_block_protection": {},
-    "core_moodlenet_send_activity": {
-      "status": "boolean",
-      "resourceurl": "string",
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    },
-    "core_moodlenet_get_share_info_activity": {
-      "name": "string",
-      "type": "string",
-      "server": "string",
-      "supportpageurl": "string",
-      "issuerid": "integer",
-      "status": "boolean",
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    },
-    "core_moodlenet_auth_check": {
-      "loginurl": "string",
-      "status": "boolean",
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    },
-    "core_moodlenet_get_shared_course_info": {
-      "name": "string",
-      "type": "string",
-      "server": "string",
-      "supportpageurl": "string",
-      "issuerid": "integer",
-      "status": "boolean",
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    },
-    "core_moodlenet_send_course": {
-      "status": "boolean",
-      "resourceurl": "string",
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    },
     "core_output_poll_stored_progress": [
       {
         "id": "integer",
@@ -5318,13 +5221,68 @@
         "timeout?": "string"
       }
     ],
+    "core_ai_delete_provider_instance": {
+      "result": "boolean",
+      "message": "string",
+      "messagetype": "string"
+    },
     "core_ai_set_policy_status": "object",
     "core_ai_get_policy_status": "object",
     "core_ai_set_action": "object",
+    "core_ai_set_provider_status": {
+      "result": "boolean",
+      "message": "string",
+      "messagetype": "string"
+    },
+    "core_ai_set_provider_order": {},
     "core_sms_set_gateway_status": {
       "result": "boolean",
       "message": "string",
       "messagetype": "string"
+    },
+    "core_question_move_questions": "string",
+    "core_question_search_shared_banks": {
+      "sharedbanks": [
+        {
+          "value": "integer",
+          "label": "string"
+        }
+      ]
+    },
+    "core_message_get_unsent_message": {
+      "message?": "string",
+      "conversationid?": "integer",
+      "otheruserid?": "integer"
+    },
+    "editor_tiny_get_configuration": {
+      "contextid": "integer",
+      "branding": "boolean",
+      "extendedvalidelements": "string",
+      "installedlanguages": [
+        {
+          "lang": "string",
+          "name": "string"
+        }
+      ],
+      "plugins": [
+        {
+          "name": "string",
+          "settings": [
+            {
+              "name": "string",
+              "value": "string"
+            }
+          ]
+        }
+      ],
+      "warnings": [
+        {
+          "item": "string",
+          "itemid": "integer",
+          "warningcode": "string",
+          "message": "string"
+        }
+      ]
     },
     "tiny_autosave_resume_session": {
       "drafttext": "string"
@@ -5332,6 +5290,9 @@
     "tiny_autosave_reset_session": {},
     "tiny_autosave_update_session": {},
     "tiny_equation_filter": {
+      "content": "string"
+    },
+    "tiny_media_preview": {
       "content": "string"
     },
     "tiny_premium_get_api_key": {
@@ -6215,6 +6176,33 @@
         }
       ]
     },
+    "mod_assign_save_overrides": {
+      "ids": [
+        "integer"
+      ]
+    },
+    "mod_assign_delete_overrides": {
+      "ids": [
+        "integer"
+      ]
+    },
+    "mod_assign_get_overrides": {
+      "overrides": [
+        {
+          "id": "integer",
+          "assignid": "integer",
+          "userid": "integer",
+          "groupid": "integer",
+          "sortorder": "integer",
+          "allowsubmissionsfromdate": "integer",
+          "duedate": "integer",
+          "cutoffdate": "integer",
+          "timelimit": "integer",
+          "reason": "string",
+          "reasonformat": "integer"
+        }
+      ]
+    },
     "mod_bigbluebuttonbn_can_join": {
       "can_join": "boolean",
       "cmid": "integer"
@@ -6452,166 +6440,6 @@
           "timemodified?": "integer"
         }
       ],
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    },
-    "mod_chat_login_user": {
-      "chatsid": "string",
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    },
-    "mod_chat_get_chat_users": {
-      "users": [
-        {
-          "id": "integer",
-          "fullname": "string",
-          "profileimageurl": "string"
-        }
-      ],
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    },
-    "mod_chat_send_chat_message": {
-      "messageid": "integer",
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    },
-    "mod_chat_get_chat_latest_messages": {
-      "messages": [
-        {
-          "id": "integer",
-          "userid": "integer",
-          "system": "boolean",
-          "message": "string",
-          "timestamp": "integer"
-        }
-      ],
-      "chatnewlasttime": "integer",
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    },
-    "mod_chat_view_chat": {
-      "status": "boolean",
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    },
-    "mod_chat_get_chats_by_courses": {
-      "chats": [
-        {
-          "id": "integer",
-          "coursemodule": "integer",
-          "course": "integer",
-          "name": "string",
-          "intro": "string",
-          "introformat": "integer",
-          "introfiles?": [
-            {
-              "filename": "string",
-              "filepath": "string",
-              "filesize": "integer",
-              "fileurl": "string",
-              "timemodified": "integer",
-              "mimetype": "string",
-              "isexternal?": "boolean",
-              "repositorytype?": "string"
-            }
-          ],
-          "section?": "integer",
-          "visible?": "boolean",
-          "groupmode?": "integer",
-          "groupingid?": "integer",
-          "lang?": "string",
-          "chatmethod?": "string",
-          "keepdays?": "integer",
-          "studentlogs?": "integer",
-          "chattime?": "integer",
-          "schedule?": "integer",
-          "timemodified?": "integer"
-        }
-      ],
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    },
-    "mod_chat_get_sessions": {
-      "sessions": [
-        {
-          "sessionstart": "integer",
-          "sessionend": "integer",
-          "sessionusers": [
-            {
-              "userid": "integer",
-              "messagecount": "integer"
-            }
-          ],
-          "iscomplete": "boolean"
-        }
-      ],
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    },
-    "mod_chat_get_session_messages": {
-      "messages": [
-        {}
-      ],
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    },
-    "mod_chat_view_sessions": {
-      "status": "boolean",
       "warnings": [
         {
           "item": "string",
@@ -7624,6 +7452,20 @@
       ]
     },
     "mod_forum_update_discussion_post": {
+      "status": "boolean",
+      "warnings": [
+        {
+          "item": "string",
+          "itemid": "integer",
+          "warningcode": "string",
+          "message": "string"
+        }
+      ]
+    },
+    "mod_forum_set_forum_subscription": {},
+    "mod_forum_set_forum_tracking": {},
+    "mod_forum_mark_posts_read": "boolean",
+    "mod_forum_set_read_state": {
       "status": "boolean",
       "warnings": [
         {
@@ -9941,6 +9783,59 @@
         }
       ]
     },
+    "mod_quiz_get_user_quiz_attempts": {
+      "attempts": [
+        {
+          "id?": "integer",
+          "quiz?": "integer",
+          "userid?": "integer",
+          "attempt?": "integer",
+          "uniqueid?": "integer",
+          "layout?": "string",
+          "currentpage?": "integer",
+          "preview?": "integer",
+          "state?": "string",
+          "timestart?": "integer",
+          "timefinish?": "integer",
+          "timemodified?": "integer",
+          "timemodifiedoffline?": "integer",
+          "timecheckstate?": "integer",
+          "sumgrades?": "number",
+          "gradeitemmarks?": [
+            {
+              "name": "string",
+              "grade": "number",
+              "maxgrade": "number"
+            }
+          ],
+          "gradednotificationsenttime?": "integer",
+          "feedback?": {
+            "feedbacktext?": "string",
+            "feedbackformat?": "integer",
+            "feedbackinlinefiles?": [
+              {
+                "filename": "string",
+                "filepath": "string",
+                "filesize": "integer",
+                "fileurl": "string",
+                "timemodified": "integer",
+                "mimetype": "string",
+                "isexternal?": "boolean",
+                "repositorytype?": "string"
+              }
+            ]
+          }
+        }
+      ],
+      "warnings": [
+        {
+          "item": "string",
+          "itemid": "integer",
+          "warningcode": "string",
+          "message": "string"
+        }
+      ]
+    },
     "mod_quiz_get_user_best_grade": {
       "hasgrade": "boolean",
       "grade?": "number",
@@ -10459,6 +10354,69 @@
     "mod_quiz_update_slots": "null",
     "mod_quiz_get_edit_grading_page_data": "string",
     "mod_quiz_create_grade_item_per_section": "null",
+    "mod_quiz_get_users_in_report": {
+      "extrafields": [
+        "string"
+      ],
+      "users": [
+        {
+          "id": "string",
+          "username?": "string",
+          "firstname?": "string",
+          "lastname?": "string",
+          "fullname": "string",
+          "initials?": "string",
+          "email?": "string",
+          "address?": "string",
+          "phone1?": "string",
+          "phone2?": "string",
+          "department?": "string",
+          "institution?": "string",
+          "idnumber?": "string",
+          "interests?": "string",
+          "firstaccess?": "string",
+          "lastaccess?": "string",
+          "auth?": "string",
+          "suspended?": "string",
+          "confirmed?": "string",
+          "lang?": "string",
+          "calendartype?": "string",
+          "theme?": "string",
+          "timezone?": "string",
+          "mailformat?": "string",
+          "trackforums?": "string",
+          "description?": "string",
+          "descriptionformat?": "integer",
+          "city?": "string",
+          "country?": "string",
+          "profileimageurlsmall": "string",
+          "profileimageurl": "string",
+          "customfields?": [
+            {
+              "type": "string",
+              "value": "string",
+              "displayvalue?": "string",
+              "name": "string",
+              "shortname": "string"
+            }
+          ],
+          "preferences?": [
+            {
+              "name": "string",
+              "value": "string"
+            }
+          ]
+        }
+      ],
+      "warnings": [
+        {
+          "item": "string",
+          "itemid": "integer",
+          "warningcode": "string",
+          "message": "string"
+        }
+      ]
+    },
     "mod_resource_view_resource": {
       "status": "boolean",
       "warnings": [
@@ -10735,93 +10693,6 @@
       ]
     },
     "mod_scorm_get_scorm_access_information": {
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    },
-    "mod_survey_get_surveys_by_courses": {
-      "surveys": [
-        {
-          "id": "integer",
-          "coursemodule": "integer",
-          "course": "integer",
-          "name": "string",
-          "intro": "string",
-          "introformat": "integer",
-          "introfiles?": [
-            {
-              "filename": "string",
-              "filepath": "string",
-              "filesize": "integer",
-              "fileurl": "string",
-              "timemodified": "integer",
-              "mimetype": "string",
-              "isexternal?": "boolean",
-              "repositorytype?": "string"
-            }
-          ],
-          "section?": "integer",
-          "visible?": "boolean",
-          "groupmode?": "integer",
-          "groupingid?": "integer",
-          "lang?": "string",
-          "template?": "integer",
-          "days?": "integer",
-          "questions?": "string",
-          "surveydone?": "integer",
-          "timecreated?": "integer",
-          "timemodified?": "integer"
-        }
-      ],
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    },
-    "mod_survey_view_survey": {
-      "status": "boolean",
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    },
-    "mod_survey_get_questions": {
-      "questions": [
-        {
-          "id": "integer",
-          "text": "string",
-          "shorttext": "string",
-          "multi": "string",
-          "intro": "string",
-          "type": "integer",
-          "options": "string",
-          "parent": "integer"
-        }
-      ],
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    },
-    "mod_survey_submit_answers": {
-      "status": "boolean",
       "warnings": [
         {
           "item": "string",
@@ -11471,28 +11342,6 @@
       ],
       "pushratingstouserplans": "boolean"
     },
-    "report_insights_set_notuseful_prediction": {
-      "success": "boolean",
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    },
-    "report_insights_set_fixed_prediction": {
-      "success": "boolean",
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    },
     "report_insights_action_executed": {
       "warnings": [
         {
@@ -11512,254 +11361,7 @@
     "qbank_columnsortorder_set_columnbank_order": "null",
     "qbank_columnsortorder_set_hidden_columns": "null",
     "qbank_viewquestiontext_set_question_text_format": "null",
-    "tool_admin_presets_delete_preset": "null",
-    "aiplacement_courseassist_explain_text": "object",
-    "core_message_set_default_notification": "object",
-    "core_ai_delete_provider_instance": {
-      "result": "boolean",
-      "message": "string",
-      "messagetype": "string"
-    },
-    "core_ai_set_provider_status": {
-      "result": "boolean",
-      "message": "string",
-      "messagetype": "string"
-    },
-    "core_ai_set_provider_order": {},
-    "core_question_move_questions": "string",
-    "core_question_search_shared_banks": {
-      "sharedbanks": [
-        {
-          "value": "integer",
-          "label": "string"
-        }
-      ]
-    },
-    "core_message_get_unsent_message": {
-      "message?": "string",
-      "conversationid?": "integer",
-      "otheruserid?": "integer"
-    },
-    "editor_tiny_get_configuration": {
-      "contextid": "integer",
-      "branding": "boolean",
-      "extendedvalidelements": "string",
-      "installedlanguages": [
-        {
-          "lang": "string",
-          "name": "string"
-        }
-      ],
-      "plugins": [
-        {
-          "name": "string",
-          "settings": [
-            {
-              "name": "string",
-              "value": "string"
-            }
-          ]
-        }
-      ],
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    },
-    "tiny_media_preview": {
-      "content": "string"
-    },
-    "mod_forum_mark_posts_read": "boolean",
-    "mod_quiz_get_user_quiz_attempts": {
-      "attempts": [
-        {
-          "id?": "integer",
-          "quiz?": "integer",
-          "userid?": "integer",
-          "attempt?": "integer",
-          "uniqueid?": "integer",
-          "layout?": "string",
-          "currentpage?": "integer",
-          "preview?": "integer",
-          "state?": "string",
-          "timestart?": "integer",
-          "timefinish?": "integer",
-          "timemodified?": "integer",
-          "timemodifiedoffline?": "integer",
-          "timecheckstate?": "integer",
-          "sumgrades?": "number",
-          "gradeitemmarks?": [
-            {
-              "name": "string",
-              "grade": "number",
-              "maxgrade": "number"
-            }
-          ],
-          "gradednotificationsenttime?": "integer",
-          "feedback?": {
-            "feedbacktext?": "string",
-            "feedbackformat?": "integer",
-            "feedbackinlinefiles?": [
-              {
-                "filename": "string",
-                "filepath": "string",
-                "filesize": "integer",
-                "fileurl": "string",
-                "timemodified": "integer",
-                "mimetype": "string",
-                "isexternal?": "boolean",
-                "repositorytype?": "string"
-              }
-            ]
-          }
-        }
-      ],
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    },
-    "core_courseformat_get_section_content_items": {
-      "content_items": [
-        {}
-      ]
-    },
-    "core_courseformat_get_overview_information": {},
-    "core_courseformat_log_view_overview_information": {
-      "status": "boolean",
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    },
-    "core_course_view_module_instance_list": {
-      "status": "boolean",
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    },
-    "core_customfield_toggle_shared": "boolean",
-    "mod_forum_set_forum_subscription": {},
-    "mod_forum_set_forum_tracking": {},
-    "core_customfield_convert_category": "boolean",
-    "mod_assign_save_overrides": {
-      "ids": [
-        "integer"
-      ]
-    },
-    "mod_assign_delete_overrides": {
-      "ids": [
-        "integer"
-      ]
-    },
-    "mod_assign_get_overrides": {
-      "overrides": [
-        {
-          "id": "integer",
-          "assignid": "integer",
-          "userid": "integer",
-          "groupid": "integer",
-          "sortorder": "integer",
-          "allowsubmissionsfromdate": "integer",
-          "duedate": "integer",
-          "cutoffdate": "integer",
-          "timelimit": "integer",
-          "reason": "string",
-          "reasonformat": "integer"
-        }
-      ]
-    },
-    "mod_forum_set_read_state": {
-      "status": "boolean",
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    },
-    "mod_quiz_get_users_in_report": {
-      "extrafields": [
-        "string"
-      ],
-      "users": [
-        {
-          "id": "string",
-          "username?": "string",
-          "firstname?": "string",
-          "lastname?": "string",
-          "fullname": "string",
-          "initials?": "string",
-          "email?": "string",
-          "address?": "string",
-          "phone1?": "string",
-          "phone2?": "string",
-          "department?": "string",
-          "institution?": "string",
-          "idnumber?": "string",
-          "interests?": "string",
-          "firstaccess?": "string",
-          "lastaccess?": "string",
-          "auth?": "string",
-          "suspended?": "string",
-          "confirmed?": "string",
-          "lang?": "string",
-          "calendartype?": "string",
-          "theme?": "string",
-          "timezone?": "string",
-          "mailformat?": "string",
-          "trackforums?": "string",
-          "description?": "string",
-          "descriptionformat?": "integer",
-          "city?": "string",
-          "country?": "string",
-          "profileimageurlsmall": "string",
-          "profileimageurl": "string",
-          "customfields?": [
-            {
-              "type": "string",
-              "value": "string",
-              "displayvalue?": "string",
-              "name": "string",
-              "shortname": "string"
-            }
-          ],
-          "preferences?": [
-            {
-              "name": "string",
-              "value": "string"
-            }
-          ]
-        }
-      ],
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    }
+    "tool_admin_presets_delete_preset": "null"
   },
   "parameters": {
     "tool_admin_presets_delete_preset": {
@@ -12242,26 +11844,6 @@
         "required": true
       }
     },
-    "tool_moodlenet_verify_webfinger": {
-      "profileurl": {
-        "type": "string",
-        "required": true
-      },
-      "course": {
-        "type": "integer",
-        "required": true
-      },
-      "section": {
-        "type": "integer",
-        "required": true
-      }
-    },
-    "tool_moodlenet_search_courses": {
-      "searchvalue": {
-        "type": "string",
-        "required": true
-      }
-    },
     "tool_policy_get_policy_version": {
       "versionid": {
         "type": "integer",
@@ -12430,6 +12012,16 @@
       }
     },
     "aiplacement_courseassist_summarise_text": {
+      "contextid": {
+        "type": "integer",
+        "required": true
+      },
+      "prompttext": {
+        "type": "string",
+        "required": true
+      }
+    },
+    "aiplacement_courseassist_explain_text": {
       "contextid": {
         "type": "integer",
         "required": true
@@ -13596,6 +13188,32 @@
         "required": true
       }
     },
+    "core_courseformat_get_section_content_items": {
+      "courseid": {
+        "type": "integer",
+        "required": true
+      },
+      "sectionid": {
+        "type": "integer",
+        "required": true
+      }
+    },
+    "core_courseformat_get_overview_information": {
+      "courseid": {
+        "type": "integer",
+        "required": true
+      },
+      "modname": {
+        "type": "string",
+        "required": true
+      }
+    },
+    "core_courseformat_log_view_overview_information": {
+      "courseid": {
+        "type": "integer",
+        "required": true
+      }
+    },
     "core_courseformat_new_module": {
       "courseid": {
         "type": "integer",
@@ -14013,6 +13631,16 @@
       },
       "id": {
         "type": "integer",
+        "required": true
+      }
+    },
+    "core_course_view_module_instance_list": {
+      "courseid": {
+        "type": "integer",
+        "required": true
+      },
+      "modname": {
+        "type": "string",
         "required": true
       }
     },
@@ -14457,38 +14085,12 @@
         "required": true
       }
     },
-    "core_grades_get_enrolled_users_for_search_widget": {
-      "courseid": {
-        "type": "integer",
-        "required": true
-      },
-      "actionbaseurl": {
-        "type": "string",
-        "required": true
-      },
-      "groupid": {
-        "type": "integer",
-        "required": false,
-        "default": 0
-      }
-    },
     "core_grades_get_enrolled_users_for_selector": {
       "courseid": {
         "type": "integer",
         "required": true
       },
       "groupid": {
-        "type": "integer",
-        "required": false,
-        "default": 0
-      }
-    },
-    "core_grades_get_groups_for_search_widget": {
-      "courseid": {
-        "type": "integer",
-        "required": true
-      },
-      "cmid": {
         "type": "integer",
         "required": false,
         "default": 0
@@ -15347,6 +14949,16 @@
         "required": true
       }
     },
+    "core_message_set_default_notification": {
+      "preference": {
+        "type": "string",
+        "required": true
+      },
+      "state": {
+        "type": "integer",
+        "required": true
+      }
+    },
     "core_my_view_page": {
       "page": {
         "type": "string",
@@ -15445,7 +15057,6 @@
         "default": null
       }
     },
-    "core_output_load_fontawesome_icon_map": {},
     "core_output_load_fontawesome_icon_system_map": {
       "themename": {
         "type": "string",
@@ -16797,6 +16408,24 @@
         "required": true
       }
     },
+    "core_customfield_convert_category": {
+      "categoryid": {
+        "type": "integer",
+        "required": true
+      },
+      "component": {
+        "type": "string",
+        "required": true
+      },
+      "area": {
+        "type": "string",
+        "required": true
+      },
+      "itemid": {
+        "type": "integer",
+        "required": true
+      }
+    },
     "core_customfield_move_field": {
       "id": {
         "type": "integer",
@@ -16821,6 +16450,28 @@
         "type": "integer",
         "required": false,
         "default": 0
+      }
+    },
+    "core_customfield_toggle_shared": {
+      "categoryid": {
+        "type": "integer",
+        "required": true
+      },
+      "component": {
+        "type": "string",
+        "required": true
+      },
+      "area": {
+        "type": "string",
+        "required": true
+      },
+      "itemid": {
+        "type": "integer",
+        "required": true
+      },
+      "state": {
+        "type": "boolean",
+        "required": true
       }
     },
     "core_h5p_get_trusted_h5p_file": {
@@ -17479,66 +17130,16 @@
         "required": true
       }
     },
-    "core_moodlenet_send_activity": {
-      "issuerid": {
-        "type": "integer",
-        "required": true
-      },
-      "cmid": {
-        "type": "integer",
-        "required": true
-      },
-      "shareformat": {
-        "type": "integer",
-        "required": true
-      }
-    },
-    "core_moodlenet_get_share_info_activity": {
-      "cmid": {
-        "type": "integer",
-        "required": true
-      }
-    },
-    "core_moodlenet_auth_check": {
-      "issuerid": {
-        "type": "integer",
-        "required": true
-      },
-      "courseid": {
-        "type": "integer",
-        "required": true
-      }
-    },
-    "core_moodlenet_get_shared_course_info": {
-      "courseid": {
-        "type": "integer",
-        "required": true
-      }
-    },
-    "core_moodlenet_send_course": {
-      "issuerid": {
-        "type": "integer",
-        "required": true
-      },
-      "courseid": {
-        "type": "integer",
-        "required": true
-      },
-      "shareformat": {
-        "type": "integer",
-        "required": true
-      },
-      "cmids": {
-        "type": "array",
-        "items": "integer",
-        "required": false,
-        "default": []
-      }
-    },
     "core_output_poll_stored_progress": {
       "ids": {
         "type": "array",
         "items": "integer",
+        "required": true
+      }
+    },
+    "core_ai_delete_provider_instance": {
+      "providerid": {
+        "type": "integer",
         "required": true
       }
     },
@@ -17569,12 +17170,90 @@
         "default": 0
       }
     },
+    "core_ai_set_provider_status": {
+      "plugin": {
+        "type": "integer",
+        "required": true
+      },
+      "state": {
+        "type": "integer",
+        "required": true
+      }
+    },
+    "core_ai_set_provider_order": {
+      "plugin": {
+        "type": "integer",
+        "required": true
+      },
+      "direction": {
+        "type": "integer",
+        "required": true
+      }
+    },
     "core_sms_set_gateway_status": {
       "plugin": {
         "type": "integer",
         "required": true
       },
       "state": {
+        "type": "integer",
+        "required": true
+      }
+    },
+    "core_question_move_questions": {
+      "newcontextid": {
+        "type": "integer",
+        "required": true
+      },
+      "newcategoryid": {
+        "type": "integer",
+        "required": true
+      },
+      "questionids": {
+        "type": "string",
+        "required": true
+      },
+      "returnurl": {
+        "type": "string",
+        "required": true
+      }
+    },
+    "core_question_search_shared_banks": {
+      "contextid": {
+        "type": "integer",
+        "required": true
+      },
+      "search": {
+        "type": "string",
+        "required": true
+      },
+      "requiredcapabilities": {
+        "type": "array",
+        "items": "string",
+        "required": false
+      }
+    },
+    "core_message_set_unsent_message": {
+      "message": {
+        "type": "string",
+        "required": true
+      },
+      "conversationid": {
+        "type": "integer",
+        "required": true
+      },
+      "otheruserid": {
+        "type": "integer",
+        "required": true
+      }
+    },
+    "core_message_get_unsent_message": {},
+    "editor_tiny_get_configuration": {
+      "contextlevel": {
+        "type": "string",
+        "required": true
+      },
+      "instanceid": {
         "type": "integer",
         "required": true
       }
@@ -17654,6 +17333,16 @@
         "type": "boolean",
         "required": false,
         "default": false
+      }
+    },
+    "tiny_media_preview": {
+      "contextid": {
+        "type": "integer",
+        "required": true
+      },
+      "content": {
+        "type": "string",
+        "required": true
       }
     },
     "tiny_premium_get_api_key": {
@@ -18064,6 +17753,24 @@
         "required": true
       }
     },
+    "mod_assign_save_overrides": {
+      "data": {
+        "type": "object",
+        "required": true
+      }
+    },
+    "mod_assign_delete_overrides": {
+      "data": {
+        "type": "object",
+        "required": true
+      }
+    },
+    "mod_assign_get_overrides": {
+      "assignid": {
+        "type": "integer",
+        "required": true
+      }
+    },
     "mod_bigbluebuttonbn_can_join": {
       "cmid": {
         "type": "integer",
@@ -18210,114 +17917,6 @@
         "items": "integer",
         "required": false,
         "default": []
-      }
-    },
-    "mod_chat_login_user": {
-      "chatid": {
-        "type": "integer",
-        "required": true
-      },
-      "groupid": {
-        "type": "integer",
-        "required": false,
-        "default": 0
-      }
-    },
-    "mod_chat_get_chat_users": {
-      "chatsid": {
-        "type": "string",
-        "required": true
-      }
-    },
-    "mod_chat_send_chat_message": {
-      "chatsid": {
-        "type": "string",
-        "required": true
-      },
-      "messagetext": {
-        "type": "string",
-        "required": true
-      },
-      "beepid": {
-        "type": "string",
-        "required": false,
-        "default": ""
-      }
-    },
-    "mod_chat_get_chat_latest_messages": {
-      "chatsid": {
-        "type": "string",
-        "required": true
-      },
-      "chatlasttime": {
-        "type": "integer",
-        "required": false,
-        "default": 0
-      }
-    },
-    "mod_chat_view_chat": {
-      "chatid": {
-        "type": "integer",
-        "required": true
-      }
-    },
-    "mod_chat_get_chats_by_courses": {
-      "courseids": {
-        "type": "array",
-        "items": "integer",
-        "required": false,
-        "default": []
-      }
-    },
-    "mod_chat_get_sessions": {
-      "chatid": {
-        "type": "integer",
-        "required": true
-      },
-      "groupid": {
-        "type": "integer",
-        "required": false,
-        "default": 0
-      },
-      "showall": {
-        "type": "boolean",
-        "required": false,
-        "default": false
-      }
-    },
-    "mod_chat_get_session_messages": {
-      "chatid": {
-        "type": "integer",
-        "required": true
-      },
-      "sessionstart": {
-        "type": "integer",
-        "required": true
-      },
-      "sessionend": {
-        "type": "integer",
-        "required": true
-      },
-      "groupid": {
-        "type": "integer",
-        "required": false,
-        "default": 0
-      }
-    },
-    "mod_chat_view_sessions": {
-      "cmid": {
-        "type": "integer",
-        "required": true
-      },
-      "start": {
-        "type": "integer",
-        "required": false,
-        "default": 0
-      },
-      "end": {
-        "type": "integer",
-        "required": false,
-        "default": 0
       }
     },
     "mod_choice_get_choice_results": {
@@ -19051,6 +18650,47 @@
         "type": "object_array",
         "required": false,
         "default": []
+      }
+    },
+    "mod_forum_set_forum_subscription": {
+      "forumid": {
+        "type": "integer",
+        "required": true
+      },
+      "targetstate": {
+        "type": "boolean",
+        "required": true
+      }
+    },
+    "mod_forum_set_forum_tracking": {
+      "forumid": {
+        "type": "integer",
+        "required": true
+      },
+      "targetstate": {
+        "type": "boolean",
+        "required": true
+      }
+    },
+    "mod_forum_mark_posts_read": {
+      "postids": {
+        "type": "array",
+        "items": "integer",
+        "required": true
+      },
+      "discussionid": {
+        "type": "integer",
+        "required": true
+      }
+    },
+    "mod_forum_set_read_state": {
+      "postid": {
+        "type": "integer",
+        "required": true
+      },
+      "targetstate": {
+        "type": "boolean",
+        "required": true
       }
     },
     "mod_glossary_get_glossaries_by_courses": {
@@ -20027,6 +19667,27 @@
         "default": false
       }
     },
+    "mod_quiz_get_user_quiz_attempts": {
+      "quizid": {
+        "type": "integer",
+        "required": true
+      },
+      "userid": {
+        "type": "integer",
+        "required": false,
+        "default": 0
+      },
+      "status": {
+        "type": "string",
+        "required": false,
+        "default": "finished"
+      },
+      "includepreviews": {
+        "type": "boolean",
+        "required": false,
+        "default": false
+      }
+    },
     "mod_quiz_get_user_best_grade": {
       "quizid": {
         "type": "integer",
@@ -20342,6 +20003,20 @@
         "required": true
       }
     },
+    "mod_quiz_get_users_in_report": {
+      "cmid": {
+        "type": "integer",
+        "required": true
+      },
+      "mode": {
+        "type": "string",
+        "required": true
+      },
+      "params": {
+        "type": "string",
+        "required": true
+      }
+    },
     "mod_resource_view_resource": {
       "resourceid": {
         "type": "integer",
@@ -20449,36 +20124,6 @@
     "mod_scorm_get_scorm_access_information": {
       "scormid": {
         "type": "integer",
-        "required": true
-      }
-    },
-    "mod_survey_get_surveys_by_courses": {
-      "courseids": {
-        "type": "array",
-        "items": "integer",
-        "required": false,
-        "default": []
-      }
-    },
-    "mod_survey_view_survey": {
-      "surveyid": {
-        "type": "integer",
-        "required": true
-      }
-    },
-    "mod_survey_get_questions": {
-      "surveyid": {
-        "type": "integer",
-        "required": true
-      }
-    },
-    "mod_survey_submit_answers": {
-      "surveyid": {
-        "type": "integer",
-        "required": true
-      },
-      "answers": {
-        "type": "object_array",
         "required": true
       }
     },
@@ -21030,18 +20675,6 @@
         "required": true
       }
     },
-    "report_insights_set_notuseful_prediction": {
-      "predictionid": {
-        "type": "integer",
-        "required": true
-      }
-    },
-    "report_insights_set_fixed_prediction": {
-      "predictionid": {
-        "type": "integer",
-        "required": true
-      }
-    },
     "report_insights_action_executed": {
       "actionname": {
         "type": "string",
@@ -21050,290 +20683,6 @@
       "predictionids": {
         "type": "array",
         "items": "integer",
-        "required": true
-      }
-    },
-    "aiplacement_courseassist_explain_text": {
-      "contextid": {
-        "type": "integer",
-        "required": true
-      },
-      "prompttext": {
-        "type": "string",
-        "required": true
-      }
-    },
-    "core_message_set_default_notification": {
-      "preference": {
-        "type": "string",
-        "required": true
-      },
-      "state": {
-        "type": "integer",
-        "required": true
-      }
-    },
-    "core_ai_delete_provider_instance": {
-      "providerid": {
-        "type": "integer",
-        "required": true
-      }
-    },
-    "core_ai_set_provider_status": {
-      "plugin": {
-        "type": "integer",
-        "required": true
-      },
-      "state": {
-        "type": "integer",
-        "required": true
-      }
-    },
-    "core_ai_set_provider_order": {
-      "plugin": {
-        "type": "integer",
-        "required": true
-      },
-      "direction": {
-        "type": "integer",
-        "required": true
-      }
-    },
-    "core_question_move_questions": {
-      "newcontextid": {
-        "type": "integer",
-        "required": true
-      },
-      "newcategoryid": {
-        "type": "integer",
-        "required": true
-      },
-      "questionids": {
-        "type": "string",
-        "required": true
-      },
-      "returnurl": {
-        "type": "string",
-        "required": true
-      }
-    },
-    "core_question_search_shared_banks": {
-      "contextid": {
-        "type": "integer",
-        "required": true
-      },
-      "search": {
-        "type": "string",
-        "required": true
-      },
-      "requiredcapabilities": {
-        "type": "array",
-        "items": "string",
-        "required": false
-      }
-    },
-    "core_message_set_unsent_message": {
-      "message": {
-        "type": "string",
-        "required": true
-      },
-      "conversationid": {
-        "type": "integer",
-        "required": true
-      },
-      "otheruserid": {
-        "type": "integer",
-        "required": true
-      }
-    },
-    "core_message_get_unsent_message": {},
-    "editor_tiny_get_configuration": {
-      "contextlevel": {
-        "type": "string",
-        "required": true
-      },
-      "instanceid": {
-        "type": "integer",
-        "required": true
-      }
-    },
-    "tiny_media_preview": {
-      "contextid": {
-        "type": "integer",
-        "required": true
-      },
-      "content": {
-        "type": "string",
-        "required": true
-      }
-    },
-    "mod_forum_mark_posts_read": {
-      "postids": {
-        "type": "array",
-        "items": "integer",
-        "required": true
-      },
-      "discussionid": {
-        "type": "integer",
-        "required": true
-      }
-    },
-    "mod_quiz_get_user_quiz_attempts": {
-      "quizid": {
-        "type": "integer",
-        "required": true
-      },
-      "userid": {
-        "type": "integer",
-        "required": false,
-        "default": 0
-      },
-      "status": {
-        "type": "string",
-        "required": false,
-        "default": "finished"
-      },
-      "includepreviews": {
-        "type": "boolean",
-        "required": false,
-        "default": false
-      }
-    },
-    "core_courseformat_get_section_content_items": {
-      "courseid": {
-        "type": "integer",
-        "required": true
-      },
-      "sectionid": {
-        "type": "integer",
-        "required": true
-      }
-    },
-    "core_courseformat_get_overview_information": {
-      "courseid": {
-        "type": "integer",
-        "required": true
-      },
-      "modname": {
-        "type": "string",
-        "required": true
-      }
-    },
-    "core_courseformat_log_view_overview_information": {
-      "courseid": {
-        "type": "integer",
-        "required": true
-      }
-    },
-    "core_course_view_module_instance_list": {
-      "courseid": {
-        "type": "integer",
-        "required": true
-      },
-      "modname": {
-        "type": "string",
-        "required": true
-      }
-    },
-    "core_customfield_toggle_shared": {
-      "categoryid": {
-        "type": "integer",
-        "required": true
-      },
-      "component": {
-        "type": "string",
-        "required": true
-      },
-      "area": {
-        "type": "string",
-        "required": true
-      },
-      "itemid": {
-        "type": "integer",
-        "required": true
-      },
-      "state": {
-        "type": "boolean",
-        "required": true
-      }
-    },
-    "mod_forum_set_forum_subscription": {
-      "forumid": {
-        "type": "integer",
-        "required": true
-      },
-      "targetstate": {
-        "type": "boolean",
-        "required": true
-      }
-    },
-    "mod_forum_set_forum_tracking": {
-      "forumid": {
-        "type": "integer",
-        "required": true
-      },
-      "targetstate": {
-        "type": "boolean",
-        "required": true
-      }
-    },
-    "core_customfield_convert_category": {
-      "categoryid": {
-        "type": "integer",
-        "required": true
-      },
-      "component": {
-        "type": "string",
-        "required": true
-      },
-      "area": {
-        "type": "string",
-        "required": true
-      },
-      "itemid": {
-        "type": "integer",
-        "required": true
-      }
-    },
-    "mod_assign_save_overrides": {
-      "data": {
-        "type": "object",
-        "required": true
-      }
-    },
-    "mod_assign_delete_overrides": {
-      "data": {
-        "type": "object",
-        "required": true
-      }
-    },
-    "mod_assign_get_overrides": {
-      "assignid": {
-        "type": "integer",
-        "required": true
-      }
-    },
-    "mod_forum_set_read_state": {
-      "postid": {
-        "type": "integer",
-        "required": true
-      },
-      "targetstate": {
-        "type": "boolean",
-        "required": true
-      }
-    },
-    "mod_quiz_get_users_in_report": {
-      "cmid": {
-        "type": "integer",
-        "required": true
-      },
-      "mode": {
-        "type": "string",
-        "required": true
-      },
-      "params": {
-        "type": "string",
         "required": true
       }
     }
@@ -21551,14 +20900,6 @@
       "summary": "Returns a WebService token (and private token) for QR login.",
       "kind": "read"
     },
-    "tool_moodlenet_verify_webfinger": {
-      "summary": "Verify if the passed information resolves into a WebFinger profile URL",
-      "kind": "read"
-    },
-    "tool_moodlenet_search_courses": {
-      "summary": "For some given input search for a course that matches",
-      "kind": "read"
-    },
     "tool_policy_get_policy_version": {
       "summary": "Fetch the details of a policy version",
       "kind": "read"
@@ -21605,6 +20946,10 @@
     },
     "aiplacement_courseassist_summarise_text": {
       "summary": "Summarise text for the Course Assistance Placement",
+      "kind": "write"
+    },
+    "aiplacement_courseassist_explain_text": {
+      "summary": "Explain text for the Course Assistance Placement",
       "kind": "write"
     },
     "aiplacement_editor_generate_image": {
@@ -21999,6 +21344,18 @@
       "summary": "Get the current course state.",
       "kind": "read"
     },
+    "core_courseformat_get_section_content_items": {
+      "summary": "Fetch all the content items (activities, resources and their subtypes) for the activity picker",
+      "kind": "read"
+    },
+    "core_courseformat_get_overview_information": {
+      "summary": "Get the course overview information for an specific activity type.",
+      "kind": "read"
+    },
+    "core_courseformat_log_view_overview_information": {
+      "summary": "Logs the course overview information page has been visited on an external application.",
+      "kind": "write"
+    },
     "core_courseformat_new_module": {
       "summary": "Create a new module to course.",
       "kind": "write"
@@ -22101,6 +21458,10 @@
     },
     "core_course_toggle_activity_recommendation": {
       "summary": "Adds or removes an activity as a recommendation in the activity chooser.",
+      "kind": "write"
+    },
+    "core_course_view_module_instance_list": {
+      "summary": "Logs that a module instance list has been viewed on an external application.",
       "kind": "write"
     },
     "core_enrol_get_course_enrolment_methods": {
@@ -22215,16 +21576,8 @@
       "summary": "Create grade categories inside a course gradebook.",
       "kind": "write"
     },
-    "core_grades_get_enrolled_users_for_search_widget": {
-      "summary": "** DEPRECATED ** Please do not call this function any more. ",
-      "kind": "read"
-    },
     "core_grades_get_enrolled_users_for_selector": {
       "summary": "Returns the enrolled users within and map some fields to the returned array of user objects.",
-      "kind": "read"
-    },
-    "core_grades_get_groups_for_search_widget": {
-      "summary": "** DEPRECATED ** Please do not call this function any more. ",
       "kind": "read"
     },
     "core_grades_get_groups_for_selector": {
@@ -22503,6 +21856,10 @@
       "summary": "Get number of unread notifications.",
       "kind": "read"
     },
+    "core_message_set_default_notification": {
+      "summary": "Set the default value for a given notification preference",
+      "kind": "write"
+    },
     "core_my_view_page": {
       "summary": "Trigger the My or Dashboard viewed event.",
       "kind": "write"
@@ -22537,10 +21894,6 @@
     },
     "core_output_load_template_with_dependencies": {
       "summary": "Load a template and its dependencies for a renderable",
-      "kind": "read"
-    },
-    "core_output_load_fontawesome_icon_map": {
-      "summary": "Load the mapping of names to icons",
       "kind": "read"
     },
     "core_output_load_fontawesome_icon_system_map": {
@@ -23079,12 +22432,20 @@
       "summary": "Deletes a category",
       "kind": "write"
     },
+    "core_customfield_convert_category": {
+      "summary": "Convert an entity custom field category to a shared category.",
+      "kind": "write"
+    },
     "core_customfield_move_field": {
       "summary": "Drag and drop",
       "kind": "write"
     },
     "core_customfield_move_category": {
       "summary": "Drag and drop categories",
+      "kind": "write"
+    },
+    "core_customfield_toggle_shared": {
+      "summary": "Toggle shared category state",
       "kind": "write"
     },
     "core_h5p_get_trusted_h5p_file": {
@@ -23267,29 +22628,13 @@
       "summary": "Set the protection state for a block plugin",
       "kind": "write"
     },
-    "core_moodlenet_send_activity": {
-      "summary": "Send activity to MoodleNet",
-      "kind": "read"
-    },
-    "core_moodlenet_get_share_info_activity": {
-      "summary": "Get information about an activity being shared",
-      "kind": "read"
-    },
-    "core_moodlenet_auth_check": {
-      "summary": "Check a user has authorized for a given MoodleNet site",
-      "kind": "write"
-    },
-    "core_moodlenet_get_shared_course_info": {
-      "summary": "Get information about an course being shared",
-      "kind": "read"
-    },
-    "core_moodlenet_send_course": {
-      "summary": "Send course to MoodleNet",
-      "kind": "read"
-    },
     "core_output_poll_stored_progress": {
       "summary": "Polls for the current percentage progress of a stored progress object",
       "kind": "read"
+    },
+    "core_ai_delete_provider_instance": {
+      "summary": "Delete a provider instance",
+      "kind": "write"
     },
     "core_ai_set_policy_status": {
       "summary": "Set a users AI policy acceptance",
@@ -23303,9 +22648,37 @@
       "summary": "Update action",
       "kind": "write"
     },
+    "core_ai_set_provider_status": {
+      "summary": "Set a providers status",
+      "kind": "write"
+    },
+    "core_ai_set_provider_order": {
+      "summary": "Set the order of a provider",
+      "kind": "write"
+    },
     "core_sms_set_gateway_status": {
       "summary": "Set the sms gateway status",
       "kind": "write"
+    },
+    "core_question_move_questions": {
+      "summary": "Bulk move questions to a new category.",
+      "kind": "write"
+    },
+    "core_question_search_shared_banks": {
+      "summary": "Get a list of shared question banks filtered by a search term.",
+      "kind": "read"
+    },
+    "core_message_set_unsent_message": {
+      "summary": "Store an unsent message string",
+      "kind": "write"
+    },
+    "core_message_get_unsent_message": {
+      "summary": "Get an unsent message string",
+      "kind": "read"
+    },
+    "editor_tiny_get_configuration": {
+      "summary": "Returns the TinyMCE configuration for a context.",
+      "kind": "read"
     },
     "tiny_autosave_resume_session": {
       "summary": "Resume an autosave session",
@@ -23321,6 +22694,10 @@
     },
     "tiny_equation_filter": {
       "summary": "Filter the equation",
+      "kind": "read"
+    },
+    "tiny_media_preview": {
+      "summary": "Filters the content",
       "kind": "read"
     },
     "tiny_premium_get_api_key": {
@@ -23455,6 +22832,18 @@
       "summary": "Remove submission.",
       "kind": "write"
     },
+    "mod_assign_save_overrides": {
+      "summary": "Update or insert assignment overrides",
+      "kind": "write"
+    },
+    "mod_assign_delete_overrides": {
+      "summary": "Delete assignment overrides",
+      "kind": "write"
+    },
+    "mod_assign_get_overrides": {
+      "summary": "Get assignment overrides",
+      "kind": "read"
+    },
     "mod_bigbluebuttonbn_can_join": {
       "summary": "Returns information if the current user can join or not.",
       "kind": "read"
@@ -23502,42 +22891,6 @@
     "mod_book_get_books_by_courses": {
       "summary": "Returns a list of book instances in a provided set of courses,\r\n                            if no courses are provided then all the book instances the user has access to will be returned.",
       "kind": "read"
-    },
-    "mod_chat_login_user": {
-      "summary": "Log a user into a chat room in the given chat.",
-      "kind": "write"
-    },
-    "mod_chat_get_chat_users": {
-      "summary": "Get the list of users in the given chat session.",
-      "kind": "read"
-    },
-    "mod_chat_send_chat_message": {
-      "summary": "Send a message on the given chat session.",
-      "kind": "write"
-    },
-    "mod_chat_get_chat_latest_messages": {
-      "summary": "Get the latest messages from the given chat session.",
-      "kind": "read"
-    },
-    "mod_chat_view_chat": {
-      "summary": "Trigger the course module viewed event and update the module completion status.",
-      "kind": "write"
-    },
-    "mod_chat_get_chats_by_courses": {
-      "summary": "Returns a list of chat instances in a provided set of courses,\r\n                            if no courses are provided then all the chat instances the user has access to will be returned.",
-      "kind": "read"
-    },
-    "mod_chat_get_sessions": {
-      "summary": "Retrieves chat sessions for a given chat.",
-      "kind": "read"
-    },
-    "mod_chat_get_session_messages": {
-      "summary": "Retrieves messages of the given chat session.",
-      "kind": "read"
-    },
-    "mod_chat_view_sessions": {
-      "summary": "Trigger the chat session viewed event.",
-      "kind": "write"
     },
     "mod_choice_get_choice_results": {
       "summary": "Retrieve users results for a given choice.",
@@ -23753,6 +23106,22 @@
     },
     "mod_forum_update_discussion_post": {
       "summary": "Updates a post or a discussion topic post.",
+      "kind": "write"
+    },
+    "mod_forum_set_forum_subscription": {
+      "summary": "Subscribe or unsubscribe the user to a forum.",
+      "kind": "write"
+    },
+    "mod_forum_set_forum_tracking": {
+      "summary": "Track or not unread messages in a forum for the user.",
+      "kind": "write"
+    },
+    "mod_forum_mark_posts_read": {
+      "summary": "Mark forum posts as read.",
+      "kind": "write"
+    },
+    "mod_forum_set_read_state": {
+      "summary": "Set the read or unread state for a forum post for the current user.",
       "kind": "write"
     },
     "mod_glossary_get_glossaries_by_courses": {
@@ -24023,6 +23392,10 @@
       "summary": "Return a list of attempts for the given quiz and user. ",
       "kind": "read"
     },
+    "mod_quiz_get_user_quiz_attempts": {
+      "summary": "Return a list of attempts for the given quiz and user.",
+      "kind": "read"
+    },
     "mod_quiz_get_user_best_grade": {
       "summary": "Get the best current grade for the given user on a quiz.",
       "kind": "read"
@@ -24139,6 +23512,10 @@
       "summary": "For a quiz with no grade items yet, create a grade item for each section, with the questions in that section assigned.",
       "kind": "write"
     },
+    "mod_quiz_get_users_in_report": {
+      "summary": "Returns the dataset of users within the quiz report",
+      "kind": "read"
+    },
     "mod_resource_view_resource": {
       "summary": "Simulate the view.php web interface resource: trigger events, completion, etc...",
       "kind": "write"
@@ -24182,22 +23559,6 @@
     "mod_scorm_get_scorm_access_information": {
       "summary": "Return capabilities information for a given scorm.",
       "kind": "read"
-    },
-    "mod_survey_get_surveys_by_courses": {
-      "summary": "Returns a list of survey instances in a provided set of courses,\r\n                            if no courses are provided then all the survey instances the user has access to will be returned.",
-      "kind": "read"
-    },
-    "mod_survey_view_survey": {
-      "summary": "Trigger the course module viewed event and update the module completion status.",
-      "kind": "write"
-    },
-    "mod_survey_get_questions": {
-      "summary": "Get the complete list of questions for the survey, including subquestions.",
-      "kind": "read"
-    },
-    "mod_survey_submit_answers": {
-      "summary": "Submit the answers for a given survey.",
-      "kind": "write"
     },
     "mod_url_view_url": {
       "summary": "Trigger the course module viewed event and update the module completion status.",
@@ -24363,121 +23724,9 @@
       "summary": "Load the data for the competency report in a course.",
       "kind": "read"
     },
-    "report_insights_set_notuseful_prediction": {
-      "summary": "Flags the prediction as not useful.",
-      "kind": "write"
-    },
-    "report_insights_set_fixed_prediction": {
-      "summary": "Flags a prediction as fixed.",
-      "kind": "write"
-    },
     "report_insights_action_executed": {
       "summary": "Stores an action executed over a group of predictions.",
       "kind": "write"
-    },
-    "aiplacement_courseassist_explain_text": {
-      "summary": "Explain text for the Course Assistance Placement",
-      "kind": "write"
-    },
-    "core_message_set_default_notification": {
-      "summary": "Set the default value for a given notification preference",
-      "kind": "write"
-    },
-    "core_ai_delete_provider_instance": {
-      "summary": "Delete a provider instance",
-      "kind": "write"
-    },
-    "core_ai_set_provider_status": {
-      "summary": "Set a providers status",
-      "kind": "write"
-    },
-    "core_ai_set_provider_order": {
-      "summary": "Set the order of a provider",
-      "kind": "write"
-    },
-    "core_question_move_questions": {
-      "summary": "Bulk move questions to a new category.",
-      "kind": "write"
-    },
-    "core_question_search_shared_banks": {
-      "summary": "Get a list of shared question banks filtered by a search term.",
-      "kind": "read"
-    },
-    "core_message_set_unsent_message": {
-      "summary": "Store an unsent message string",
-      "kind": "write"
-    },
-    "core_message_get_unsent_message": {
-      "summary": "Get an unsent message string",
-      "kind": "read"
-    },
-    "editor_tiny_get_configuration": {
-      "summary": "Returns the TinyMCE configuration for a context.",
-      "kind": "read"
-    },
-    "tiny_media_preview": {
-      "summary": "Filters the content",
-      "kind": "read"
-    },
-    "mod_forum_mark_posts_read": {
-      "summary": "Mark forum posts as read.",
-      "kind": "write"
-    },
-    "mod_quiz_get_user_quiz_attempts": {
-      "summary": "Return a list of attempts for the given quiz and user.",
-      "kind": "read"
-    },
-    "core_courseformat_get_section_content_items": {
-      "summary": "Fetch all the content items (activities, resources and their subtypes) for the activity picker",
-      "kind": "read"
-    },
-    "core_courseformat_get_overview_information": {
-      "summary": "Get the course overview information for an specific activity type.",
-      "kind": "read"
-    },
-    "core_courseformat_log_view_overview_information": {
-      "summary": "Logs the course overview information page has been visited on an external application.",
-      "kind": "write"
-    },
-    "core_course_view_module_instance_list": {
-      "summary": "Logs that a module instance list has been viewed on an external application.",
-      "kind": "write"
-    },
-    "core_customfield_toggle_shared": {
-      "summary": "Toggle shared category state",
-      "kind": "write"
-    },
-    "mod_forum_set_forum_subscription": {
-      "summary": "Subscribe or unsubscribe the user to a forum.",
-      "kind": "write"
-    },
-    "mod_forum_set_forum_tracking": {
-      "summary": "Track or not unread messages in a forum for the user.",
-      "kind": "write"
-    },
-    "core_customfield_convert_category": {
-      "summary": "Convert an entity custom field category to a shared category.",
-      "kind": "write"
-    },
-    "mod_assign_save_overrides": {
-      "summary": "Update or insert assignment overrides",
-      "kind": "write"
-    },
-    "mod_assign_delete_overrides": {
-      "summary": "Delete assignment overrides",
-      "kind": "write"
-    },
-    "mod_assign_get_overrides": {
-      "summary": "Get assignment overrides",
-      "kind": "read"
-    },
-    "mod_forum_set_read_state": {
-      "summary": "Set the read or unread state for a forum post for the current user.",
-      "kind": "write"
-    },
-    "mod_quiz_get_users_in_report": {
-      "summary": "Returns the dataset of users within the quiz report",
-      "kind": "read"
     }
   },
   "unresolved": [],

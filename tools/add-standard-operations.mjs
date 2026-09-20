@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 
 const projectRoot = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const contractPath = resolve(projectRoot, 'contract', 'operations.json');
-const versions = ['5.0', '5.1', '5.2'];
+const versions = ['4.5', '5.0', '5.1', '5.2', '5.3'];
 
 async function readJson(path) {
   return JSON.parse(await readFile(resolve(projectRoot, path), 'utf8'));
@@ -19,9 +19,7 @@ const inventories = Object.fromEntries(await Promise.all(versions.map(async (ver
 ])));
 const typeSources = Object.fromEntries(await Promise.all(versions.map(async (version) => [
   version,
-  await readJson(version === '5.2'
-    ? 'contract/source-response-types.json'
-    : `contract/moodle-${version}-response-types.json`)
+  await readJson(`contract/moodle-${version}-response-types.json`)
 ])));
 
 const exactParameterNames = {
@@ -191,6 +189,19 @@ const operationNames = new Set(contract.operations.map((operation) => operation.
 const allFunctions = new Set(versions.flatMap((version) => [...inventories[version]]));
 const additions = [];
 
+if (process.argv.includes('--normalize-compatibility')) {
+  for (const operation of contract.operations) {
+    if (operation.moodleFunction === 'webservice/upload.php' ||
+        operation.moodleFunction === 'webservice/pluginfile.php') {
+      operation.compatibility = { from: versions[0] };
+      continue;
+    }
+    if (versions.some((version) => inventories[version].has(operation.moodleFunction))) {
+      operation.compatibility = compatibilityFor(operation.moodleFunction);
+    }
+  }
+}
+
 if (process.argv.includes('--normalize-existing')) {
   const generatedCount = contract.generatedStandardOperationCount ?? 0;
   for (const operation of contract.operations.slice(-generatedCount)) {
@@ -240,4 +251,22 @@ contract.operations.push(...additions);
 contract.generatedStandardOperationCount =
   (contract.generatedStandardOperationCount ?? 0) + additions.length;
 await writeFile(contractPath, `${JSON.stringify(contract, null, 2)}\n`);
+
+const combinedTypes = {
+  moodleVersion: versions.at(-1),
+  schemas: {},
+  parameters: {},
+  services: {},
+  unresolved: [],
+  unresolvedParameters: []
+};
+for (const version of versions) {
+  Object.assign(combinedTypes.schemas, typeSources[version].schemas);
+  Object.assign(combinedTypes.parameters, typeSources[version].parameters);
+  Object.assign(combinedTypes.services, typeSources[version].services);
+}
+await writeFile(
+  resolve(projectRoot, 'contract', 'source-response-types.json'),
+  `${JSON.stringify(combinedTypes, null, 2)}\n`
+);
 console.log(`Added ${additions.length} standard Moodle operations.`);

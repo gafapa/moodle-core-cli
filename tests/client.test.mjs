@@ -128,10 +128,22 @@ test('maps one friendly create operation to Moodle batch parameters', async () =
 
 test('rejects unsupported Moodle versions before an operation call', async () => {
   const transport = createTransport({});
-  const client = createMoodleClient({ transport, moodleVersion: '4.5' });
+  const client = createMoodleClient({ transport, moodleVersion: '4.4' });
 
   await assert.rejects(() => client.get_courses(), MoodleUnsupportedVersionError);
   assert.equal(transport.calls.length, 0);
+});
+
+test('accepts the Moodle 4.5 and 5.3 compatibility boundaries', async () => {
+  for (const moodleVersion of ['4.5', '5.3']) {
+    const transport = createTransport({
+      core_course_get_courses: []
+    });
+    const client = createMoodleClient({ transport, moodleVersion });
+
+    assert.deepEqual(await client.get_courses(), []);
+    assert.equal(transport.calls.length, 1);
+  }
 });
 
 test('rejects operations removed after their supported Moodle version', async () => {
@@ -155,14 +167,14 @@ test('rejects operations removed after their supported Moodle version', async ()
 test('rejects future Moodle branches until their static contract is audited', async () => {
   const client = createMoodleClient({
     transport: createTransport({}),
-    moodleVersion: '5.3'
+    moodleVersion: '5.4'
   });
 
   await assert.rejects(
     client.get_site_info({}),
     (error) => {
       assert.equal(error.code, 'unsupported_moodle_version');
-      assert.equal(error.details.maximumVerifiedVersion, '5.2');
+      assert.equal(error.details.maximumVerifiedVersion, '5.3');
       return true;
     }
   );

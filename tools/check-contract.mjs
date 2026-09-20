@@ -8,9 +8,9 @@ const errors = [];
 const names = new Set();
 
 if (!contract.version) errors.push('Contract version is required.');
-if (contract.minimumMoodleVersion !== '5.0') errors.push('minimumMoodleVersion must be 5.0.');
-if (contract.maximumVerifiedMoodleVersion !== '5.2') {
-  errors.push('maximumVerifiedMoodleVersion must be 5.2.');
+if (contract.minimumMoodleVersion !== '4.5') errors.push('minimumMoodleVersion must be 4.5.');
+if (contract.maximumVerifiedMoodleVersion !== '5.3') {
+  errors.push('maximumVerifiedMoodleVersion must be 5.3.');
 }
 if (!Number.isInteger(contract.generatedStandardOperationCount)) {
   errors.push('generatedStandardOperationCount must be an integer.');

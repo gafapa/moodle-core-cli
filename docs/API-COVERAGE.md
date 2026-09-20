@@ -2,7 +2,7 @@
 
 ## Supported scope
 
-Moodle Core CLI is a static, friendly client for Moodle 5.0 and later. It does not inspect a live site's function catalog and it does not offer an arbitrary `call(functionName, parameters)` escape hatch.
+Moodle Core CLI is a static, friendly client for Moodle 4.5 through 5.3. It does not inspect a live site's function catalog and it does not offer an arbitrary `call(functionName, parameters)` escape hatch.
 
 The contract covers:
 
@@ -25,20 +25,24 @@ The source audit reads every `db/services.php` file, identifies function declara
 
 | Moodle branch | Service declarations | All covered | Official mobile functions | Mobile covered | Unknown contract functions |
 | --- | ---: | ---: | ---: | ---: | ---: |
+| 4.5 | 759 | 759 | 438 | 438 | 0 |
 | 5.0 | 754 | 754 | 426 | 426 | 0 |
 | 5.1 | 761 | 761 | 432 | 432 | 0 |
 | 5.2 | 755 | 755 | 430 | 430 | 0 |
+| 5.3 beta | 760 | 760 | 431 | 431 | 0 |
 
-The counts are branch-specific. Moodle may add or remove functions between minor branches. For example, the MoodleNet functions are available through Moodle 5.1 and are rejected by the client on Moodle 5.2.
+The counts are branch-specific. Moodle may add or remove functions between minor branches. For example, the MoodleNet functions are available through Moodle 5.1 and are rejected by the client on Moodle 5.2. The Moodle 5.3 row was audited from the official `v5.3.0-beta` tag and will be audited again when the stable branch is published.
 
 ## Reproducing the audit
 
 Use a source checkout for the branch being checked:
 
 ```bash
+npm run coverage:audit -- /path/to/moodle --version 4.5 --strict --require-all
 npm run coverage:audit -- /path/to/moodle --version 5.0 --strict --require-all
 npm run coverage:audit -- /path/to/moodle --version 5.1 --strict --require-all
 npm run coverage:audit -- /path/to/moodle --version 5.2 --strict --require-all
+npm run coverage:audit -- /path/to/moodle --version 5.3 --strict --require-all
 ```
 
 Strict mode fails when:

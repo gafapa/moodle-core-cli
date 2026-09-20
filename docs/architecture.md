@@ -2,7 +2,7 @@
 
 ## Goals
 
-Moodle Core CLI provides one stable, friendly API over Moodle 5.0+ core web services. The npm library is the primary product; the CLI is an adapter over the same client methods.
+Moodle Core CLI provides one stable, friendly API over Moodle 4.5+ core web services. The npm library is the primary product; the CLI is an adapter over the same client methods.
 
 The project intentionally does not provide live web service discovery, arbitrary `wsfunction` calls, or APIs supplied by third-party and site-local plugins.
 
@@ -26,7 +26,7 @@ CLI result serialization redacts secret-bearing fields and entire results from t
 
 ## Version policy
 
-Moodle 5.0 is the minimum supported version. Automatic detection uses `core_webservice_get_site_info`. Consumers can provide a Moodle version explicitly when that function is not exposed by their external service.
+Moodle 4.5 is the minimum supported version. Automatic detection uses `core_webservice_get_site_info`. Consumers can provide a Moodle version explicitly when that function is not exposed by their external service.
 
 The contract also records the newest audited branch. A future branch is rejected until its source inventory, parameter structures, response structures, and compatibility differences have been incorporated into a new package release.
 

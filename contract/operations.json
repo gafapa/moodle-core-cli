@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
-  "minimumMoodleVersion": "5.0",
-  "maximumVerifiedMoodleVersion": "5.2",
-  "generatedStandardOperationCount": 255,
+  "minimumMoodleVersion": "4.5",
+  "maximumVerifiedMoodleVersion": "5.3",
+  "generatedStandardOperationCount": 278,
   "operations": [
     {
       "name": "get_site_info",
@@ -10,7 +10,7 @@
       "kind": "read",
       "moodleFunction": "core_webservice_get_site_info",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {},
       "returns": {
@@ -29,7 +29,7 @@
       "kind": "read",
       "moodleFunction": "core_course_get_courses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_ids": {
@@ -56,7 +56,7 @@
       "kind": "read",
       "moodleFunction": "core_course_get_courses_by_field",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -81,7 +81,7 @@
       "kind": "write",
       "moodleFunction": "core_course_create_courses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "fullname": {
@@ -131,7 +131,7 @@
       "kind": "write",
       "moodleFunction": "core_course_update_courses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -186,7 +186,7 @@
       "kind": "write",
       "moodleFunction": "core_course_delete_courses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -209,7 +209,7 @@
       "kind": "read",
       "moodleFunction": "core_course_get_contents",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -228,7 +228,7 @@
       "kind": "read",
       "moodleFunction": "core_user_get_users_by_field",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "field": {
@@ -257,7 +257,7 @@
       "kind": "write",
       "moodleFunction": "core_user_create_users",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "username": {
@@ -300,7 +300,7 @@
       "kind": "write",
       "moodleFunction": "core_user_update_users",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -348,7 +348,7 @@
       "kind": "write",
       "moodleFunction": "core_user_delete_users",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -368,7 +368,7 @@
       "kind": "write",
       "moodleFunction": "enrol_manual_enrol_users",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -414,7 +414,7 @@
       "kind": "write",
       "moodleFunction": "enrol_manual_unenrol_users",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -445,7 +445,7 @@
       "kind": "read",
       "moodleFunction": "core_group_get_course_groups",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -464,7 +464,7 @@
       "kind": "write",
       "moodleFunction": "core_group_create_groups",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -510,7 +510,7 @@
       "kind": "write",
       "moodleFunction": "core_group_delete_groups",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "group_id": {
@@ -530,7 +530,7 @@
       "kind": "write",
       "moodleFunction": "core_group_add_group_members",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "group_id": {
@@ -556,7 +556,7 @@
       "kind": "write",
       "moodleFunction": "core_group_delete_group_members",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "group_id": {
@@ -582,7 +582,7 @@
       "kind": "read",
       "moodleFunction": "core_course_get_categories",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "parent_id": {
@@ -613,7 +613,7 @@
       "kind": "read",
       "moodleFunction": "core_course_get_categories",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "category_id": {
@@ -638,7 +638,7 @@
       "kind": "read",
       "moodleFunction": "core_enrol_get_enrolled_users",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -676,7 +676,7 @@
       "kind": "read",
       "moodleFunction": "core_cohort_get_cohorts",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "cohort_ids": {
@@ -695,7 +695,7 @@
       "kind": "read",
       "moodleFunction": "core_group_get_group_members",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "group_id": {
@@ -717,7 +717,7 @@
       "kind": "read",
       "moodleFunction": "core_group_get_course_groupings",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -736,7 +736,7 @@
       "kind": "read",
       "moodleFunction": "core_completion_get_activities_completion_status",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -758,7 +758,7 @@
       "kind": "read",
       "moodleFunction": "core_completion_get_course_completion_status",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -780,7 +780,7 @@
       "kind": "read",
       "moodleFunction": "core_calendar_get_calendar_events",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "event_ids": {
@@ -834,7 +834,7 @@
       "kind": "read",
       "moodleFunction": "gradereport_user_get_grade_items",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -861,7 +861,7 @@
       "kind": "write",
       "moodleFunction": "core_course_create_categories",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "name": {
@@ -897,7 +897,7 @@
       "kind": "write",
       "moodleFunction": "core_course_update_categories",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "category_id": {
@@ -938,7 +938,7 @@
       "kind": "write",
       "moodleFunction": "core_course_delete_categories",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "category_id": {
@@ -970,7 +970,7 @@
       "kind": "read",
       "moodleFunction": "core_group_get_groups",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "group_id": {
@@ -987,7 +987,7 @@
       "kind": "write",
       "moodleFunction": "core_group_update_groups",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "group_id": {
@@ -1033,7 +1033,7 @@
       "kind": "write",
       "moodleFunction": "core_group_create_groupings",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -1065,7 +1065,7 @@
       "kind": "read",
       "moodleFunction": "core_group_get_groupings",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "grouping_id": {
@@ -1086,7 +1086,7 @@
       "kind": "write",
       "moodleFunction": "core_group_update_groupings",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "grouping_id": {
@@ -1118,7 +1118,7 @@
       "kind": "write",
       "moodleFunction": "core_group_delete_groupings",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "grouping_id": {
@@ -1138,7 +1138,7 @@
       "kind": "write",
       "moodleFunction": "core_group_assign_grouping",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "grouping_id": {
@@ -1164,7 +1164,7 @@
       "kind": "write",
       "moodleFunction": "core_group_unassign_grouping",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "grouping_id": {
@@ -1190,7 +1190,7 @@
       "kind": "write",
       "moodleFunction": "core_cohort_create_cohorts",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "name": {
@@ -1226,7 +1226,7 @@
       "kind": "write",
       "moodleFunction": "core_cohort_update_cohorts",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "cohort_id": {
@@ -1267,7 +1267,7 @@
       "kind": "write",
       "moodleFunction": "core_cohort_delete_cohorts",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "cohort_id": {
@@ -1287,7 +1287,7 @@
       "kind": "read",
       "moodleFunction": "core_cohort_get_cohort_members",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "cohort_id": {
@@ -1309,7 +1309,7 @@
       "kind": "read",
       "moodleFunction": "core_cohort_search_cohorts",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "query": {
@@ -1349,7 +1349,7 @@
       "kind": "write",
       "moodleFunction": "core_cohort_add_cohort_members",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "cohort_id": {
@@ -1378,7 +1378,7 @@
       "kind": "write",
       "moodleFunction": "core_cohort_delete_cohort_members",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "cohort_id": {
@@ -1404,7 +1404,7 @@
       "kind": "write",
       "moodleFunction": "core_role_assign_roles",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "role_id": {
@@ -1447,7 +1447,7 @@
       "kind": "write",
       "moodleFunction": "core_role_unassign_roles",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "role_id": {
@@ -1490,7 +1490,7 @@
       "kind": "read",
       "moodleFunction": "core_enrol_get_users_courses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -1513,7 +1513,7 @@
       "kind": "read",
       "moodleFunction": "core_enrol_get_course_enrolment_methods",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -1532,7 +1532,7 @@
       "kind": "read",
       "moodleFunction": "core_enrol_get_enrolled_users_with_capability",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -1575,7 +1575,7 @@
       "kind": "read",
       "moodleFunction": "core_enrol_search_users",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -1615,7 +1615,7 @@
       "kind": "read",
       "moodleFunction": "core_enrol_get_potential_users",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -1655,7 +1655,7 @@
       "kind": "read",
       "moodleFunction": "enrol_self_get_instance_info",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "enrolment_id": {
@@ -1672,7 +1672,7 @@
       "kind": "write",
       "moodleFunction": "enrol_self_enrol_user",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -1698,7 +1698,7 @@
       "kind": "write",
       "moodleFunction": "core_enrol_submit_user_enrolment_form",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "enrolment_id": {
@@ -1733,7 +1733,7 @@
       "kind": "write",
       "moodleFunction": "core_enrol_unenrol_user_enrolment",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "enrolment_id": {
@@ -1750,7 +1750,7 @@
       "kind": "read",
       "moodleFunction": "gradereport_user_get_grades_table",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -1777,7 +1777,7 @@
       "kind": "read",
       "moodleFunction": "gradereport_overview_get_course_grades",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -1794,7 +1794,7 @@
       "kind": "read",
       "moodleFunction": "gradereport_user_get_access_information",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -1811,7 +1811,7 @@
       "kind": "read",
       "moodleFunction": "core_grades_get_gradeitems",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -1828,7 +1828,7 @@
       "kind": "read",
       "moodleFunction": "core_grades_get_grade_tree",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -1845,7 +1845,7 @@
       "kind": "read",
       "moodleFunction": "core_grades_get_gradable_users",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -1871,7 +1871,7 @@
       "kind": "read",
       "moodleFunction": "core_grades_get_feedback",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -1898,7 +1898,7 @@
       "kind": "write",
       "moodleFunction": "core_grades_create_gradecategories",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -1949,7 +1949,7 @@
       "kind": "write",
       "moodleFunction": "core_grades_update_grades",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "source": {
@@ -1999,7 +1999,7 @@
       "kind": "write",
       "moodleFunction": "core_completion_update_activity_completion_status_manually",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "module_id": {
@@ -2020,7 +2020,7 @@
       "kind": "write",
       "moodleFunction": "core_completion_override_activity_completion_status",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "module_id": {
@@ -2048,7 +2048,7 @@
       "kind": "write",
       "moodleFunction": "core_completion_mark_course_self_completed",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -2065,7 +2065,7 @@
       "kind": "write",
       "moodleFunction": "webservice/upload.php",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "file_path": {
@@ -2102,7 +2102,7 @@
       "kind": "write",
       "moodleFunction": "webservice/pluginfile.php",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "file_url": {
@@ -2130,7 +2130,7 @@
       "kind": "read",
       "moodleFunction": "mod_assign_get_assignments",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_ids": {
@@ -2156,7 +2156,7 @@
       "kind": "read",
       "moodleFunction": "mod_assign_get_submissions",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "assignment_ids": {
@@ -2187,7 +2187,7 @@
       "kind": "read",
       "moodleFunction": "mod_assign_get_grades",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "assignment_ids": {
@@ -2209,7 +2209,7 @@
       "kind": "read",
       "moodleFunction": "mod_assign_get_submission_status",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "assignment_id": {
@@ -2236,7 +2236,7 @@
       "kind": "read",
       "moodleFunction": "mod_assign_list_participants",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "assignment_id": {
@@ -2278,7 +2278,7 @@
       "kind": "read",
       "moodleFunction": "mod_assign_get_participant",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "assignment_id": {
@@ -2304,7 +2304,7 @@
       "kind": "write",
       "moodleFunction": "mod_assign_start_submission",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "assignment_id": {
@@ -2321,7 +2321,7 @@
       "kind": "write",
       "moodleFunction": "mod_assign_save_submission",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "assignment_id": {
@@ -2359,7 +2359,7 @@
       "kind": "write",
       "moodleFunction": "mod_assign_submit_for_grading",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "assignment_id": {
@@ -2382,7 +2382,7 @@
       "kind": "write",
       "moodleFunction": "mod_assign_save_grade",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "assignment_id": {
@@ -2433,7 +2433,7 @@
       "kind": "write",
       "moodleFunction": "mod_assign_set_user_flags",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "assignment_id": {
@@ -2475,7 +2475,7 @@
       "kind": "read",
       "moodleFunction": "mod_assign_get_user_flags",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "assignment_ids": {
@@ -2492,7 +2492,7 @@
       "kind": "read",
       "moodleFunction": "mod_assign_get_user_mappings",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "assignment_ids": {
@@ -2509,7 +2509,7 @@
       "kind": "write",
       "moodleFunction": "mod_assign_lock_submissions",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "assignment_id": {
@@ -2533,7 +2533,7 @@
       "kind": "write",
       "moodleFunction": "mod_assign_unlock_submissions",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "assignment_id": {
@@ -2557,7 +2557,7 @@
       "kind": "write",
       "moodleFunction": "mod_assign_revert_submissions_to_draft",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "assignment_id": {
@@ -2581,7 +2581,7 @@
       "kind": "write",
       "moodleFunction": "mod_assign_save_user_extensions",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "assignment_id": {
@@ -2610,7 +2610,7 @@
       "kind": "write",
       "moodleFunction": "mod_assign_reveal_identities",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "assignment_id": {
@@ -2629,7 +2629,7 @@
       "kind": "write",
       "moodleFunction": "mod_assign_copy_previous_attempt",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "assignment_id": {
@@ -2648,7 +2648,7 @@
       "kind": "write",
       "moodleFunction": "mod_assign_remove_submission",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "assignment_id": {
@@ -2670,7 +2670,7 @@
       "kind": "write",
       "moodleFunction": "mod_assign_view_assign",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "assignment_id": {
@@ -2687,7 +2687,7 @@
       "kind": "write",
       "moodleFunction": "mod_assign_view_submission_status",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "assignment_id": {
@@ -2704,7 +2704,7 @@
       "kind": "write",
       "moodleFunction": "mod_assign_view_grading_table",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "assignment_id": {
@@ -2721,7 +2721,7 @@
       "kind": "read",
       "moodleFunction": "mod_forum_get_forums_by_courses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_ids": {
@@ -2740,7 +2740,7 @@
       "kind": "read",
       "moodleFunction": "mod_forum_get_forum_discussions",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "forum_id": {
@@ -2776,7 +2776,7 @@
       "kind": "read",
       "moodleFunction": "mod_forum_get_discussion_posts",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "discussion_id": {
@@ -2814,7 +2814,7 @@
       "kind": "read",
       "moodleFunction": "mod_forum_get_discussion_post",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "post_id": {
@@ -2831,7 +2831,7 @@
       "kind": "read",
       "moodleFunction": "mod_forum_get_discussion_posts_by_userid",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -2870,7 +2870,7 @@
       "kind": "read",
       "moodleFunction": "mod_forum_get_forum_access_information",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "forum_id": {
@@ -2887,7 +2887,7 @@
       "kind": "read",
       "moodleFunction": "mod_forum_can_add_discussion",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "forum_id": {
@@ -2909,7 +2909,7 @@
       "kind": "write",
       "moodleFunction": "mod_forum_add_discussion",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "forum_id": {
@@ -2957,7 +2957,7 @@
       "kind": "write",
       "moodleFunction": "mod_forum_add_discussion_post",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "post_id": {
@@ -3005,7 +3005,7 @@
       "kind": "write",
       "moodleFunction": "mod_forum_update_discussion_post",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "post_id": {
@@ -3053,7 +3053,7 @@
       "kind": "write",
       "moodleFunction": "mod_forum_delete_post",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "post_id": {
@@ -3070,7 +3070,7 @@
       "kind": "write",
       "moodleFunction": "mod_forum_prepare_draft_area_for_post",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "post_id": {
@@ -3142,7 +3142,7 @@
       "kind": "write",
       "moodleFunction": "mod_forum_set_subscription_state",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "forum_id": {
@@ -3168,7 +3168,7 @@
       "kind": "write",
       "moodleFunction": "mod_forum_toggle_favourite_state",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "discussion_id": {
@@ -3189,7 +3189,7 @@
       "kind": "write",
       "moodleFunction": "mod_forum_set_pin_state",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "discussion_id": {
@@ -3210,7 +3210,7 @@
       "kind": "write",
       "moodleFunction": "mod_forum_set_lock_state",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "forum_id": {
@@ -3258,7 +3258,7 @@
       "kind": "write",
       "moodleFunction": "mod_forum_view_forum",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "forum_id": {
@@ -3275,7 +3275,7 @@
       "kind": "write",
       "moodleFunction": "mod_forum_view_forum_discussion",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "discussion_id": {
@@ -3292,7 +3292,7 @@
       "kind": "read",
       "moodleFunction": "mod_quiz_get_quizzes_by_courses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_ids": {
@@ -3344,7 +3344,7 @@
       "kind": "read",
       "moodleFunction": "mod_quiz_get_user_best_grade",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "quiz_id": {
@@ -3366,7 +3366,7 @@
       "kind": "read",
       "moodleFunction": "mod_quiz_get_combined_review_options",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "quiz_id": {
@@ -3388,7 +3388,7 @@
       "kind": "write",
       "moodleFunction": "mod_quiz_start_attempt",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "quiz_id": {
@@ -3413,7 +3413,7 @@
       "kind": "read",
       "moodleFunction": "mod_quiz_get_attempt_data",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "attempt_id": {
@@ -3439,7 +3439,7 @@
       "kind": "read",
       "moodleFunction": "mod_quiz_get_attempt_summary",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "attempt_id": {
@@ -3460,7 +3460,7 @@
       "kind": "write",
       "moodleFunction": "mod_quiz_save_attempt",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "attempt_id": {
@@ -3485,7 +3485,7 @@
       "kind": "write",
       "moodleFunction": "mod_quiz_process_attempt",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "attempt_id": {
@@ -3518,7 +3518,7 @@
       "kind": "read",
       "moodleFunction": "mod_quiz_get_attempt_review",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "attempt_id": {
@@ -3540,7 +3540,7 @@
       "kind": "read",
       "moodleFunction": "mod_quiz_get_quiz_feedback_for_grade",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "quiz_id": {
@@ -3561,7 +3561,7 @@
       "kind": "read",
       "moodleFunction": "mod_quiz_get_quiz_access_information",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "quiz_id": {
@@ -3578,7 +3578,7 @@
       "kind": "read",
       "moodleFunction": "mod_quiz_get_attempt_access_information",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "quiz_id": {
@@ -3600,7 +3600,7 @@
       "kind": "read",
       "moodleFunction": "mod_quiz_get_quiz_required_qtypes",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "quiz_id": {
@@ -3617,7 +3617,7 @@
       "kind": "write",
       "moodleFunction": "mod_quiz_view_quiz",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "quiz_id": {
@@ -3634,7 +3634,7 @@
       "kind": "write",
       "moodleFunction": "mod_quiz_view_attempt",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "attempt_id": {
@@ -3660,7 +3660,7 @@
       "kind": "write",
       "moodleFunction": "mod_quiz_view_attempt_summary",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "attempt_id": {
@@ -3681,7 +3681,7 @@
       "kind": "write",
       "moodleFunction": "mod_quiz_view_attempt_review",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "attempt_id": {
@@ -3698,7 +3698,7 @@
       "kind": "read",
       "moodleFunction": "mod_book_get_books_by_courses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_ids": {
@@ -3715,7 +3715,7 @@
       "kind": "write",
       "moodleFunction": "mod_book_view_book",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "book_id": {
@@ -3737,7 +3737,7 @@
       "kind": "read",
       "moodleFunction": "mod_folder_get_folders_by_courses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_ids": {
@@ -3754,7 +3754,7 @@
       "kind": "write",
       "moodleFunction": "mod_folder_view_folder",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "folder_id": {
@@ -3771,7 +3771,7 @@
       "kind": "read",
       "moodleFunction": "mod_imscp_get_imscps_by_courses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_ids": {
@@ -3788,7 +3788,7 @@
       "kind": "write",
       "moodleFunction": "mod_imscp_view_imscp",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "imscp_id": {
@@ -3805,7 +3805,7 @@
       "kind": "read",
       "moodleFunction": "mod_label_get_labels_by_courses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_ids": {
@@ -3822,7 +3822,7 @@
       "kind": "read",
       "moodleFunction": "mod_page_get_pages_by_courses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_ids": {
@@ -3839,7 +3839,7 @@
       "kind": "write",
       "moodleFunction": "mod_page_view_page",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "page_id": {
@@ -3856,7 +3856,7 @@
       "kind": "read",
       "moodleFunction": "mod_resource_get_resources_by_courses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_ids": {
@@ -3873,7 +3873,7 @@
       "kind": "write",
       "moodleFunction": "mod_resource_view_resource",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "resource_id": {
@@ -3890,7 +3890,7 @@
       "kind": "read",
       "moodleFunction": "mod_url_get_urls_by_courses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_ids": {
@@ -3907,7 +3907,7 @@
       "kind": "write",
       "moodleFunction": "mod_url_view_url",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "url_id": {
@@ -3924,7 +3924,7 @@
       "kind": "read",
       "moodleFunction": "mod_choice_get_choices_by_courses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_ids": {
@@ -3941,7 +3941,7 @@
       "kind": "read",
       "moodleFunction": "mod_choice_get_choice_options",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "choice_id": {
@@ -3958,7 +3958,7 @@
       "kind": "read",
       "moodleFunction": "mod_choice_get_choice_results",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "choice_id": {
@@ -3980,7 +3980,7 @@
       "kind": "write",
       "moodleFunction": "mod_choice_submit_choice_response",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "choice_id": {
@@ -4002,7 +4002,7 @@
       "kind": "write",
       "moodleFunction": "mod_choice_delete_choice_responses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "choice_id": {
@@ -4024,7 +4024,7 @@
       "kind": "write",
       "moodleFunction": "mod_choice_view_choice",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "choice_id": {
@@ -4041,7 +4041,7 @@
       "kind": "read",
       "moodleFunction": "mod_scorm_get_scorms_by_courses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_ids": {
@@ -4058,7 +4058,7 @@
       "kind": "read",
       "moodleFunction": "mod_scorm_get_scorm_attempt_count",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "scorm_id": {
@@ -4084,7 +4084,7 @@
       "kind": "read",
       "moodleFunction": "mod_scorm_get_scorm_scoes",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "scorm_id": {
@@ -4105,7 +4105,7 @@
       "kind": "read",
       "moodleFunction": "mod_scorm_get_scorm_user_data",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "scorm_id": {
@@ -4127,7 +4127,7 @@
       "kind": "write",
       "moodleFunction": "mod_scorm_insert_scorm_tracks",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "sco_id": {
@@ -4153,7 +4153,7 @@
       "kind": "read",
       "moodleFunction": "mod_scorm_get_scorm_sco_tracks",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "sco_id": {
@@ -4180,7 +4180,7 @@
       "kind": "write",
       "moodleFunction": "mod_scorm_launch_sco",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "scorm_id": {
@@ -4202,7 +4202,7 @@
       "kind": "read",
       "moodleFunction": "mod_scorm_get_scorm_access_information",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "scorm_id": {
@@ -4219,7 +4219,7 @@
       "kind": "write",
       "moodleFunction": "mod_scorm_view_scorm",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "scorm_id": {
@@ -4236,7 +4236,7 @@
       "kind": "read",
       "moodleFunction": "mod_wiki_get_wikis_by_courses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_ids": {
@@ -4253,7 +4253,7 @@
       "kind": "read",
       "moodleFunction": "mod_wiki_get_subwikis",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "wiki_id": {
@@ -4270,7 +4270,7 @@
       "kind": "read",
       "moodleFunction": "mod_wiki_get_subwiki_pages",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "wiki_id": {
@@ -4313,7 +4313,7 @@
       "kind": "read",
       "moodleFunction": "mod_wiki_get_subwiki_files",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "wiki_id": {
@@ -4340,7 +4340,7 @@
       "kind": "read",
       "moodleFunction": "mod_wiki_get_page_contents",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "page_id": {
@@ -4357,7 +4357,7 @@
       "kind": "write",
       "moodleFunction": "mod_wiki_get_page_for_editing",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "page_id": {
@@ -4382,7 +4382,7 @@
       "kind": "write",
       "moodleFunction": "mod_wiki_new_page",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "title": {
@@ -4426,7 +4426,7 @@
       "kind": "write",
       "moodleFunction": "mod_wiki_edit_page",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "page_id": {
@@ -4451,7 +4451,7 @@
       "kind": "write",
       "moodleFunction": "mod_wiki_view_wiki",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "wiki_id": {
@@ -4468,7 +4468,7 @@
       "kind": "write",
       "moodleFunction": "mod_wiki_view_page",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "page_id": {
@@ -4485,7 +4485,7 @@
       "kind": "read",
       "moodleFunction": "mod_feedback_get_feedbacks_by_courses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_ids": {
@@ -4502,7 +4502,7 @@
       "kind": "read",
       "moodleFunction": "mod_feedback_get_feedback_access_information",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "feedback_id": {
@@ -4524,7 +4524,7 @@
       "kind": "read",
       "moodleFunction": "mod_feedback_get_current_completed_tmp",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "feedback_id": {
@@ -4546,7 +4546,7 @@
       "kind": "read",
       "moodleFunction": "mod_feedback_get_items",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "feedback_id": {
@@ -4568,7 +4568,7 @@
       "kind": "write",
       "moodleFunction": "mod_feedback_launch_feedback",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "feedback_id": {
@@ -4590,7 +4590,7 @@
       "kind": "read",
       "moodleFunction": "mod_feedback_get_page_items",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "feedback_id": {
@@ -4617,7 +4617,7 @@
       "kind": "write",
       "moodleFunction": "mod_feedback_process_page",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "feedback_id": {
@@ -4652,7 +4652,7 @@
       "kind": "read",
       "moodleFunction": "mod_feedback_get_analysis",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "feedback_id": {
@@ -4679,7 +4679,7 @@
       "kind": "read",
       "moodleFunction": "mod_feedback_get_unfinished_responses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "feedback_id": {
@@ -4701,7 +4701,7 @@
       "kind": "read",
       "moodleFunction": "mod_feedback_get_finished_responses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "feedback_id": {
@@ -4723,7 +4723,7 @@
       "kind": "read",
       "moodleFunction": "mod_feedback_get_non_respondents",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "feedback_id": {
@@ -4769,7 +4769,7 @@
       "kind": "read",
       "moodleFunction": "mod_feedback_get_responses_analysis",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "feedback_id": {
@@ -4806,7 +4806,7 @@
       "kind": "read",
       "moodleFunction": "mod_feedback_get_last_completed",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "feedback_id": {
@@ -4828,7 +4828,7 @@
       "kind": "write",
       "moodleFunction": "mod_feedback_questions_reorder",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "module_id": {
@@ -4850,7 +4850,7 @@
       "kind": "write",
       "moodleFunction": "mod_feedback_view_feedback",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "feedback_id": {
@@ -4876,7 +4876,7 @@
       "kind": "read",
       "moodleFunction": "mod_h5pactivity_get_h5pactivities_by_courses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_ids": {
@@ -4893,7 +4893,7 @@
       "kind": "read",
       "moodleFunction": "mod_h5pactivity_get_h5pactivity_access_information",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "h5p_id": {
@@ -4910,7 +4910,7 @@
       "kind": "read",
       "moodleFunction": "mod_h5pactivity_get_attempts",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "h5p_id": {
@@ -4932,7 +4932,7 @@
       "kind": "read",
       "moodleFunction": "mod_h5pactivity_get_results",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "h5p_id": {
@@ -4954,7 +4954,7 @@
       "kind": "read",
       "moodleFunction": "mod_h5pactivity_get_user_attempts",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "h5p_id": {
@@ -4993,7 +4993,7 @@
       "kind": "write",
       "moodleFunction": "mod_h5pactivity_log_report_viewed",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "h5p_id": {
@@ -5020,7 +5020,7 @@
       "kind": "write",
       "moodleFunction": "mod_h5pactivity_view_h5pactivity",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "h5p_id": {
@@ -5037,7 +5037,7 @@
       "kind": "read",
       "moodleFunction": "mod_data_get_databases_by_courses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_ids": {
@@ -5054,7 +5054,7 @@
       "kind": "read",
       "moodleFunction": "mod_data_get_data_access_information",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "database_id": {
@@ -5076,7 +5076,7 @@
       "kind": "read",
       "moodleFunction": "mod_data_get_entries",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "database_id": {
@@ -5125,7 +5125,7 @@
       "kind": "read",
       "moodleFunction": "mod_data_get_entry",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "entry_id": {
@@ -5146,7 +5146,7 @@
       "kind": "read",
       "moodleFunction": "mod_data_get_fields",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "database_id": {
@@ -5163,7 +5163,7 @@
       "kind": "read",
       "moodleFunction": "mod_data_search_entries",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "database_id": {
@@ -5220,7 +5220,7 @@
       "kind": "write",
       "moodleFunction": "mod_data_approve_entry",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "entry_id": {
@@ -5241,7 +5241,7 @@
       "kind": "write",
       "moodleFunction": "mod_data_delete_entry",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "entry_id": {
@@ -5258,7 +5258,7 @@
       "kind": "write",
       "moodleFunction": "mod_data_add_entry",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "database_id": {
@@ -5284,7 +5284,7 @@
       "kind": "write",
       "moodleFunction": "mod_data_update_entry",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "entry_id": {
@@ -5305,7 +5305,7 @@
       "kind": "write",
       "moodleFunction": "mod_data_delete_saved_preset",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "database_id": {
@@ -5327,7 +5327,7 @@
       "kind": "read",
       "moodleFunction": "mod_data_get_mapping_information",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "module_id": {
@@ -5348,7 +5348,7 @@
       "kind": "write",
       "moodleFunction": "mod_data_view_database",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "database_id": {
@@ -5365,7 +5365,7 @@
       "kind": "read",
       "moodleFunction": "mod_glossary_get_glossaries_by_courses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_ids": {
@@ -5382,7 +5382,7 @@
       "kind": "read",
       "moodleFunction": "mod_glossary_get_entries_by_letter",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "glossary_id": {
@@ -5417,7 +5417,7 @@
       "kind": "read",
       "moodleFunction": "mod_glossary_get_entries_by_date",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "glossary_id": {
@@ -5464,7 +5464,7 @@
       "kind": "read",
       "moodleFunction": "mod_glossary_get_categories",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "glossary_id": {
@@ -5491,7 +5491,7 @@
       "kind": "read",
       "moodleFunction": "mod_glossary_get_entries_by_category",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "glossary_id": {
@@ -5526,7 +5526,7 @@
       "kind": "read",
       "moodleFunction": "mod_glossary_get_authors",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "glossary_id": {
@@ -5557,7 +5557,7 @@
       "kind": "read",
       "moodleFunction": "mod_glossary_get_entries_by_author",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "glossary_id": {
@@ -5608,7 +5608,7 @@
       "kind": "read",
       "moodleFunction": "mod_glossary_get_entries_by_author_id",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "glossary_id": {
@@ -5661,7 +5661,7 @@
       "kind": "read",
       "moodleFunction": "mod_glossary_get_entries_by_search",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "glossary_id": {
@@ -5717,7 +5717,7 @@
       "kind": "read",
       "moodleFunction": "mod_glossary_get_entries_by_term",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "glossary_id": {
@@ -5752,7 +5752,7 @@
       "kind": "read",
       "moodleFunction": "mod_glossary_get_entries_to_approve",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "glossary_id": {
@@ -5800,7 +5800,7 @@
       "kind": "read",
       "moodleFunction": "mod_glossary_get_entry_by_id",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "entry_id": {
@@ -5817,7 +5817,7 @@
       "kind": "write",
       "moodleFunction": "mod_glossary_add_entry",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "glossary_id": {
@@ -5851,7 +5851,7 @@
       "kind": "write",
       "moodleFunction": "mod_glossary_update_entry",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "entry_id": {
@@ -5885,7 +5885,7 @@
       "kind": "write",
       "moodleFunction": "mod_glossary_delete_entry",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "entry_id": {
@@ -5902,7 +5902,7 @@
       "kind": "write",
       "moodleFunction": "mod_glossary_prepare_entry_for_edition",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "entry_id": {
@@ -5919,7 +5919,7 @@
       "kind": "write",
       "moodleFunction": "mod_glossary_view_glossary",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "glossary_id": {
@@ -5940,7 +5940,7 @@
       "kind": "write",
       "moodleFunction": "mod_glossary_view_entry",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "entry_id": {
@@ -5957,7 +5957,7 @@
       "kind": "read",
       "moodleFunction": "mod_bigbluebuttonbn_get_bigbluebuttonbns_by_courses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_ids": {
@@ -5974,7 +5974,7 @@
       "kind": "read",
       "moodleFunction": "mod_bigbluebuttonbn_can_join",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "module_id": {
@@ -5996,7 +5996,7 @@
       "kind": "write",
       "moodleFunction": "mod_bigbluebuttonbn_get_join_url",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "module_id": {
@@ -6018,7 +6018,7 @@
       "kind": "read",
       "moodleFunction": "mod_bigbluebuttonbn_get_recordings",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "bigbluebutton_id": {
@@ -6045,7 +6045,7 @@
       "kind": "read",
       "moodleFunction": "mod_bigbluebuttonbn_get_recordings_to_import",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "destination_id": {
@@ -6082,7 +6082,7 @@
       "kind": "write",
       "moodleFunction": "mod_bigbluebuttonbn_update_recording",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "bigbluebutton_id": {
@@ -6121,7 +6121,7 @@
       "kind": "write",
       "moodleFunction": "mod_bigbluebuttonbn_end_meeting",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "bigbluebutton_id": {
@@ -6143,7 +6143,7 @@
       "kind": "write",
       "moodleFunction": "mod_bigbluebuttonbn_completion_validate",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "bigbluebutton_id": {
@@ -6160,7 +6160,7 @@
       "kind": "read",
       "moodleFunction": "mod_bigbluebuttonbn_meeting_info",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "bigbluebutton_id": {
@@ -6186,7 +6186,7 @@
       "kind": "write",
       "moodleFunction": "mod_bigbluebuttonbn_view_bigbluebuttonbn",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "bigbluebutton_id": {
@@ -6203,7 +6203,7 @@
       "kind": "read",
       "moodleFunction": "mod_lesson_get_lessons_by_courses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_ids": {
@@ -6220,7 +6220,7 @@
       "kind": "read",
       "moodleFunction": "mod_lesson_get_lesson",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "lesson_id": {
@@ -6241,7 +6241,7 @@
       "kind": "read",
       "moodleFunction": "mod_lesson_get_lesson_access_information",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "lesson_id": {
@@ -6258,7 +6258,7 @@
       "kind": "read",
       "moodleFunction": "mod_lesson_get_questions_attempts",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "lesson_id": {
@@ -6294,7 +6294,7 @@
       "kind": "read",
       "moodleFunction": "mod_lesson_get_user_grade",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "lesson_id": {
@@ -6316,7 +6316,7 @@
       "kind": "read",
       "moodleFunction": "mod_lesson_get_user_attempt_grade",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "lesson_id": {
@@ -6343,7 +6343,7 @@
       "kind": "read",
       "moodleFunction": "mod_lesson_get_content_pages_viewed",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "lesson_id": {
@@ -6370,7 +6370,7 @@
       "kind": "read",
       "moodleFunction": "mod_lesson_get_user_timers",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "lesson_id": {
@@ -6392,7 +6392,7 @@
       "kind": "read",
       "moodleFunction": "mod_lesson_get_pages",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "lesson_id": {
@@ -6413,7 +6413,7 @@
       "kind": "write",
       "moodleFunction": "mod_lesson_launch_attempt",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "lesson_id": {
@@ -6443,7 +6443,7 @@
       "kind": "read",
       "moodleFunction": "mod_lesson_get_page_data",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "lesson_id": {
@@ -6477,7 +6477,7 @@
       "kind": "write",
       "moodleFunction": "mod_lesson_process_page",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "lesson_id": {
@@ -6511,7 +6511,7 @@
       "kind": "write",
       "moodleFunction": "mod_lesson_finish_attempt",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "lesson_id": {
@@ -6540,7 +6540,7 @@
       "kind": "read",
       "moodleFunction": "mod_lesson_get_attempts_overview",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "lesson_id": {
@@ -6562,7 +6562,7 @@
       "kind": "read",
       "moodleFunction": "mod_lesson_get_user_attempt",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "lesson_id": {
@@ -6589,7 +6589,7 @@
       "kind": "read",
       "moodleFunction": "mod_lesson_get_pages_possible_jumps",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "lesson_id": {
@@ -6606,7 +6606,7 @@
       "kind": "write",
       "moodleFunction": "mod_lesson_view_lesson",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "lesson_id": {
@@ -6627,7 +6627,7 @@
       "kind": "read",
       "moodleFunction": "mod_lti_get_ltis_by_courses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_ids": {
@@ -6644,7 +6644,7 @@
       "kind": "read",
       "moodleFunction": "mod_lti_get_tool_launch_data",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "tool_id": {
@@ -6661,7 +6661,7 @@
       "kind": "read",
       "moodleFunction": "mod_lti_get_tool_proxies",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "only_orphaned": {
@@ -6677,7 +6677,7 @@
       "kind": "write",
       "moodleFunction": "mod_lti_create_tool_proxy",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "name": {
@@ -6707,7 +6707,7 @@
       "kind": "write",
       "moodleFunction": "mod_lti_delete_tool_proxy",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "proxy_id": {
@@ -6724,7 +6724,7 @@
       "kind": "read",
       "moodleFunction": "mod_lti_get_tool_proxy_registration_request",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "proxy_id": {
@@ -6741,7 +6741,7 @@
       "kind": "read",
       "moodleFunction": "mod_lti_get_tool_types",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "proxy_id": {
@@ -6758,7 +6758,7 @@
       "kind": "read",
       "moodleFunction": "mod_lti_get_tool_types_and_proxies",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "proxy_id": {
@@ -6789,7 +6789,7 @@
       "kind": "read",
       "moodleFunction": "mod_lti_get_tool_types_and_proxies_count",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "proxy_id": {
@@ -6810,7 +6810,7 @@
       "kind": "write",
       "moodleFunction": "mod_lti_create_tool_type",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "cartridge_url": {
@@ -6834,7 +6834,7 @@
       "kind": "write",
       "moodleFunction": "mod_lti_update_tool_type",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "tool_type_id": {
@@ -6863,7 +6863,7 @@
       "kind": "write",
       "moodleFunction": "mod_lti_delete_tool_type",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "tool_type_id": {
@@ -6880,7 +6880,7 @@
       "kind": "write",
       "moodleFunction": "mod_lti_delete_course_tool_type",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "tool_type_id": {
@@ -6897,7 +6897,7 @@
       "kind": "write",
       "moodleFunction": "mod_lti_toggle_showinactivitychooser",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "tool_type_id": {
@@ -6923,7 +6923,7 @@
       "kind": "read",
       "moodleFunction": "mod_lti_is_cartridge",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "url": {
@@ -6939,7 +6939,7 @@
       "kind": "write",
       "moodleFunction": "mod_lti_view_lti",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "lti_id": {
@@ -6956,7 +6956,7 @@
       "kind": "read",
       "moodleFunction": "mod_workshop_get_workshops_by_courses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_ids": {
@@ -6973,7 +6973,7 @@
       "kind": "read",
       "moodleFunction": "mod_workshop_get_workshop_access_information",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "workshop_id": {
@@ -6990,7 +6990,7 @@
       "kind": "read",
       "moodleFunction": "mod_workshop_get_user_plan",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "workshop_id": {
@@ -7012,7 +7012,7 @@
       "kind": "write",
       "moodleFunction": "mod_workshop_add_submission",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "workshop_id": {
@@ -7052,7 +7052,7 @@
       "kind": "write",
       "moodleFunction": "mod_workshop_update_submission",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "submission_id": {
@@ -7092,7 +7092,7 @@
       "kind": "write",
       "moodleFunction": "mod_workshop_delete_submission",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "submission_id": {
@@ -7109,7 +7109,7 @@
       "kind": "read",
       "moodleFunction": "mod_workshop_get_submissions",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "workshop_id": {
@@ -7146,7 +7146,7 @@
       "kind": "read",
       "moodleFunction": "mod_workshop_get_submission",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "submission_id": {
@@ -7163,7 +7163,7 @@
       "kind": "read",
       "moodleFunction": "mod_workshop_get_submission_assessments",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "submission_id": {
@@ -7180,7 +7180,7 @@
       "kind": "read",
       "moodleFunction": "mod_workshop_get_assessment",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "assessment_id": {
@@ -7197,7 +7197,7 @@
       "kind": "read",
       "moodleFunction": "mod_workshop_get_assessment_form_definition",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "assessment_id": {
@@ -7222,7 +7222,7 @@
       "kind": "read",
       "moodleFunction": "mod_workshop_get_reviewer_assessments",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "workshop_id": {
@@ -7244,7 +7244,7 @@
       "kind": "write",
       "moodleFunction": "mod_workshop_update_assessment",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "assessment_id": {
@@ -7265,7 +7265,7 @@
       "kind": "read",
       "moodleFunction": "mod_workshop_get_grades",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "workshop_id": {
@@ -7287,7 +7287,7 @@
       "kind": "write",
       "moodleFunction": "mod_workshop_evaluate_assessment",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "assessment_id": {
@@ -7322,7 +7322,7 @@
       "kind": "read",
       "moodleFunction": "mod_workshop_get_grades_report",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "workshop_id": {
@@ -7366,7 +7366,7 @@
       "kind": "write",
       "moodleFunction": "mod_workshop_evaluate_submission",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "submission_id": {
@@ -7400,7 +7400,7 @@
       "kind": "write",
       "moodleFunction": "mod_workshop_view_workshop",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "workshop_id": {
@@ -7417,7 +7417,7 @@
       "kind": "write",
       "moodleFunction": "mod_workshop_view_submission",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "submission_id": {
@@ -7434,7 +7434,7 @@
       "kind": "write",
       "moodleFunction": "mod_assign_save_grades",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "assignment_id": {
@@ -7459,7 +7459,7 @@
       "kind": "write",
       "moodleFunction": "mod_assign_submit_grading_form",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "assignment_id": {
@@ -7489,7 +7489,7 @@
       "kind": "read",
       "moodleFunction": "mod_quiz_get_user_attempts",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "quiz_id": {
@@ -7524,7 +7524,7 @@
       "kind": "write",
       "moodleFunction": "mod_quiz_set_question_version",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "slot_id": {
@@ -7546,7 +7546,7 @@
       "kind": "write",
       "moodleFunction": "mod_quiz_reopen_attempt",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "attempt_id": {
@@ -7563,7 +7563,7 @@
       "kind": "read",
       "moodleFunction": "mod_quiz_get_reopen_attempt_confirmation",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "attempt_id": {
@@ -7580,7 +7580,7 @@
       "kind": "write",
       "moodleFunction": "mod_quiz_add_random_questions",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "module_id": {
@@ -7619,7 +7619,7 @@
       "kind": "write",
       "moodleFunction": "mod_quiz_update_filter_condition",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "module_id": {
@@ -7645,7 +7645,7 @@
       "kind": "write",
       "moodleFunction": "mod_quiz_save_overrides",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "quiz_id": {
@@ -7666,7 +7666,7 @@
       "kind": "write",
       "moodleFunction": "mod_quiz_delete_overrides",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "quiz_id": {
@@ -7688,7 +7688,7 @@
       "kind": "read",
       "moodleFunction": "mod_quiz_get_overrides",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "quiz_id": {
@@ -7705,7 +7705,7 @@
       "kind": "write",
       "moodleFunction": "mod_quiz_create_grade_items",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "quiz_id": {
@@ -7727,7 +7727,7 @@
       "kind": "write",
       "moodleFunction": "mod_quiz_delete_grade_items",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "quiz_id": {
@@ -7749,7 +7749,7 @@
       "kind": "write",
       "moodleFunction": "mod_quiz_update_grade_items",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "quiz_id": {
@@ -7770,7 +7770,7 @@
       "kind": "write",
       "moodleFunction": "mod_quiz_update_slots",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "quiz_id": {
@@ -7791,7 +7791,7 @@
       "kind": "read",
       "moodleFunction": "mod_quiz_get_edit_grading_page_data",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "quiz_id": {
@@ -7808,7 +7808,7 @@
       "kind": "write",
       "moodleFunction": "mod_quiz_create_grade_item_per_section",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "quiz_id": {
@@ -7825,7 +7825,7 @@
       "kind": "read",
       "moodleFunction": "core_calendar_get_calendar_monthly_view",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "year": {
@@ -7865,7 +7865,7 @@
       "kind": "read",
       "moodleFunction": "core_calendar_get_calendar_day_view",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "year": {
@@ -7903,7 +7903,7 @@
       "kind": "read",
       "moodleFunction": "core_calendar_get_calendar_upcoming_view",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -7925,7 +7925,7 @@
       "kind": "write",
       "moodleFunction": "core_calendar_update_event_start_day",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "event_id": {
@@ -7947,7 +7947,7 @@
       "kind": "write",
       "moodleFunction": "core_calendar_create_calendar_events",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "events": {
@@ -7963,7 +7963,7 @@
       "kind": "write",
       "moodleFunction": "core_calendar_delete_calendar_events",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "events": {
@@ -7979,7 +7979,7 @@
       "kind": "read",
       "moodleFunction": "core_calendar_get_action_events_by_timesort",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "from": {
@@ -8024,7 +8024,7 @@
       "kind": "read",
       "moodleFunction": "core_calendar_get_action_events_by_course",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -8065,7 +8065,7 @@
       "kind": "read",
       "moodleFunction": "core_calendar_get_action_events_by_courses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_ids": {
@@ -8101,7 +8101,7 @@
       "kind": "read",
       "moodleFunction": "core_calendar_get_calendar_event_by_id",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "event_id": {
@@ -8118,7 +8118,7 @@
       "kind": "write",
       "moodleFunction": "core_calendar_submit_create_update_form",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "form_data": {
@@ -8134,7 +8134,7 @@
       "kind": "read",
       "moodleFunction": "core_calendar_get_calendar_access_information",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -8151,7 +8151,7 @@
       "kind": "read",
       "moodleFunction": "core_calendar_get_allowed_event_types",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -8168,7 +8168,7 @@
       "kind": "read",
       "moodleFunction": "core_calendar_get_calendar_export_token",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {},
       "returns": "object"
@@ -8179,7 +8179,7 @@
       "kind": "read",
       "moodleFunction": "core_badges_get_badge",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "badge_id": {
@@ -8196,7 +8196,7 @@
       "kind": "read",
       "moodleFunction": "core_badges_get_user_badges",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -8236,7 +8236,7 @@
       "kind": "read",
       "moodleFunction": "core_badges_get_user_badge_by_hash",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "hash": {
@@ -8252,7 +8252,7 @@
       "kind": "read",
       "moodleFunction": "core_blog_get_entries",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "filters": {
@@ -8278,7 +8278,7 @@
       "kind": "write",
       "moodleFunction": "core_blog_view_entries",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "filters": {
@@ -8294,7 +8294,7 @@
       "kind": "read",
       "moodleFunction": "core_blog_get_access_information",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {},
       "returns": "object"
@@ -8305,7 +8305,7 @@
       "kind": "write",
       "moodleFunction": "core_blog_add_entry",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "subject": {
@@ -8334,7 +8334,7 @@
       "kind": "write",
       "moodleFunction": "core_blog_update_entry",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "entry_id": {
@@ -8368,7 +8368,7 @@
       "kind": "write",
       "moodleFunction": "core_blog_delete_entry",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "entry_id": {
@@ -8385,7 +8385,7 @@
       "kind": "write",
       "moodleFunction": "core_blog_prepare_entry_for_edition",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "entry_id": {
@@ -8402,7 +8402,7 @@
       "kind": "read",
       "moodleFunction": "core_comment_get_comments",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "context_type": {
@@ -8449,7 +8449,7 @@
       "kind": "write",
       "moodleFunction": "core_comment_add_comments",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "comments": {
@@ -8465,7 +8465,7 @@
       "kind": "write",
       "moodleFunction": "core_comment_delete_comments",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "comment_ids": {
@@ -8482,7 +8482,7 @@
       "kind": "write",
       "moodleFunction": "core_notes_create_notes",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "notes": {
@@ -8498,7 +8498,7 @@
       "kind": "write",
       "moodleFunction": "core_notes_delete_notes",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "note_ids": {
@@ -8515,7 +8515,7 @@
       "kind": "read",
       "moodleFunction": "core_notes_get_course_notes",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -8537,7 +8537,7 @@
       "kind": "write",
       "moodleFunction": "core_notes_view_notes",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -8559,7 +8559,7 @@
       "kind": "read",
       "moodleFunction": "core_rating_get_item_ratings",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "context_type": {
@@ -8606,7 +8606,7 @@
       "kind": "write",
       "moodleFunction": "core_rating_add_rating",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "context_type": {
@@ -8658,7 +8658,7 @@
       "kind": "read",
       "moodleFunction": "core_group_get_activity_allowed_groups",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_module_id": {
@@ -8683,7 +8683,7 @@
       "kind": "read",
       "moodleFunction": "core_group_get_activity_groupmode",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_module_id": {
@@ -8701,7 +8701,7 @@
       "kind": "read",
       "moodleFunction": "core_group_get_course_user_groups",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -8734,7 +8734,7 @@
       "kind": "read",
       "moodleFunction": "core_group_get_groups_for_selector",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -8759,7 +8759,7 @@
       "kind": "read",
       "moodleFunction": "block_recentlyaccesseditems_get_recent_items",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "limit": {
@@ -8777,7 +8777,7 @@
       "kind": "read",
       "moodleFunction": "block_starredcourses_get_starred_courses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "limit": {
@@ -8801,7 +8801,7 @@
       "kind": "write",
       "moodleFunction": "core_my_view_page",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "page": {
@@ -8821,7 +8821,7 @@
       "kind": "write",
       "moodleFunction": "core_question_update_flag",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "question_usage_id": {
@@ -8865,7 +8865,7 @@
       "kind": "read",
       "moodleFunction": "core_files_get_files",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "context_id": {
@@ -8926,7 +8926,7 @@
       "kind": "write",
       "moodleFunction": "core_files_delete_draft_files",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "draft_item_id": {
@@ -8947,7 +8947,7 @@
       "kind": "write",
       "moodleFunction": "core_files_get_unused_draft_itemid",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {},
       "returns": "object"
@@ -8958,7 +8958,7 @@
       "kind": "read",
       "moodleFunction": "core_user_get_user_preferences",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "preference": {
@@ -8984,7 +8984,7 @@
       "kind": "read",
       "moodleFunction": "core_user_get_private_files_info",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -9003,7 +9003,7 @@
       "kind": "write",
       "moodleFunction": "core_user_view_user_list",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -9021,7 +9021,7 @@
       "kind": "write",
       "moodleFunction": "core_user_view_user_profile",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -9046,7 +9046,7 @@
       "kind": "write",
       "moodleFunction": "core_user_agree_site_policy",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {},
       "returns": "object"
@@ -9057,7 +9057,7 @@
       "kind": "write",
       "moodleFunction": "core_user_add_user_private_files",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "draft_item_id": {
@@ -9075,7 +9075,7 @@
       "kind": "write",
       "moodleFunction": "core_user_update_picture",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "draft_item_id": {
@@ -9106,7 +9106,7 @@
       "kind": "write",
       "moodleFunction": "core_user_remove_user_device",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "device_id": {
@@ -9130,7 +9130,7 @@
       "kind": "read",
       "moodleFunction": "core_search_get_results",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "query": {
@@ -9155,7 +9155,7 @@
       "kind": "read",
       "moodleFunction": "core_search_get_top_results",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "query": {
@@ -9175,7 +9175,7 @@
       "kind": "read",
       "moodleFunction": "core_search_get_search_areas_list",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "category": {
@@ -9194,7 +9194,7 @@
       "kind": "write",
       "moodleFunction": "core_search_view_results",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "query": {
@@ -9219,7 +9219,7 @@
       "kind": "read",
       "moodleFunction": "core_tag_get_tag_areas",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {},
       "returns": "object"
@@ -9230,7 +9230,7 @@
       "kind": "read",
       "moodleFunction": "core_tag_get_tag_collections",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {},
       "returns": "object"
@@ -9241,7 +9241,7 @@
       "kind": "read",
       "moodleFunction": "core_tag_get_tag_cloud",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "collection_id": {
@@ -9305,7 +9305,7 @@
       "kind": "read",
       "moodleFunction": "core_tag_get_tagindex",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "tag": {
@@ -9354,7 +9354,7 @@
       "kind": "read",
       "moodleFunction": "core_tag_get_tagindex_per_area",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "tag_id": {
@@ -9409,7 +9409,7 @@
       "kind": "read",
       "moodleFunction": "core_course_get_course_module",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_module_id": {
@@ -9427,7 +9427,7 @@
       "kind": "read",
       "moodleFunction": "core_course_get_course_module_by_instance",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "module": {
@@ -9449,7 +9449,7 @@
       "kind": "write",
       "moodleFunction": "core_course_view_course",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -9474,7 +9474,7 @@
       "kind": "read",
       "moodleFunction": "core_course_search_courses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "criteria": {
@@ -9534,7 +9534,7 @@
       "kind": "read",
       "moodleFunction": "core_course_get_user_navigation_options",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_ids": {
@@ -9552,7 +9552,7 @@
       "kind": "read",
       "moodleFunction": "core_course_get_user_administration_options",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_ids": {
@@ -9570,7 +9570,7 @@
       "kind": "read",
       "moodleFunction": "core_course_get_updates_since",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -9600,7 +9600,7 @@
       "kind": "read",
       "moodleFunction": "core_course_get_enrolled_courses_by_timeline_classification",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "classification": {
@@ -9654,7 +9654,7 @@
       "kind": "write",
       "moodleFunction": "core_course_set_favourite_courses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "courses": {
@@ -9670,7 +9670,7 @@
       "kind": "read",
       "moodleFunction": "core_course_get_recent_courses",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -9705,7 +9705,7 @@
       "kind": "read",
       "moodleFunction": "core_course_check_updates",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -9731,7 +9731,7 @@
       "kind": "read",
       "moodleFunction": "core_course_get_enrolled_courses_with_action_events_by_timeline_classification",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "classification": {
@@ -9854,7 +9854,7 @@
       "kind": "read",
       "moodleFunction": "core_filters_get_available_in_context",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "contexts": {
@@ -9870,7 +9870,7 @@
       "kind": "read",
       "moodleFunction": "core_filters_get_all_states",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {},
       "returns": {
@@ -9900,7 +9900,7 @@
       "kind": "read",
       "moodleFunction": "core_get_component_strings",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "component": {
@@ -9921,7 +9921,7 @@
       "kind": "read",
       "moodleFunction": "core_output_load_fontawesome_icon_system_map",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {},
       "returns": "object"
@@ -9932,7 +9932,7 @@
       "kind": "read",
       "moodleFunction": "core_h5p_get_trusted_h5p_file",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "url": {
@@ -9972,7 +9972,7 @@
       "kind": "read",
       "moodleFunction": "message_airnotifier_is_system_configured",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {},
       "returns": "boolean"
@@ -9983,7 +9983,7 @@
       "kind": "read",
       "moodleFunction": "message_airnotifier_are_notification_preferences_configured",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_ids": {
@@ -10001,7 +10001,7 @@
       "kind": "read",
       "moodleFunction": "message_airnotifier_get_user_devices",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "application_id": {
@@ -10025,7 +10025,7 @@
       "kind": "write",
       "moodleFunction": "message_airnotifier_enable_device",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "device_id": {
@@ -10048,7 +10048,7 @@
       "kind": "read",
       "moodleFunction": "message_popup_get_popup_notifications",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -10084,7 +10084,7 @@
       "kind": "read",
       "moodleFunction": "message_popup_get_unread_popup_notification_count",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -10102,7 +10102,7 @@
       "kind": "read",
       "moodleFunction": "enrol_guest_get_instance_info",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "instance_id": {
@@ -10120,7 +10120,7 @@
       "kind": "write",
       "moodleFunction": "enrol_guest_validate_password",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "instance_id": {
@@ -10142,7 +10142,7 @@
       "kind": "write",
       "moodleFunction": "core_user_add_user_device",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "application_id": {
@@ -10190,7 +10190,7 @@
       "kind": "write",
       "moodleFunction": "core_user_update_user_device_public_key",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "device_id": {
@@ -10217,7 +10217,7 @@
       "kind": "read",
       "moodleFunction": "core_user_get_course_user_profiles",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "users": {
@@ -10233,7 +10233,7 @@
       "kind": "write",
       "moodleFunction": "core_user_set_user_preferences",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "preferences": {
@@ -10249,7 +10249,7 @@
       "kind": "write",
       "moodleFunction": "core_user_update_user_preferences",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -10274,7 +10274,7 @@
       "kind": "write",
       "moodleFunction": "core_user_prepare_private_files_for_edition",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {},
       "returns": "object"
@@ -10285,7 +10285,7 @@
       "kind": "write",
       "moodleFunction": "core_user_update_private_files",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "draft_item_id": {
@@ -10303,7 +10303,7 @@
       "kind": "read",
       "moodleFunction": "core_xapi_get_state",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "component": {
@@ -10335,7 +10335,7 @@
       "kind": "read",
       "moodleFunction": "core_xapi_get_states",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "component": {
@@ -10369,7 +10369,7 @@
       "kind": "write",
       "moodleFunction": "core_xapi_post_state",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "component": {
@@ -10405,7 +10405,7 @@
       "kind": "write",
       "moodleFunction": "core_xapi_delete_state",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "component": {
@@ -10437,7 +10437,7 @@
       "kind": "write",
       "moodleFunction": "core_xapi_delete_states",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "component": {
@@ -10465,7 +10465,7 @@
       "kind": "write",
       "moodleFunction": "core_xapi_statement_post",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "component": {
@@ -10487,7 +10487,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_competency_viewed",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "competency_id": {
@@ -10505,7 +10505,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_delete_evidence",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "evidence_id": {
@@ -10523,7 +10523,7 @@
       "kind": "read",
       "moodleFunction": "core_competency_get_scale_values",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "scale_id": {
@@ -10541,7 +10541,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_grade_competency_in_course",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -10579,7 +10579,7 @@
       "kind": "read",
       "moodleFunction": "core_competency_list_course_competencies",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -10597,7 +10597,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_user_competency_viewed",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_competency_id": {
@@ -10615,7 +10615,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_user_competency_viewed_in_course",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "competency_id": {
@@ -10645,7 +10645,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_user_competency_viewed_in_plan",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "competency_id": {
@@ -10675,7 +10675,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_user_competency_plan_viewed",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "competency_id": {
@@ -10705,7 +10705,7 @@
       "kind": "read",
       "moodleFunction": "core_block_get_course_blocks",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -10729,7 +10729,7 @@
       "kind": "read",
       "moodleFunction": "core_block_get_dashboard_blocks",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -10760,7 +10760,7 @@
       "kind": "read",
       "moodleFunction": "core_block_fetch_addable_blocks",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "page_context_id": {
@@ -10801,7 +10801,7 @@
       "kind": "read",
       "moodleFunction": "core_grades_get_enrolled_users_for_selector",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -10826,7 +10826,7 @@
       "kind": "read",
       "moodleFunction": "core_grades_get_groups_for_selector",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -10851,7 +10851,7 @@
       "kind": "read",
       "moodleFunction": "core_grades_grader_gradingpanel_point_fetch",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "component": {
@@ -10884,7 +10884,7 @@
       "kind": "write",
       "moodleFunction": "core_grades_grader_gradingpanel_point_store",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "component": {
@@ -10922,7 +10922,7 @@
       "kind": "read",
       "moodleFunction": "core_grades_grader_gradingpanel_scale_fetch",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "component": {
@@ -10955,7 +10955,7 @@
       "kind": "write",
       "moodleFunction": "core_grades_grader_gradingpanel_scale_store",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "component": {
@@ -10993,7 +10993,7 @@
       "kind": "read",
       "moodleFunction": "gradereport_grader_get_users_in_report",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -11011,7 +11011,7 @@
       "kind": "read",
       "moodleFunction": "gradereport_singleview_get_grade_items_for_search_widget",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -11029,7 +11029,7 @@
       "kind": "write",
       "moodleFunction": "gradereport_overview_view_grade_report",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -11054,7 +11054,7 @@
       "kind": "write",
       "moodleFunction": "gradereport_user_view_grade_report",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -11079,7 +11079,7 @@
       "kind": "write",
       "moodleFunction": "report_insights_action_executed",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "action": {
@@ -11102,7 +11102,7 @@
       "kind": "read",
       "moodleFunction": "core_reportbuilder_list_reports",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "page": {
@@ -11127,7 +11127,7 @@
       "kind": "read",
       "moodleFunction": "core_reportbuilder_retrieve_report",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "report_id": {
@@ -11158,7 +11158,7 @@
       "kind": "write",
       "moodleFunction": "core_reportbuilder_view_report",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "report_id": {
@@ -11176,7 +11176,7 @@
       "kind": "read",
       "moodleFunction": "core_reportbuilder_can_view_system_report",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "source": {
@@ -11218,7 +11218,7 @@
       "kind": "read",
       "moodleFunction": "core_reportbuilder_retrieve_system_report",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "source": {
@@ -11270,7 +11270,7 @@
       "kind": "read",
       "moodleFunction": "core_table_get_dynamic_table_content",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "component": {
@@ -11356,7 +11356,7 @@
       "kind": "read",
       "moodleFunction": "tiny_premium_get_api_key",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "context_id": {
@@ -11374,7 +11374,7 @@
       "kind": "read",
       "moodleFunction": "tool_dataprivacy_get_access_information",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {},
       "returns": "object"
@@ -11385,7 +11385,7 @@
       "kind": "write",
       "moodleFunction": "tool_dataprivacy_create_data_request",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "request_type": {
@@ -11419,7 +11419,7 @@
       "kind": "write",
       "moodleFunction": "tool_dataprivacy_cancel_data_request",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "request_id": {
@@ -11437,7 +11437,7 @@
       "kind": "write",
       "moodleFunction": "tool_dataprivacy_contact_dpo",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "message": {
@@ -11453,7 +11453,7 @@
       "kind": "read",
       "moodleFunction": "tool_dataprivacy_get_data_requests",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -11511,7 +11511,7 @@
       "kind": "read",
       "moodleFunction": "tool_policy_get_user_acceptances",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -11530,7 +11530,7 @@
       "kind": "write",
       "moodleFunction": "tool_policy_set_acceptances_status",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "policies": {
@@ -11551,7 +11551,7 @@
       "kind": "read",
       "moodleFunction": "tool_lp_data_for_course_competencies_page",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -11576,7 +11576,7 @@
       "kind": "read",
       "moodleFunction": "tool_lp_data_for_plan_page",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "plan_id": {
@@ -11594,7 +11594,7 @@
       "kind": "read",
       "moodleFunction": "tool_lp_data_for_plans_page",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -11612,7 +11612,7 @@
       "kind": "read",
       "moodleFunction": "tool_lp_data_for_user_competency_summary",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -11636,7 +11636,7 @@
       "kind": "read",
       "moodleFunction": "tool_lp_data_for_user_competency_summary_in_course",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -11666,7 +11666,7 @@
       "kind": "read",
       "moodleFunction": "tool_lp_data_for_user_competency_summary_in_plan",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "competency_id": {
@@ -11690,7 +11690,7 @@
       "kind": "read",
       "moodleFunction": "tool_lp_data_for_user_evidence_list_page",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -11708,7 +11708,7 @@
       "kind": "read",
       "moodleFunction": "tool_lp_data_for_user_evidence_page",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "evidence_id": {
@@ -11726,7 +11726,7 @@
       "kind": "write",
       "moodleFunction": "core_message_send_messages_to_conversation",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "conversation_id": {
@@ -11748,7 +11748,7 @@
       "kind": "write",
       "moodleFunction": "core_message_send_instant_messages",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "messages": {
@@ -11764,7 +11764,7 @@
       "kind": "write",
       "moodleFunction": "core_message_delete_contacts",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_ids": {
@@ -11789,7 +11789,7 @@
       "kind": "write",
       "moodleFunction": "core_message_mute_conversations",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -11813,7 +11813,7 @@
       "kind": "write",
       "moodleFunction": "core_message_unmute_conversations",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -11837,7 +11837,7 @@
       "kind": "write",
       "moodleFunction": "core_message_block_user",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -11861,7 +11861,7 @@
       "kind": "write",
       "moodleFunction": "core_message_unblock_user",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -11885,7 +11885,7 @@
       "kind": "read",
       "moodleFunction": "core_message_get_contact_requests",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -11917,7 +11917,7 @@
       "kind": "read",
       "moodleFunction": "core_message_get_received_contact_requests_count",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -11935,7 +11935,7 @@
       "kind": "read",
       "moodleFunction": "core_message_get_conversation_members",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -11985,7 +11985,7 @@
       "kind": "write",
       "moodleFunction": "core_message_create_contact_request",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -12009,7 +12009,7 @@
       "kind": "write",
       "moodleFunction": "core_message_confirm_contact_request",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -12033,7 +12033,7 @@
       "kind": "write",
       "moodleFunction": "core_message_decline_contact_request",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -12057,7 +12057,7 @@
       "kind": "read",
       "moodleFunction": "core_message_message_search_users",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -12094,7 +12094,7 @@
       "kind": "read",
       "moodleFunction": "core_message_data_for_messagearea_search_messages",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -12131,7 +12131,7 @@
       "kind": "read",
       "moodleFunction": "core_message_get_conversation_between_users",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -12201,7 +12201,7 @@
       "kind": "read",
       "moodleFunction": "core_message_get_self_conversation",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -12239,7 +12239,7 @@
       "kind": "read",
       "moodleFunction": "core_message_get_conversation_messages",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -12290,7 +12290,7 @@
       "kind": "read",
       "moodleFunction": "core_message_get_user_contacts",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -12322,7 +12322,7 @@
       "kind": "read",
       "moodleFunction": "core_message_search_contacts",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "query": {
@@ -12345,7 +12345,7 @@
       "kind": "read",
       "moodleFunction": "core_message_get_conversations",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -12390,7 +12390,7 @@
       "kind": "read",
       "moodleFunction": "core_message_get_conversation",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -12460,7 +12460,7 @@
       "kind": "read",
       "moodleFunction": "core_message_get_messages",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "to_user_id": {
@@ -12515,7 +12515,7 @@
       "kind": "read",
       "moodleFunction": "core_message_get_conversation_counts",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -12534,7 +12534,7 @@
       "kind": "read",
       "moodleFunction": "core_message_get_unread_conversation_counts",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -12553,7 +12553,7 @@
       "kind": "read",
       "moodleFunction": "core_message_get_unread_conversations_count",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "to_user_id": {
@@ -12571,7 +12571,7 @@
       "kind": "read",
       "moodleFunction": "core_message_get_unread_notification_count",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "to_user_id": {
@@ -12589,7 +12589,7 @@
       "kind": "read",
       "moodleFunction": "core_message_get_blocked_users",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -12607,7 +12607,7 @@
       "kind": "read",
       "moodleFunction": "core_message_get_member_info",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "reference_user_id": {
@@ -12643,7 +12643,7 @@
       "kind": "write",
       "moodleFunction": "core_message_mark_message_read",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "message_id": {
@@ -12668,7 +12668,7 @@
       "kind": "write",
       "moodleFunction": "core_message_mark_notification_read",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "notification_id": {
@@ -12693,7 +12693,7 @@
       "kind": "write",
       "moodleFunction": "core_message_mark_all_notifications_as_read",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "to_user_id": {
@@ -12725,7 +12725,7 @@
       "kind": "write",
       "moodleFunction": "core_message_mark_all_conversation_messages_as_read",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -12749,7 +12749,7 @@
       "kind": "write",
       "moodleFunction": "core_message_delete_conversations_by_id",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -12773,7 +12773,7 @@
       "kind": "write",
       "moodleFunction": "core_message_delete_message",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "message_id": {
@@ -12802,7 +12802,7 @@
       "kind": "write",
       "moodleFunction": "core_message_delete_message_for_all_users",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "message_id": {
@@ -12826,7 +12826,7 @@
       "kind": "write",
       "moodleFunction": "core_message_message_processor_config_form",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -12854,7 +12854,7 @@
       "kind": "read",
       "moodleFunction": "core_message_get_user_notification_preferences",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -12873,7 +12873,7 @@
       "kind": "read",
       "moodleFunction": "core_message_get_user_message_preferences",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -12892,7 +12892,7 @@
       "kind": "write",
       "moodleFunction": "core_message_set_favourite_conversations",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -12917,7 +12917,7 @@
       "kind": "write",
       "moodleFunction": "core_message_unset_favourite_conversations",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -12973,7 +12973,7 @@
       "kind": "write",
       "moodleFunction": "aiplacement_courseassist_summarise_text",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "context_id": {
@@ -13005,7 +13005,7 @@
       "kind": "write",
       "moodleFunction": "aiplacement_editor_generate_image",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "context_id": {
@@ -13054,7 +13054,7 @@
       "kind": "write",
       "moodleFunction": "aiplacement_editor_generate_text",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "context_id": {
@@ -13086,7 +13086,7 @@
       "kind": "read",
       "moodleFunction": "core_ai_get_policy_status",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -13106,7 +13106,7 @@
       "kind": "write",
       "moodleFunction": "core_ai_set_policy_status",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "context_id": {
@@ -13126,7 +13126,7 @@
       "kind": "read",
       "moodleFunction": "tool_analytics_potential_contexts",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "query": {
@@ -13148,7 +13148,7 @@
       "kind": "read",
       "moodleFunction": "tool_mobile_get_plugins_supporting_mobile",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {},
       "returns": "object"
@@ -13159,7 +13159,7 @@
       "kind": "read",
       "moodleFunction": "tool_mobile_get_public_config",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {},
       "returns": "object"
@@ -13170,7 +13170,7 @@
       "kind": "read",
       "moodleFunction": "tool_mobile_get_config",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "section": {
@@ -13187,7 +13187,7 @@
       "kind": "write",
       "moodleFunction": "tool_mobile_get_autologin_key",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "private_token": {
@@ -13204,7 +13204,7 @@
       "kind": "read",
       "moodleFunction": "tool_mobile_get_content",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "component": {
@@ -13230,7 +13230,7 @@
       "kind": "write",
       "moodleFunction": "tool_mobile_call_external_functions",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "requests": {
@@ -13246,7 +13246,7 @@
       "kind": "write",
       "moodleFunction": "tool_mobile_get_tokens_for_qr_login",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "qr_login_key": {
@@ -13269,7 +13269,7 @@
       "kind": "write",
       "moodleFunction": "tool_mobile_validate_subscription_key",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "key": {
@@ -13285,7 +13285,7 @@
       "kind": "read",
       "moodleFunction": "tool_policy_get_policy_version",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "version_id": {
@@ -13310,7 +13310,7 @@
       "kind": "read",
       "moodleFunction": "tool_moodlenet_search_courses",
       "compatibility": {
-        "from": "5.0",
+        "from": "4.5",
         "until": "5.1"
       },
       "parameters": {
@@ -13339,7 +13339,7 @@
       "kind": "read",
       "moodleFunction": "tool_moodlenet_verify_webfinger",
       "compatibility": {
-        "from": "5.0",
+        "from": "4.5",
         "until": "5.1"
       },
       "parameters": {
@@ -13373,7 +13373,7 @@
       "kind": "read",
       "moodleFunction": "auth_email_get_signup_settings",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {},
       "returns": {
@@ -13431,7 +13431,7 @@
       "kind": "write",
       "moodleFunction": "auth_email_signup_user",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_name": {
@@ -13507,7 +13507,7 @@
       "kind": "read",
       "moodleFunction": "block_accessreview_get_module_data",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -13530,7 +13530,7 @@
       "kind": "read",
       "moodleFunction": "block_accessreview_get_section_data",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -13553,7 +13553,7 @@
       "kind": "write",
       "moodleFunction": "core_admin_set_block_protection",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "plugin": {
@@ -13573,7 +13573,7 @@
       "kind": "write",
       "moodleFunction": "core_admin_set_plugin_order",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "plugin": {
@@ -13593,7 +13593,7 @@
       "kind": "write",
       "moodleFunction": "core_admin_set_plugin_state",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "plugin": {
@@ -13633,7 +13633,7 @@
       "kind": "write",
       "moodleFunction": "core_ai_set_action",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "plugin": {
@@ -13702,7 +13702,7 @@
       "kind": "write",
       "moodleFunction": "core_auth_confirm_user",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_name": {
@@ -13733,7 +13733,7 @@
       "kind": "read",
       "moodleFunction": "core_auth_is_age_digital_consent_verification_enabled",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {},
       "returns": {
@@ -13746,7 +13746,7 @@
       "kind": "read",
       "moodleFunction": "core_auth_is_minor",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "age": {
@@ -13768,7 +13768,7 @@
       "kind": "write",
       "moodleFunction": "core_auth_request_password_reset",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_name": {
@@ -13802,7 +13802,7 @@
       "kind": "write",
       "moodleFunction": "core_auth_resend_confirmation_email",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_name": {
@@ -13838,7 +13838,7 @@
       "kind": "read",
       "moodleFunction": "core_backup_get_async_backup_links_backup",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "filename": {
@@ -13867,7 +13867,7 @@
       "kind": "read",
       "moodleFunction": "core_backup_get_async_backup_links_restore",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "backupid": {
@@ -13890,7 +13890,7 @@
       "kind": "read",
       "moodleFunction": "core_backup_get_async_backup_progress",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "backupids": {
@@ -13919,7 +13919,7 @@
       "kind": "read",
       "moodleFunction": "core_backup_get_copy_progress",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "copies": {
@@ -13942,7 +13942,7 @@
       "kind": "read",
       "moodleFunction": "core_backup_submit_copy_form",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "json_form_data": {
@@ -13959,7 +13959,7 @@
       "kind": "write",
       "moodleFunction": "core_badges_disable_badges",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "badgeids": {
@@ -13986,7 +13986,7 @@
       "kind": "write",
       "moodleFunction": "core_badges_enable_badges",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "badgeids": {
@@ -14018,7 +14018,7 @@
       "kind": "write",
       "moodleFunction": "core_calendar_delete_subscription",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "subscription_id": {
@@ -14045,7 +14045,7 @@
       "kind": "read",
       "moodleFunction": "core_calendar_get_timestamps",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "data": {
@@ -14068,7 +14068,7 @@
       "kind": "write",
       "moodleFunction": "core_change_editmode",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "setmode": {
@@ -14090,7 +14090,7 @@
       "kind": "read",
       "moodleFunction": "core_check_get_result_admintree",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "admin_tree_id": {
@@ -14123,7 +14123,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_add_competency_to_course",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -14145,7 +14145,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_add_competency_to_plan",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "plan_id": {
@@ -14167,7 +14167,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_add_competency_to_template",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "template_id": {
@@ -14189,7 +14189,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_add_related_competency",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "competency_id": {
@@ -14211,7 +14211,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_approve_plan",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -14227,7 +14227,7 @@
       "kind": "read",
       "moodleFunction": "core_competency_competency_framework_viewed",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -14243,7 +14243,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_complete_plan",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "plan_id": {
@@ -14260,7 +14260,7 @@
       "kind": "read",
       "moodleFunction": "core_competency_count_competencies",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "filters": {
@@ -14276,7 +14276,7 @@
       "kind": "read",
       "moodleFunction": "core_competency_count_competencies_in_course",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -14292,7 +14292,7 @@
       "kind": "read",
       "moodleFunction": "core_competency_count_competencies_in_template",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -14308,7 +14308,7 @@
       "kind": "read",
       "moodleFunction": "core_competency_count_competency_frameworks",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "context": {
@@ -14329,7 +14329,7 @@
       "kind": "read",
       "moodleFunction": "core_competency_count_course_module_competencies",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_module_id": {
@@ -14346,7 +14346,7 @@
       "kind": "read",
       "moodleFunction": "core_competency_count_courses_using_competency",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -14362,7 +14362,7 @@
       "kind": "read",
       "moodleFunction": "core_competency_count_templates",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "context": {
@@ -14383,7 +14383,7 @@
       "kind": "read",
       "moodleFunction": "core_competency_count_templates_using_competency",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -14399,7 +14399,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_create_competency",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "competency": {
@@ -14415,7 +14415,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_create_competency_framework",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "competency_framework": {
@@ -14432,7 +14432,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_create_plan",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "plan": {
@@ -14448,7 +14448,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_create_template",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "template": {
@@ -14464,7 +14464,7 @@
       "kind": "read",
       "moodleFunction": "core_competency_create_user_evidence_competency",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_evidence_id": {
@@ -14486,7 +14486,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_delete_competency",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -14502,7 +14502,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_delete_competency_framework",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -14518,7 +14518,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_delete_plan",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -14534,7 +14534,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_delete_template",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -14555,7 +14555,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_delete_user_evidence",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -14571,7 +14571,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_delete_user_evidence_competency",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_evidence_id": {
@@ -14593,7 +14593,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_duplicate_competency_framework",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -14609,7 +14609,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_duplicate_template",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -14625,7 +14625,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_grade_competency",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -14655,7 +14655,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_grade_competency_in_plan",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "plan_id": {
@@ -14685,7 +14685,7 @@
       "kind": "read",
       "moodleFunction": "core_competency_list_competencies",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "filters": {
@@ -14723,7 +14723,7 @@
       "kind": "read",
       "moodleFunction": "core_competency_list_competencies_in_template",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -14741,7 +14741,7 @@
       "kind": "read",
       "moodleFunction": "core_competency_list_competency_frameworks",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "sort": {
@@ -14795,7 +14795,7 @@
       "kind": "read",
       "moodleFunction": "core_competency_list_course_module_competencies",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_module_id": {
@@ -14817,7 +14817,7 @@
       "kind": "read",
       "moodleFunction": "core_competency_list_plan_competencies",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -14839,7 +14839,7 @@
       "kind": "read",
       "moodleFunction": "core_competency_list_templates",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "sort": {
@@ -14888,7 +14888,7 @@
       "kind": "read",
       "moodleFunction": "core_competency_list_templates_using_competency",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -14906,7 +14906,7 @@
       "kind": "read",
       "moodleFunction": "core_competency_list_user_plans",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -14925,7 +14925,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_move_down_competency",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -14941,7 +14941,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_move_up_competency",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -14957,7 +14957,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_plan_cancel_review_request",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -14973,7 +14973,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_plan_request_review",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -14989,7 +14989,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_plan_start_review",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -15005,7 +15005,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_plan_stop_review",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -15021,7 +15021,7 @@
       "kind": "read",
       "moodleFunction": "core_competency_read_competency",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -15037,7 +15037,7 @@
       "kind": "read",
       "moodleFunction": "core_competency_read_competency_framework",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -15053,7 +15053,7 @@
       "kind": "read",
       "moodleFunction": "core_competency_read_plan",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -15069,7 +15069,7 @@
       "kind": "read",
       "moodleFunction": "core_competency_read_template",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -15085,7 +15085,7 @@
       "kind": "read",
       "moodleFunction": "core_competency_read_user_evidence",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -15101,7 +15101,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_remove_competency_from_course",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -15123,7 +15123,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_remove_competency_from_plan",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "plan_id": {
@@ -15145,7 +15145,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_remove_competency_from_template",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "template_id": {
@@ -15167,7 +15167,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_remove_related_competency",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "competency_id": {
@@ -15189,7 +15189,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_reopen_plan",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "plan_id": {
@@ -15206,7 +15206,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_reorder_course_competency",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -15233,7 +15233,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_reorder_plan_competency",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "plan_id": {
@@ -15260,7 +15260,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_reorder_template_competency",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "template_id": {
@@ -15287,7 +15287,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_request_review_of_user_evidence_linked_competencies",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -15303,7 +15303,7 @@
       "kind": "read",
       "moodleFunction": "core_competency_search_competencies",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "query": {
@@ -15327,7 +15327,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_set_course_competency_ruleoutcome",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_competency_id": {
@@ -15349,7 +15349,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_set_parent_competency",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "competency_id": {
@@ -15370,7 +15370,7 @@
       "kind": "read",
       "moodleFunction": "core_competency_template_has_related_data",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -15386,7 +15386,7 @@
       "kind": "read",
       "moodleFunction": "core_competency_template_viewed",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -15402,7 +15402,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_unapprove_plan",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -15418,7 +15418,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_unlink_plan_from_template",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "plan_id": {
@@ -15435,7 +15435,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_update_competency",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "competency": {
@@ -15451,7 +15451,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_update_competency_framework",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "competency_framework": {
@@ -15468,7 +15468,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_update_course_competency_settings",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -15489,7 +15489,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_update_plan",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "plan": {
@@ -15505,7 +15505,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_update_template",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "template": {
@@ -15521,7 +15521,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_user_competency_cancel_review_request",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -15543,7 +15543,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_user_competency_request_review",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -15565,7 +15565,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_user_competency_start_review",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -15587,7 +15587,7 @@
       "kind": "write",
       "moodleFunction": "core_competency_user_competency_stop_review",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -15609,7 +15609,7 @@
       "kind": "write",
       "moodleFunction": "core_contentbank_copy_content",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "contentid": {
@@ -15639,7 +15639,7 @@
       "kind": "write",
       "moodleFunction": "core_contentbank_delete_content",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "contentids": {
@@ -15666,7 +15666,7 @@
       "kind": "write",
       "moodleFunction": "core_contentbank_rename_content",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "contentid": {
@@ -15696,7 +15696,7 @@
       "kind": "write",
       "moodleFunction": "core_contentbank_set_content_visibility",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "contentid": {
@@ -15726,7 +15726,7 @@
       "kind": "write",
       "moodleFunction": "core_course_add_content_item_to_user_favourites",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "component_name": {
@@ -15748,7 +15748,7 @@
       "kind": "write",
       "moodleFunction": "core_course_delete_modules",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_module_ids": {
@@ -15766,7 +15766,7 @@
       "kind": "write",
       "moodleFunction": "core_course_duplicate_course",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -15809,7 +15809,7 @@
       "kind": "write",
       "moodleFunction": "core_course_edit_module",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "action": {
@@ -15835,7 +15835,7 @@
       "kind": "write",
       "moodleFunction": "core_course_edit_section",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "action": {
@@ -15861,7 +15861,7 @@
       "kind": "read",
       "moodleFunction": "core_course_get_activity_chooser_footer",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -15888,7 +15888,7 @@
       "kind": "read",
       "moodleFunction": "core_course_get_course_content_items",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -15913,7 +15913,7 @@
       "kind": "read",
       "moodleFunction": "core_course_get_enrolled_users_by_cmid",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_module_id": {
@@ -15960,7 +15960,7 @@
       "kind": "read",
       "moodleFunction": "core_course_get_module",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -15982,7 +15982,7 @@
       "kind": "write",
       "moodleFunction": "core_course_import_course",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "importfrom": {
@@ -16013,7 +16013,7 @@
       "kind": "write",
       "moodleFunction": "core_course_remove_content_item_from_user_favourites",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "component_name": {
@@ -16035,7 +16035,7 @@
       "kind": "write",
       "moodleFunction": "core_course_toggle_activity_recommendation",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "area": {
@@ -16059,7 +16059,7 @@
       "kind": "write",
       "moodleFunction": "core_courseformat_create_module",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -16090,7 +16090,7 @@
       "kind": "read",
       "moodleFunction": "core_courseformat_file_handlers",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -16139,7 +16139,7 @@
       "kind": "read",
       "moodleFunction": "core_courseformat_get_state",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -16156,7 +16156,7 @@
       "kind": "write",
       "moodleFunction": "core_courseformat_new_module",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -16187,7 +16187,7 @@
       "kind": "write",
       "moodleFunction": "core_courseformat_update_course",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "action": {
@@ -16225,7 +16225,7 @@
       "kind": "write",
       "moodleFunction": "core_create_userfeedback_action_record",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "action": {
@@ -16276,7 +16276,7 @@
       "kind": "write",
       "moodleFunction": "core_customfield_create_category",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "component": {
@@ -16301,7 +16301,7 @@
       "kind": "write",
       "moodleFunction": "core_customfield_delete_category",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -16317,7 +16317,7 @@
       "kind": "write",
       "moodleFunction": "core_customfield_delete_field",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -16333,7 +16333,7 @@
       "kind": "write",
       "moodleFunction": "core_customfield_move_category",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -16354,7 +16354,7 @@
       "kind": "write",
       "moodleFunction": "core_customfield_move_field",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -16380,7 +16380,7 @@
       "kind": "read",
       "moodleFunction": "core_customfield_reload_template",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "component": {
@@ -16471,7 +16471,7 @@
       "kind": "read",
       "moodleFunction": "core_dynamic_tabs_get_content",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "tab": {
@@ -16495,7 +16495,7 @@
       "kind": "read",
       "moodleFunction": "core_fetch_notifications",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "context_id": {
@@ -16522,7 +16522,7 @@
       "kind": "write",
       "moodleFunction": "core_files_upload",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "context_id": {
@@ -16586,7 +16586,7 @@
       "kind": "write",
       "moodleFunction": "core_form_dynamic_form",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "form": {
@@ -16611,7 +16611,7 @@
       "kind": "read",
       "moodleFunction": "core_form_get_filetypes_browser_data",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "onlytypes": {
@@ -16657,7 +16657,7 @@
       "kind": "read",
       "moodleFunction": "core_get_fragment",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "component": {
@@ -16689,7 +16689,7 @@
       "kind": "read",
       "moodleFunction": "core_get_string",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "stringid": {
@@ -16721,7 +16721,7 @@
       "kind": "read",
       "moodleFunction": "core_get_strings",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "strings": {
@@ -16744,7 +16744,7 @@
       "kind": "read",
       "moodleFunction": "core_get_user_dates",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "context_id": {
@@ -16782,7 +16782,7 @@
       "kind": "read",
       "moodleFunction": "core_grading_get_definitions",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_module_ids": {
@@ -16830,7 +16830,7 @@
       "kind": "read",
       "moodleFunction": "core_grading_get_gradingform_instances",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "definition_id": {
@@ -16864,7 +16864,7 @@
       "kind": "write",
       "moodleFunction": "core_grading_save_definitions",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "areas": {
@@ -16880,7 +16880,7 @@
       "kind": "read",
       "moodleFunction": "core_message_get_message_processor",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "user_id": {
@@ -16962,7 +16962,7 @@
       "kind": "write",
       "moodleFunction": "core_moodlenet_auth_check",
       "compatibility": {
-        "from": "5.0",
+        "from": "4.5",
         "until": "5.1"
       },
       "parameters": {
@@ -16995,7 +16995,7 @@
       "kind": "read",
       "moodleFunction": "core_moodlenet_get_share_info_activity",
       "compatibility": {
-        "from": "5.0",
+        "from": "4.5",
         "until": "5.1"
       },
       "parameters": {
@@ -17028,7 +17028,7 @@
       "kind": "read",
       "moodleFunction": "core_moodlenet_get_shared_course_info",
       "compatibility": {
-        "from": "5.0",
+        "from": "4.5",
         "until": "5.1"
       },
       "parameters": {
@@ -17061,7 +17061,7 @@
       "kind": "read",
       "moodleFunction": "core_moodlenet_send_activity",
       "compatibility": {
-        "from": "5.0",
+        "from": "4.5",
         "until": "5.1"
       },
       "parameters": {
@@ -17099,7 +17099,7 @@
       "kind": "read",
       "moodleFunction": "core_moodlenet_send_course",
       "compatibility": {
-        "from": "5.0",
+        "from": "4.5",
         "until": "5.1"
       },
       "parameters": {
@@ -17144,7 +17144,7 @@
       "kind": "read",
       "moodleFunction": "core_notes_get_notes",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "notes": {
@@ -17180,7 +17180,7 @@
       "kind": "write",
       "moodleFunction": "core_notes_update_notes",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "notes": {
@@ -17204,7 +17204,7 @@
       "kind": "read",
       "moodleFunction": "core_output_load_template",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "component": {
@@ -17234,7 +17234,7 @@
       "kind": "read",
       "moodleFunction": "core_output_load_template_with_dependencies",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "component": {
@@ -17284,7 +17284,7 @@
       "kind": "read",
       "moodleFunction": "core_output_poll_stored_progress",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "ids": {
@@ -17311,7 +17311,7 @@
       "kind": "read",
       "moodleFunction": "core_payment_get_available_gateways",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "component": {
@@ -17345,7 +17345,7 @@
       "kind": "read",
       "moodleFunction": "core_question_get_random_question_summaries",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "category_id": {
@@ -17457,7 +17457,7 @@
       "kind": "write",
       "moodleFunction": "core_reportbuilder_audiences_delete",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "report_id": {
@@ -17479,7 +17479,7 @@
       "kind": "write",
       "moodleFunction": "core_reportbuilder_columns_add",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "report_id": {
@@ -17501,7 +17501,7 @@
       "kind": "write",
       "moodleFunction": "core_reportbuilder_columns_delete",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "report_id": {
@@ -17522,7 +17522,7 @@
       "kind": "write",
       "moodleFunction": "core_reportbuilder_columns_reorder",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "report_id": {
@@ -17547,7 +17547,7 @@
       "kind": "read",
       "moodleFunction": "core_reportbuilder_columns_sort_get",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "report_id": {
@@ -17564,7 +17564,7 @@
       "kind": "write",
       "moodleFunction": "core_reportbuilder_columns_sort_reorder",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "report_id": {
@@ -17589,7 +17589,7 @@
       "kind": "write",
       "moodleFunction": "core_reportbuilder_columns_sort_toggle",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "report_id": {
@@ -17618,7 +17618,7 @@
       "kind": "write",
       "moodleFunction": "core_reportbuilder_conditions_add",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "report_id": {
@@ -17640,7 +17640,7 @@
       "kind": "write",
       "moodleFunction": "core_reportbuilder_conditions_delete",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "report_id": {
@@ -17662,7 +17662,7 @@
       "kind": "write",
       "moodleFunction": "core_reportbuilder_conditions_reorder",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "report_id": {
@@ -17688,7 +17688,7 @@
       "kind": "write",
       "moodleFunction": "core_reportbuilder_conditions_reset",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "report_id": {
@@ -17705,7 +17705,7 @@
       "kind": "write",
       "moodleFunction": "core_reportbuilder_filters_add",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "report_id": {
@@ -17727,7 +17727,7 @@
       "kind": "write",
       "moodleFunction": "core_reportbuilder_filters_delete",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "report_id": {
@@ -17749,7 +17749,7 @@
       "kind": "write",
       "moodleFunction": "core_reportbuilder_filters_reorder",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "report_id": {
@@ -17775,7 +17775,7 @@
       "kind": "write",
       "moodleFunction": "core_reportbuilder_filters_reset",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "report_id": {
@@ -17797,7 +17797,7 @@
       "kind": "write",
       "moodleFunction": "core_reportbuilder_reports_delete",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "report_id": {
@@ -17814,7 +17814,7 @@
       "kind": "read",
       "moodleFunction": "core_reportbuilder_reports_get",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "report_id": {
@@ -17842,7 +17842,7 @@
       "kind": "write",
       "moodleFunction": "core_reportbuilder_schedules_delete",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "report_id": {
@@ -17863,7 +17863,7 @@
       "kind": "write",
       "moodleFunction": "core_reportbuilder_schedules_send",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "report_id": {
@@ -17884,7 +17884,7 @@
       "kind": "write",
       "moodleFunction": "core_reportbuilder_schedules_toggle",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "report_id": {
@@ -17909,7 +17909,7 @@
       "kind": "write",
       "moodleFunction": "core_reportbuilder_set_filters",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "report_id": {
@@ -17935,7 +17935,7 @@
       "kind": "read",
       "moodleFunction": "core_search_get_relevant_users",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "query": {
@@ -17962,7 +17962,7 @@
       "kind": "read",
       "moodleFunction": "core_session_time_remaining",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {},
       "returns": {
@@ -17976,7 +17976,7 @@
       "kind": "read",
       "moodleFunction": "core_session_touch",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {},
       "returns": "boolean"
@@ -17987,7 +17987,7 @@
       "kind": "write",
       "moodleFunction": "core_sms_set_gateway_status",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "plugin": {
@@ -18011,7 +18011,7 @@
       "kind": "read",
       "moodleFunction": "core_tag_get_tags",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "tags": {
@@ -18050,7 +18050,7 @@
       "kind": "write",
       "moodleFunction": "core_tag_update_tags",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "tags": {
@@ -18075,7 +18075,7 @@
       "kind": "write",
       "moodleFunction": "core_update_inplace_editable",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "component": {
@@ -18121,7 +18121,7 @@
       "kind": "read",
       "moodleFunction": "core_user_get_users",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "criteria": {
@@ -18196,7 +18196,7 @@
       "kind": "read",
       "moodleFunction": "core_user_search_identity",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "query": {
@@ -18227,7 +18227,7 @@
       "kind": "write",
       "moodleFunction": "customfield_number_recalculate_value",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "field_id": {
@@ -18267,7 +18267,7 @@
       "kind": "write",
       "moodleFunction": "enrol_meta_add_instances",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "instances": {
@@ -18290,7 +18290,7 @@
       "kind": "write",
       "moodleFunction": "enrol_meta_delete_instances",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "instances": {
@@ -18313,7 +18313,7 @@
       "kind": "write",
       "moodleFunction": "gradingform_guide_grader_gradingpanel_fetch",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "component": {
@@ -18382,7 +18382,7 @@
       "kind": "write",
       "moodleFunction": "gradingform_guide_grader_gradingpanel_store",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "component": {
@@ -18422,7 +18422,7 @@
       "kind": "write",
       "moodleFunction": "gradingform_rubric_grader_gradingpanel_fetch",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "component": {
@@ -18490,7 +18490,7 @@
       "kind": "write",
       "moodleFunction": "gradingform_rubric_grader_gradingpanel_store",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "component": {
@@ -18530,7 +18530,7 @@
       "kind": "read",
       "moodleFunction": "media_videojs_get_language",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "lang": {
@@ -18546,7 +18546,7 @@
       "kind": "write",
       "moodleFunction": "paygw_paypal_create_transaction_complete",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "component": {
@@ -18577,7 +18577,7 @@
       "kind": "read",
       "moodleFunction": "paygw_paypal_get_config_for_js",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "component": {
@@ -18608,7 +18608,7 @@
       "kind": "write",
       "moodleFunction": "qbank_columnsortorder_set_column_size",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "sizes": {
@@ -18630,7 +18630,7 @@
       "kind": "write",
       "moodleFunction": "qbank_columnsortorder_set_columnbank_order",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "columns": {
@@ -18653,7 +18653,7 @@
       "kind": "write",
       "moodleFunction": "qbank_columnsortorder_set_hidden_columns",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "columns": {
@@ -18676,7 +18676,7 @@
       "kind": "write",
       "moodleFunction": "qbank_editquestion_set_status",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "question_id": {
@@ -18701,7 +18701,7 @@
       "kind": "write",
       "moodleFunction": "qbank_managecategories_move_category",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "page_context_id": {
@@ -18745,7 +18745,7 @@
       "kind": "write",
       "moodleFunction": "qbank_tagquestion_submit_tags_form",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "question_id": {
@@ -18773,7 +18773,7 @@
       "kind": "write",
       "moodleFunction": "qbank_viewquestiontext_set_question_text_format",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "format": {
@@ -18789,7 +18789,7 @@
       "kind": "read",
       "moodleFunction": "quizaccess_seb_validate_quiz_keys",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_module_id": {
@@ -18824,7 +18824,7 @@
       "kind": "read",
       "moodleFunction": "report_competency_data_for_report",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "course_id": {
@@ -18862,7 +18862,7 @@
       "kind": "write",
       "moodleFunction": "tiny_autosave_reset_session",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "context_id": {
@@ -18892,7 +18892,7 @@
       "kind": "write",
       "moodleFunction": "tiny_autosave_resume_session",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "context_id": {
@@ -18928,7 +18928,7 @@
       "kind": "write",
       "moodleFunction": "tiny_autosave_update_session",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "context_id": {
@@ -18962,7 +18962,7 @@
       "kind": "read",
       "moodleFunction": "tiny_equation_filter",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "context_id": {
@@ -19013,7 +19013,7 @@
       "kind": "write",
       "moodleFunction": "tool_admin_presets_delete_preset",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -19029,7 +19029,7 @@
       "kind": "read",
       "moodleFunction": "tool_behat_get_entity_generator",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "entitytype": {
@@ -19049,7 +19049,7 @@
       "kind": "write",
       "moodleFunction": "tool_dataprivacy_approve_data_request",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "request_id": {
@@ -19076,7 +19076,7 @@
       "kind": "write",
       "moodleFunction": "tool_dataprivacy_bulk_approve_data_requests",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "requestids": {
@@ -19103,7 +19103,7 @@
       "kind": "write",
       "moodleFunction": "tool_dataprivacy_bulk_deny_data_requests",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "requestids": {
@@ -19130,7 +19130,7 @@
       "kind": "write",
       "moodleFunction": "tool_dataprivacy_confirm_contexts_for_deletion",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "ids": {
@@ -19158,7 +19158,7 @@
       "kind": "write",
       "moodleFunction": "tool_dataprivacy_create_category_form",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "json_form_data": {
@@ -19186,7 +19186,7 @@
       "kind": "write",
       "moodleFunction": "tool_dataprivacy_create_purpose_form",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "json_form_data": {
@@ -19214,7 +19214,7 @@
       "kind": "write",
       "moodleFunction": "tool_dataprivacy_delete_category",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -19240,7 +19240,7 @@
       "kind": "write",
       "moodleFunction": "tool_dataprivacy_delete_purpose",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -19266,7 +19266,7 @@
       "kind": "write",
       "moodleFunction": "tool_dataprivacy_deny_data_request",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "request_id": {
@@ -19293,7 +19293,7 @@
       "kind": "read",
       "moodleFunction": "tool_dataprivacy_get_activity_options",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "nodefaults": {
@@ -19325,7 +19325,7 @@
       "kind": "read",
       "moodleFunction": "tool_dataprivacy_get_category_options",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "include_inherited": {
@@ -19364,7 +19364,7 @@
       "kind": "read",
       "moodleFunction": "tool_dataprivacy_get_data_request",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "request_id": {
@@ -19391,7 +19391,7 @@
       "kind": "read",
       "moodleFunction": "tool_dataprivacy_get_purpose_options",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "include_inherited": {
@@ -19430,7 +19430,7 @@
       "kind": "read",
       "moodleFunction": "tool_dataprivacy_get_users",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "query": {
@@ -19457,7 +19457,7 @@
       "kind": "write",
       "moodleFunction": "tool_dataprivacy_mark_complete",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "request_id": {
@@ -19484,7 +19484,7 @@
       "kind": "write",
       "moodleFunction": "tool_dataprivacy_set_context_defaults",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "context_level": {
@@ -19529,7 +19529,7 @@
       "kind": "write",
       "moodleFunction": "tool_dataprivacy_set_context_form",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "json_form_data": {
@@ -19556,7 +19556,7 @@
       "kind": "write",
       "moodleFunction": "tool_dataprivacy_set_contextlevel_form",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "json_form_data": {
@@ -19583,7 +19583,7 @@
       "kind": "write",
       "moodleFunction": "tool_dataprivacy_submit_selected_courses_form",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "request_id": {
@@ -19615,7 +19615,7 @@
       "kind": "write",
       "moodleFunction": "tool_dataprivacy_tree_extra_branches",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "context_id": {
@@ -19655,7 +19655,7 @@
       "kind": "read",
       "moodleFunction": "tool_lp_data_for_competencies_manage_page",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "competency_framework_id": {
@@ -19684,7 +19684,7 @@
       "kind": "read",
       "moodleFunction": "tool_lp_data_for_competency_frameworks_manage_page",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "page_context": {
@@ -19710,7 +19710,7 @@
       "kind": "read",
       "moodleFunction": "tool_lp_data_for_competency_summary",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "competency_id": {
@@ -19739,7 +19739,7 @@
       "kind": "read",
       "moodleFunction": "tool_lp_data_for_related_competencies_section",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "competency_id": {
@@ -19761,7 +19761,7 @@
       "kind": "read",
       "moodleFunction": "tool_lp_data_for_template_competencies_page",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "template_id": {
@@ -19794,7 +19794,7 @@
       "kind": "read",
       "moodleFunction": "tool_lp_data_for_templates_manage_page",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "page_context": {
@@ -19821,7 +19821,7 @@
       "kind": "read",
       "moodleFunction": "tool_lp_list_courses_using_competency",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "id": {
@@ -19839,7 +19839,7 @@
       "kind": "read",
       "moodleFunction": "tool_lp_search_cohorts",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "query": {
@@ -19897,7 +19897,7 @@
       "kind": "read",
       "moodleFunction": "tool_lp_search_users",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "query": {
@@ -19934,7 +19934,7 @@
       "kind": "write",
       "moodleFunction": "tool_policy_submit_accept_on_behalf",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "json_form_data": {
@@ -19951,7 +19951,7 @@
       "kind": "read",
       "moodleFunction": "tool_templatelibrary_list_templates",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "component": {
@@ -19980,7 +19980,7 @@
       "kind": "read",
       "moodleFunction": "tool_templatelibrary_load_canonical_template",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "component": {
@@ -20000,7 +20000,7 @@
       "kind": "write",
       "moodleFunction": "tool_usertours_complete_tour",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "tourid": {
@@ -20032,7 +20032,7 @@
       "kind": "read",
       "moodleFunction": "tool_usertours_fetch_and_start_tour",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "tourid": {
@@ -20075,7 +20075,7 @@
       "kind": "write",
       "moodleFunction": "tool_usertours_reset_tour",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "tourid": {
@@ -20101,7 +20101,7 @@
       "kind": "write",
       "moodleFunction": "tool_usertours_step_shown",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "tourid": {
@@ -20133,7 +20133,7 @@
       "kind": "write",
       "moodleFunction": "tool_xmldb_invoke_move_action",
       "compatibility": {
-        "from": "5.0"
+        "from": "4.5"
       },
       "parameters": {
         "action": {
@@ -20169,6 +20169,875 @@
         }
       },
       "returns": "null"
+    },
+    {
+      "name": "grades_get_enrolled_users_for_search_widget",
+      "summary": "** DEPRECATED ** Please do not call this function any more. ",
+      "kind": "read",
+      "moodleFunction": "core_grades_get_enrolled_users_for_search_widget",
+      "compatibility": {
+        "from": "4.5",
+        "until": "4.5"
+      },
+      "parameters": {
+        "course_id": {
+          "type": "integer",
+          "required": true,
+          "moodleName": "courseid"
+        },
+        "actionbaseurl": {
+          "type": "string",
+          "required": true
+        },
+        "group_id": {
+          "type": "integer",
+          "required": false,
+          "default": 0,
+          "moodleName": "groupid"
+        }
+      },
+      "returns": {
+        "users": [
+          {
+            "id": "string",
+            "profileimage?": "string",
+            "url?": "string",
+            "fullname?": "string",
+            "email?": "string",
+            "active": "boolean"
+          }
+        ],
+        "warnings": [
+          {
+            "item": "string",
+            "itemid": "integer",
+            "warningcode": "string",
+            "message": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "grades_get_groups_for_search_widget",
+      "summary": "** DEPRECATED ** Please do not call this function any more. ",
+      "kind": "read",
+      "moodleFunction": "core_grades_get_groups_for_search_widget",
+      "compatibility": {
+        "from": "4.5",
+        "until": "4.5"
+      },
+      "parameters": {
+        "course_id": {
+          "type": "integer",
+          "required": true,
+          "moodleName": "courseid"
+        },
+        "course_module_id": {
+          "type": "integer",
+          "required": false,
+          "default": 0,
+          "moodleName": "cmid"
+        }
+      },
+      "returns": {
+        "groups": [
+          {
+            "id": "string",
+            "name": "string",
+            "groupimageurl?": "string"
+          }
+        ],
+        "warnings": [
+          {
+            "item": "string",
+            "itemid": "integer",
+            "warningcode": "string",
+            "message": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "output_load_fontawesome_icon_map",
+      "summary": "Load the mapping of names to icons",
+      "kind": "read",
+      "moodleFunction": "core_output_load_fontawesome_icon_map",
+      "compatibility": {
+        "from": "4.5",
+        "until": "4.5"
+      },
+      "parameters": {},
+      "returns": [
+        {
+          "component": "string",
+          "pix": "string",
+          "to": "string"
+        }
+      ]
+    },
+    {
+      "name": "mod_assign_delete_overrides",
+      "summary": "Delete assignment overrides",
+      "kind": "write",
+      "moodleFunction": "mod_assign_delete_overrides",
+      "compatibility": {
+        "from": "5.3"
+      },
+      "parameters": {
+        "data": {
+          "type": "object",
+          "required": true
+        }
+      },
+      "returns": {
+        "ids": [
+          "integer"
+        ]
+      }
+    },
+    {
+      "name": "mod_assign_get_overrides",
+      "summary": "Get assignment overrides",
+      "kind": "read",
+      "moodleFunction": "mod_assign_get_overrides",
+      "compatibility": {
+        "from": "5.3"
+      },
+      "parameters": {
+        "assignid": {
+          "type": "integer",
+          "required": true
+        }
+      },
+      "returns": {
+        "overrides": [
+          {
+            "id": "integer",
+            "assignid": "integer",
+            "userid": "integer",
+            "groupid": "integer",
+            "sortorder": "integer",
+            "allowsubmissionsfromdate": "integer",
+            "duedate": "integer",
+            "cutoffdate": "integer",
+            "timelimit": "integer",
+            "reason": "string",
+            "reasonformat": "integer"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mod_assign_save_overrides",
+      "summary": "Update or insert assignment overrides",
+      "kind": "write",
+      "moodleFunction": "mod_assign_save_overrides",
+      "compatibility": {
+        "from": "5.3"
+      },
+      "parameters": {
+        "data": {
+          "type": "object",
+          "required": true
+        }
+      },
+      "returns": {
+        "ids": [
+          "integer"
+        ]
+      }
+    },
+    {
+      "name": "mod_chat_get_chat_latest_messages",
+      "summary": "Get the latest messages from the given chat session.",
+      "kind": "read",
+      "moodleFunction": "mod_chat_get_chat_latest_messages",
+      "compatibility": {
+        "from": "4.5",
+        "until": "4.5"
+      },
+      "parameters": {
+        "chatsid": {
+          "type": "string",
+          "required": true
+        },
+        "chatlasttime": {
+          "type": "integer",
+          "required": false,
+          "default": 0
+        }
+      },
+      "returns": {
+        "messages": [
+          {
+            "id": "integer",
+            "userid": "integer",
+            "system": "boolean",
+            "message": "string",
+            "timestamp": "integer"
+          }
+        ],
+        "chatnewlasttime": "integer",
+        "warnings": [
+          {
+            "item": "string",
+            "itemid": "integer",
+            "warningcode": "string",
+            "message": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mod_chat_get_chat_users",
+      "summary": "Get the list of users in the given chat session.",
+      "kind": "read",
+      "moodleFunction": "mod_chat_get_chat_users",
+      "compatibility": {
+        "from": "4.5",
+        "until": "4.5"
+      },
+      "parameters": {
+        "chatsid": {
+          "type": "string",
+          "required": true
+        }
+      },
+      "returns": {
+        "users": [
+          {
+            "id": "integer",
+            "fullname": "string",
+            "profileimageurl": "string"
+          }
+        ],
+        "warnings": [
+          {
+            "item": "string",
+            "itemid": "integer",
+            "warningcode": "string",
+            "message": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mod_chat_get_chats_by_courses",
+      "summary": "Returns a list of chat instances in a provided set of courses,\r\n                            if no courses are provided then all the chat instances the user has access to will be returned.",
+      "kind": "read",
+      "moodleFunction": "mod_chat_get_chats_by_courses",
+      "compatibility": {
+        "from": "4.5",
+        "until": "4.5"
+      },
+      "parameters": {
+        "course_ids": {
+          "type": "array",
+          "items": "integer",
+          "required": false,
+          "default": [],
+          "moodleName": "courseids"
+        }
+      },
+      "returns": {
+        "chats": [
+          {
+            "id": "integer",
+            "coursemodule": "integer",
+            "course": "integer",
+            "name": "string",
+            "intro": "string",
+            "introformat": "integer",
+            "introfiles?": [
+              {
+                "filename": "string",
+                "filepath": "string",
+                "filesize": "integer",
+                "fileurl": "string",
+                "timemodified": "integer",
+                "mimetype": "string",
+                "isexternal?": "boolean",
+                "repositorytype?": "string"
+              }
+            ],
+            "section?": "integer",
+            "visible?": "boolean",
+            "groupmode?": "integer",
+            "groupingid?": "integer",
+            "lang?": "string",
+            "chatmethod?": "string",
+            "keepdays?": "integer",
+            "studentlogs?": "integer",
+            "chattime?": "integer",
+            "schedule?": "integer",
+            "timemodified?": "integer"
+          }
+        ],
+        "warnings": [
+          {
+            "item": "string",
+            "itemid": "integer",
+            "warningcode": "string",
+            "message": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mod_chat_get_session_messages",
+      "summary": "Retrieves messages of the given chat session.",
+      "kind": "read",
+      "moodleFunction": "mod_chat_get_session_messages",
+      "compatibility": {
+        "from": "4.5",
+        "until": "4.5"
+      },
+      "parameters": {
+        "chatid": {
+          "type": "integer",
+          "required": true
+        },
+        "sessionstart": {
+          "type": "integer",
+          "required": true
+        },
+        "sessionend": {
+          "type": "integer",
+          "required": true
+        },
+        "group_id": {
+          "type": "integer",
+          "required": false,
+          "default": 0,
+          "moodleName": "groupid"
+        }
+      },
+      "returns": {
+        "messages": [
+          {}
+        ],
+        "warnings": [
+          {
+            "item": "string",
+            "itemid": "integer",
+            "warningcode": "string",
+            "message": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mod_chat_get_sessions",
+      "summary": "Retrieves chat sessions for a given chat.",
+      "kind": "read",
+      "moodleFunction": "mod_chat_get_sessions",
+      "compatibility": {
+        "from": "4.5",
+        "until": "4.5"
+      },
+      "parameters": {
+        "chatid": {
+          "type": "integer",
+          "required": true
+        },
+        "group_id": {
+          "type": "integer",
+          "required": false,
+          "default": 0,
+          "moodleName": "groupid"
+        },
+        "showall": {
+          "type": "boolean",
+          "required": false,
+          "default": false
+        }
+      },
+      "returns": {
+        "sessions": [
+          {
+            "sessionstart": "integer",
+            "sessionend": "integer",
+            "sessionusers": [
+              {
+                "userid": "integer",
+                "messagecount": "integer"
+              }
+            ],
+            "iscomplete": "boolean"
+          }
+        ],
+        "warnings": [
+          {
+            "item": "string",
+            "itemid": "integer",
+            "warningcode": "string",
+            "message": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mod_chat_login_user",
+      "summary": "Log a user into a chat room in the given chat.",
+      "kind": "write",
+      "moodleFunction": "mod_chat_login_user",
+      "compatibility": {
+        "from": "4.5",
+        "until": "4.5"
+      },
+      "parameters": {
+        "chatid": {
+          "type": "integer",
+          "required": true
+        },
+        "group_id": {
+          "type": "integer",
+          "required": false,
+          "default": 0,
+          "moodleName": "groupid"
+        }
+      },
+      "returns": {
+        "chatsid": "string",
+        "warnings": [
+          {
+            "item": "string",
+            "itemid": "integer",
+            "warningcode": "string",
+            "message": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mod_chat_send_chat_message",
+      "summary": "Send a message on the given chat session.",
+      "kind": "write",
+      "moodleFunction": "mod_chat_send_chat_message",
+      "compatibility": {
+        "from": "4.5",
+        "until": "4.5"
+      },
+      "parameters": {
+        "chatsid": {
+          "type": "string",
+          "required": true
+        },
+        "messagetext": {
+          "type": "string",
+          "required": true
+        },
+        "beepid": {
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      },
+      "returns": {
+        "messageid": "integer",
+        "warnings": [
+          {
+            "item": "string",
+            "itemid": "integer",
+            "warningcode": "string",
+            "message": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mod_chat_view_chat",
+      "summary": "Trigger the course module viewed event and update the module completion status.",
+      "kind": "write",
+      "moodleFunction": "mod_chat_view_chat",
+      "compatibility": {
+        "from": "4.5",
+        "until": "4.5"
+      },
+      "parameters": {
+        "chatid": {
+          "type": "integer",
+          "required": true
+        }
+      },
+      "returns": {
+        "status": "boolean",
+        "warnings": [
+          {
+            "item": "string",
+            "itemid": "integer",
+            "warningcode": "string",
+            "message": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mod_chat_view_sessions",
+      "summary": "Trigger the chat session viewed event.",
+      "kind": "write",
+      "moodleFunction": "mod_chat_view_sessions",
+      "compatibility": {
+        "from": "4.5",
+        "until": "4.5"
+      },
+      "parameters": {
+        "course_module_id": {
+          "type": "integer",
+          "required": true,
+          "moodleName": "cmid"
+        },
+        "start": {
+          "type": "integer",
+          "required": false,
+          "default": 0
+        },
+        "end": {
+          "type": "integer",
+          "required": false,
+          "default": 0
+        }
+      },
+      "returns": {
+        "status": "boolean",
+        "warnings": [
+          {
+            "item": "string",
+            "itemid": "integer",
+            "warningcode": "string",
+            "message": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mod_forum_set_read_state",
+      "summary": "Set the read or unread state for a forum post for the current user.",
+      "kind": "write",
+      "moodleFunction": "mod_forum_set_read_state",
+      "compatibility": {
+        "from": "5.3"
+      },
+      "parameters": {
+        "postid": {
+          "type": "integer",
+          "required": true
+        },
+        "targetstate": {
+          "type": "boolean",
+          "required": true
+        }
+      },
+      "returns": {
+        "status": "boolean",
+        "warnings": [
+          {
+            "item": "string",
+            "itemid": "integer",
+            "warningcode": "string",
+            "message": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mod_quiz_get_users_in_report",
+      "summary": "Returns the dataset of users within the quiz report",
+      "kind": "read",
+      "moodleFunction": "mod_quiz_get_users_in_report",
+      "compatibility": {
+        "from": "5.3"
+      },
+      "parameters": {
+        "course_module_id": {
+          "type": "integer",
+          "required": true,
+          "moodleName": "cmid"
+        },
+        "mode": {
+          "type": "string",
+          "required": true
+        },
+        "params": {
+          "type": "string",
+          "required": true
+        }
+      },
+      "returns": {
+        "extrafields": [
+          "string"
+        ],
+        "users": [
+          {
+            "id": "string",
+            "username?": "string",
+            "firstname?": "string",
+            "lastname?": "string",
+            "fullname": "string",
+            "initials?": "string",
+            "email?": "string",
+            "address?": "string",
+            "phone1?": "string",
+            "phone2?": "string",
+            "department?": "string",
+            "institution?": "string",
+            "idnumber?": "string",
+            "interests?": "string",
+            "firstaccess?": "string",
+            "lastaccess?": "string",
+            "auth?": "string",
+            "suspended?": "string",
+            "confirmed?": "string",
+            "lang?": "string",
+            "calendartype?": "string",
+            "theme?": "string",
+            "timezone?": "string",
+            "mailformat?": "string",
+            "trackforums?": "string",
+            "description?": "string",
+            "descriptionformat?": "integer",
+            "city?": "string",
+            "country?": "string",
+            "profileimageurlsmall": "string",
+            "profileimageurl": "string",
+            "customfields?": [
+              {
+                "type": "string",
+                "value": "string",
+                "displayvalue?": "string",
+                "name": "string",
+                "shortname": "string"
+              }
+            ],
+            "preferences?": [
+              {
+                "name": "string",
+                "value": "string"
+              }
+            ]
+          }
+        ],
+        "warnings": [
+          {
+            "item": "string",
+            "itemid": "integer",
+            "warningcode": "string",
+            "message": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mod_survey_get_questions",
+      "summary": "Get the complete list of questions for the survey, including subquestions.",
+      "kind": "read",
+      "moodleFunction": "mod_survey_get_questions",
+      "compatibility": {
+        "from": "4.5",
+        "until": "4.5"
+      },
+      "parameters": {
+        "surveyid": {
+          "type": "integer",
+          "required": true
+        }
+      },
+      "returns": {
+        "questions": [
+          {
+            "id": "integer",
+            "text": "string",
+            "shorttext": "string",
+            "multi": "string",
+            "intro": "string",
+            "type": "integer",
+            "options": "string",
+            "parent": "integer"
+          }
+        ],
+        "warnings": [
+          {
+            "item": "string",
+            "itemid": "integer",
+            "warningcode": "string",
+            "message": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mod_survey_get_surveys_by_courses",
+      "summary": "Returns a list of survey instances in a provided set of courses,\r\n                            if no courses are provided then all the survey instances the user has access to will be returned.",
+      "kind": "read",
+      "moodleFunction": "mod_survey_get_surveys_by_courses",
+      "compatibility": {
+        "from": "4.5",
+        "until": "4.5"
+      },
+      "parameters": {
+        "course_ids": {
+          "type": "array",
+          "items": "integer",
+          "required": false,
+          "default": [],
+          "moodleName": "courseids"
+        }
+      },
+      "returns": {
+        "surveys": [
+          {
+            "id": "integer",
+            "coursemodule": "integer",
+            "course": "integer",
+            "name": "string",
+            "intro": "string",
+            "introformat": "integer",
+            "introfiles?": [
+              {
+                "filename": "string",
+                "filepath": "string",
+                "filesize": "integer",
+                "fileurl": "string",
+                "timemodified": "integer",
+                "mimetype": "string",
+                "isexternal?": "boolean",
+                "repositorytype?": "string"
+              }
+            ],
+            "section?": "integer",
+            "visible?": "boolean",
+            "groupmode?": "integer",
+            "groupingid?": "integer",
+            "lang?": "string",
+            "template?": "integer",
+            "days?": "integer",
+            "questions?": "string",
+            "surveydone?": "integer",
+            "timecreated?": "integer",
+            "timemodified?": "integer"
+          }
+        ],
+        "warnings": [
+          {
+            "item": "string",
+            "itemid": "integer",
+            "warningcode": "string",
+            "message": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mod_survey_submit_answers",
+      "summary": "Submit the answers for a given survey.",
+      "kind": "write",
+      "moodleFunction": "mod_survey_submit_answers",
+      "compatibility": {
+        "from": "4.5",
+        "until": "4.5"
+      },
+      "parameters": {
+        "surveyid": {
+          "type": "integer",
+          "required": true
+        },
+        "answers": {
+          "type": "object_array",
+          "required": true
+        }
+      },
+      "returns": {
+        "status": "boolean",
+        "warnings": [
+          {
+            "item": "string",
+            "itemid": "integer",
+            "warningcode": "string",
+            "message": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mod_survey_view_survey",
+      "summary": "Trigger the course module viewed event and update the module completion status.",
+      "kind": "write",
+      "moodleFunction": "mod_survey_view_survey",
+      "compatibility": {
+        "from": "4.5",
+        "until": "4.5"
+      },
+      "parameters": {
+        "surveyid": {
+          "type": "integer",
+          "required": true
+        }
+      },
+      "returns": {
+        "status": "boolean",
+        "warnings": [
+          {
+            "item": "string",
+            "itemid": "integer",
+            "warningcode": "string",
+            "message": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "report_insights_set_fixed_prediction",
+      "summary": "Flags a prediction as fixed.",
+      "kind": "write",
+      "moodleFunction": "report_insights_set_fixed_prediction",
+      "compatibility": {
+        "from": "4.5",
+        "until": "4.5"
+      },
+      "parameters": {
+        "predictionid": {
+          "type": "integer",
+          "required": true
+        }
+      },
+      "returns": {
+        "success": "boolean",
+        "warnings": [
+          {
+            "item": "string",
+            "itemid": "integer",
+            "warningcode": "string",
+            "message": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "report_insights_set_notuseful_prediction",
+      "summary": "Flags the prediction as not useful.",
+      "kind": "write",
+      "moodleFunction": "report_insights_set_notuseful_prediction",
+      "compatibility": {
+        "from": "4.5",
+        "until": "4.5"
+      },
+      "parameters": {
+        "predictionid": {
+          "type": "integer",
+          "required": true
+        }
+      },
+      "returns": {
+        "success": "boolean",
+        "warnings": [
+          {
+            "item": "string",
+            "itemid": "integer",
+            "warningcode": "string",
+            "message": "string"
+          }
+        ]
+      }
     }
   ]
 }

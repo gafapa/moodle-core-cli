@@ -1,5 +1,5 @@
 {
-  "moodleVersion": "5.3",
+  "moodleVersion": "4.5",
   "schemas": {
     "tool_analytics_potential_contexts": [
       {
@@ -550,7 +550,6 @@
       "tool_mobile_androidappid?": "string",
       "tool_mobile_setuplink?": "string",
       "tool_mobile_qrcodetype?": "integer",
-      "tool_mobile_enabledeeplinkautologin?": "boolean",
       "warnings": [
         {
           "item": "string",
@@ -559,10 +558,7 @@
           "message": "string"
         }
       ],
-      "showloginform": "integer",
-      "tool_mfa_enabled?": "boolean",
-      "enableloginrecaptcha?": "boolean",
-      "enableforgotpasswordrecaptcha?": "boolean"
+      "showloginform": "integer"
     },
     "tool_mobile_get_config": {
       "settings": [
@@ -1001,7 +997,6 @@
           "firstname?": "string",
           "lastname?": "string",
           "fullname": "string",
-          "initials?": "string",
           "email?": "string",
           "address?": "string",
           "phone1?": "string",
@@ -1233,8 +1228,7 @@
               "numusers?": "integer",
               "averageformatted?": "string",
               "feedback?": "string",
-              "feedbackformat?": "integer",
-              "parentcategoryid?": "integer"
+              "feedbackformat?": "integer"
             }
           ]
         }
@@ -1924,7 +1918,6 @@
             "url?": "string",
             "name": "string",
             "instance?": "integer",
-            "lang?": "string",
             "contextid?": "integer",
             "description?": "string",
             "visible?": "integer",
@@ -1954,7 +1947,6 @@
             },
             "customdata?": "string",
             "noviewlink?": "boolean",
-            "candisplay?": "boolean",
             "completion?": "integer",
             "completiondata": {},
             "downloadcontent?": "integer",
@@ -2005,39 +1997,21 @@
     "core_course_get_course_module": {
       "cm": {
         "id": "integer",
-        "coursemodule": "integer",
         "course": "integer",
-        "name": "string",
-        "intro": "string",
-        "introformat": "integer",
-        "introfiles?": [
-          {
-            "filename": "string",
-            "filepath": "string",
-            "filesize": "integer",
-            "fileurl": "string",
-            "timemodified": "integer",
-            "mimetype": "string",
-            "isexternal?": "boolean",
-            "repositorytype?": "string"
-          }
-        ],
-        "section?": "integer",
-        "visible?": "integer",
-        "groupmode?": "integer",
-        "groupingid?": "integer",
-        "lang?": "string",
-        "enableaitools?": "integer",
-        "enabledaiactions?": "string",
         "module": "integer",
+        "name": "string",
         "modname": "string",
         "instance": "integer",
+        "section": "integer",
         "sectionnum": "integer",
+        "groupmode": "integer",
+        "groupingid": "integer",
         "completion": "integer",
         "idnumber?": "string",
         "added?": "integer",
         "score?": "integer",
         "indent?": "integer",
+        "visible?": "integer",
         "visibleoncoursepage?": "integer",
         "visibleold?": "integer",
         "completiongradeitemnumber?": "integer",
@@ -2077,39 +2051,21 @@
     "core_course_get_course_module_by_instance": {
       "cm": {
         "id": "integer",
-        "coursemodule": "integer",
         "course": "integer",
-        "name": "string",
-        "intro": "string",
-        "introformat": "integer",
-        "introfiles?": [
-          {
-            "filename": "string",
-            "filepath": "string",
-            "filesize": "integer",
-            "fileurl": "string",
-            "timemodified": "integer",
-            "mimetype": "string",
-            "isexternal?": "boolean",
-            "repositorytype?": "string"
-          }
-        ],
-        "section?": "integer",
-        "visible?": "integer",
-        "groupmode?": "integer",
-        "groupingid?": "integer",
-        "lang?": "string",
-        "enableaitools?": "integer",
-        "enabledaiactions?": "string",
         "module": "integer",
+        "name": "string",
         "modname": "string",
         "instance": "integer",
+        "section": "integer",
         "sectionnum": "integer",
+        "groupmode": "integer",
+        "groupingid": "integer",
         "completion": "integer",
         "idnumber?": "string",
         "added?": "integer",
         "score?": "integer",
         "indent?": "integer",
+        "visible?": "integer",
         "visibleoncoursepage?": "integer",
         "visibleold?": "integer",
         "completiongradeitemnumber?": "integer",
@@ -2151,8 +2107,7 @@
       {
         "extension": "string",
         "module": "string",
-        "message": "string",
-        "imagedetails": "boolean"
+        "message": "string"
       }
     ],
     "core_courseformat_get_state": "string",
@@ -2541,7 +2496,6 @@
         "username?": "string",
         "firstname?": "string",
         "lastname?": "string",
-        "initials?": "string",
         "fullname": "string",
         "email?": "string",
         "address?": "string",
@@ -2609,7 +2563,6 @@
             "username?": "string",
             "firstname?": "string",
             "lastname?": "string",
-            "initials?": "string",
             "fullname": "string",
             "email?": "string",
             "address?": "string",
@@ -2674,7 +2627,6 @@
         "firstname?": "string",
         "lastname?": "string",
         "fullname": "string",
-        "initials?": "string",
         "email?": "string",
         "address?": "string",
         "phone1?": "string",
@@ -2724,7 +2676,6 @@
         "firstname?": "string",
         "lastname?": "string",
         "fullname": "string",
-        "initials?": "string",
         "email?": "string",
         "address?": "string",
         "phone1?": "string",
@@ -3046,7 +2997,6 @@
           "firstname?": "string",
           "lastname?": "string",
           "fullname": "string",
-          "initials?": "string",
           "email?": "string",
           "address?": "string",
           "phone1?": "string",
@@ -3120,8 +3070,7 @@
         {
           "id": "string",
           "name": "string",
-          "groupimageurl?": "string",
-          "participation": "boolean"
+          "groupimageurl?": "string"
         }
       ],
       "warnings": [
@@ -3166,7 +3115,6 @@
           "firstname?": "string",
           "lastname?": "string",
           "fullname": "string",
-          "initials?": "string",
           "email?": "string",
           "address?": "string",
           "phone1?": "string",
@@ -3443,8 +3391,7 @@
         {
           "id": "string",
           "name": "string",
-          "groupimageurl?": "string",
-          "participation": "boolean"
+          "groupimageurl?": "string"
         }
       ],
       "warnings": [
@@ -3487,7 +3434,6 @@
       {
         "id": "integer",
         "fullname": "string",
-        "initials?": "string",
         "profileurl": "string",
         "profileimageurl": "string",
         "profileimageurlsmall": "string",
@@ -3577,7 +3523,6 @@
         {
           "userid": "integer",
           "fullname": "string",
-          "initials?": "string",
           "profileimageurl": "string",
           "profileimageurlsmall": "string",
           "ismessaging": "boolean",
@@ -3599,7 +3544,6 @@
         {
           "id": "integer",
           "fullname": "string",
-          "initials?": "string",
           "profileurl": "string",
           "profileimageurl": "string",
           "profileimageurlsmall": "string",
@@ -3618,7 +3562,6 @@
         {
           "id": "integer",
           "fullname": "string",
-          "initials?": "string",
           "profileurl": "string",
           "profileimageurl": "string",
           "profileimageurlsmall": "string",
@@ -3638,7 +3581,6 @@
       {
         "id": "integer",
         "fullname": "string",
-        "initials?": "string",
         "profileurl": "string",
         "profileimageurl": "string",
         "profileimageurlsmall": "string",
@@ -3670,7 +3612,6 @@
             {
               "id": "integer",
               "fullname": "string",
-              "initials?": "string",
               "profileurl": "string",
               "profileimageurl": "string",
               "profileimageurlsmall": "string",
@@ -3693,8 +3634,7 @@
               "timecreated": "integer"
             }
           ],
-          "candeletemessagesforallusers": "boolean",
-          "cansendmessagetoconversation": "boolean"
+          "candeletemessagesforallusers": "boolean"
         }
       ]
     },
@@ -3713,7 +3653,6 @@
         {
           "id": "integer",
           "fullname": "string",
-          "initials?": "string",
           "profileurl": "string",
           "profileimageurl": "string",
           "profileimageurlsmall": "string",
@@ -3736,8 +3675,7 @@
           "timecreated": "integer"
         }
       ],
-      "candeletemessagesforallusers": "boolean",
-      "cansendmessagetoconversation": "boolean"
+      "candeletemessagesforallusers": "boolean"
     },
     "core_message_get_conversation_between_users": {
       "id": "integer",
@@ -3754,7 +3692,6 @@
         {
           "id": "integer",
           "fullname": "string",
-          "initials?": "string",
           "profileurl": "string",
           "profileimageurl": "string",
           "profileimageurlsmall": "string",
@@ -3777,8 +3714,7 @@
           "timecreated": "integer"
         }
       ],
-      "candeletemessagesforallusers": "boolean",
-      "cansendmessagetoconversation": "boolean"
+      "candeletemessagesforallusers": "boolean"
     },
     "core_message_get_self_conversation": {
       "id": "integer",
@@ -3795,7 +3731,6 @@
         {
           "id": "integer",
           "fullname": "string",
-          "initials?": "string",
           "profileurl": "string",
           "profileimageurl": "string",
           "profileimageurlsmall": "string",
@@ -3818,8 +3753,7 @@
           "timecreated": "integer"
         }
       ],
-      "candeletemessagesforallusers": "boolean",
-      "cansendmessagetoconversation": "boolean"
+      "candeletemessagesforallusers": "boolean"
     },
     "core_message_get_messages": {
       "messages": [
@@ -3867,7 +3801,6 @@
       {
         "id": "integer",
         "fullname": "string",
-        "initials?": "string",
         "profileurl": "string",
         "profileimageurl": "string",
         "profileimageurlsmall": "string",
@@ -3886,7 +3819,6 @@
       {
         "id": "integer",
         "fullname": "string",
-        "initials?": "string",
         "profileurl": "string",
         "profileimageurl": "string",
         "profileimageurlsmall": "string",
@@ -3945,7 +3877,6 @@
         "timecreated?": "integer",
         "conversationid?": "integer",
         "useridfrom?": "integer",
-        "cantsendtouser?": "string",
         "candeletemessagesforallusers": "boolean"
       }
     ],
@@ -3963,7 +3894,6 @@
         {
           "id": "integer",
           "fullname": "string",
-          "initials?": "string",
           "profileurl": "string",
           "profileimageurl": "string",
           "profileimageurlsmall": "string",
@@ -4434,7 +4364,6 @@
         "firstname?": "string",
         "lastname?": "string",
         "fullname": "string",
-        "initials?": "string",
         "email?": "string",
         "address?": "string",
         "phone1?": "string",
@@ -4485,7 +4414,6 @@
           "firstname?": "string",
           "lastname?": "string",
           "fullname": "string",
-          "initials?": "string",
           "email?": "string",
           "address?": "string",
           "phone1?": "string",
@@ -4544,7 +4472,6 @@
         "firstname?": "string",
         "lastname?": "string",
         "fullname": "string",
-        "initials?": "string",
         "email?": "string",
         "address?": "string",
         "phone1?": "string",
@@ -4902,10 +4829,7 @@
       "theme?": "string",
       "limitconcurrentlogins?": "integer",
       "usersessionscount?": "integer",
-      "policyagreed?": "integer",
-      "usercanchangeconfig?": "boolean",
-      "usercanviewconfig?": "boolean",
-      "sitesecret?": "string"
+      "policyagreed?": "integer"
     },
     "core_block_get_course_blocks": {
       "blocks": [
@@ -5033,33 +4957,24 @@
       "area": "string",
       "itemid": "integer",
       "usescategories": "boolean",
-      "hascategories": "boolean",
-      "hassharedcategories": "boolean",
       "categories": [
         {
           "id": "integer",
           "name": "string",
           "nameeditable": "string",
-          "addfieldmenu": "string",
-          "actionsmenu": "string",
           "movetitle": "string",
-          "canedit": "boolean",
+          "addfieldmenu": "string",
           "fields?": [
             {
               "name": "string",
               "shortname": "string",
               "type": "string",
               "id": "integer",
-              "actionsmenu": "string",
               "movetitle": "string"
             }
-          ],
-          "toggle?": "string",
-          "extraclasses?": "string"
+          ]
         }
-      ],
-      "canmovefields": "boolean",
-      "canmovecategories": "boolean"
+      ]
     },
     "core_customfield_create_category": "integer",
     "core_h5p_get_trusted_h5p_file": {
@@ -5335,8 +5250,7 @@
       "content": "string"
     },
     "tiny_premium_get_api_key": {
-      "apikey": "string",
-      "usecloud": "boolean"
+      "apikey": "string"
     },
     "media_videojs_get_language": "string",
     "message_airnotifier_is_system_configured": "integer",
@@ -5467,31 +5381,9 @@
           "assignments": [
             {
               "id": "integer",
-              "coursemodule": "integer",
+              "cmid": "integer",
               "course": "integer",
               "name": "string",
-              "intro": "string",
-              "introformat": "integer",
-              "introfiles?": [
-                {
-                  "filename": "string",
-                  "filepath": "string",
-                  "filesize": "integer",
-                  "fileurl": "string",
-                  "timemodified": "integer",
-                  "mimetype": "string",
-                  "isexternal?": "boolean",
-                  "repositorytype?": "string"
-                }
-              ],
-              "section?": "integer",
-              "visible?": "boolean",
-              "groupmode?": "integer",
-              "groupingid?": "integer",
-              "lang?": "string",
-              "enableaitools?": "integer",
-              "enabledaiactions?": "string",
-              "cmid": "integer",
               "nosubmissions": "integer",
               "submissiondrafts": "integer",
               "sendnotifications": "integer",
@@ -5500,7 +5392,6 @@
               "duedate": "integer",
               "allowsubmissionsfromdate": "integer",
               "grade": "integer",
-              "gradepenalty": "integer",
               "timemodified": "integer",
               "completionsubmit": "integer",
               "cutoffdate": "integer",
@@ -5515,10 +5406,6 @@
               "maxattempts": "integer",
               "markingworkflow": "integer",
               "markingallocation": "integer",
-              "markercount": "integer",
-              "optionalmarkercount?": "integer",
-              "multimarkmethod": "string",
-              "multimarkrounding": "integer",
               "markinganonymous": "integer",
               "requiresubmissionstatement": "integer",
               "preventsubmissionnotingroup?": "integer",
@@ -5532,6 +5419,20 @@
                   "subtype": "string",
                   "name": "string",
                   "value": "string"
+                }
+              ],
+              "intro?": "string",
+              "introformat?": "integer",
+              "introfiles?": [
+                {
+                  "filename": "string",
+                  "filepath": "string",
+                  "filesize": "integer",
+                  "fileurl": "string",
+                  "timemodified": "integer",
+                  "mimetype": "string",
+                  "isexternal?": "boolean",
+                  "repositorytype?": "string"
                 }
               ],
               "introattachments?": [
@@ -5647,7 +5548,8 @@
               "locked": "integer",
               "mailed": "integer",
               "extensionduedate": "integer",
-              "workflowstate?": "string"
+              "workflowstate?": "string",
+              "allocatedmarker": "integer"
             }
           ]
         }
@@ -6068,7 +5970,6 @@
         "firstname?": "string",
         "lastname?": "string",
         "fullname": "string",
-        "initials?": "string",
         "email?": "string",
         "address?": "string",
         "phone1?": "string",
@@ -6139,7 +6040,6 @@
         "firstname?": "string",
         "lastname?": "string",
         "fullname": "string",
-        "initials?": "string",
         "email?": "string",
         "address?": "string",
         "phone1?": "string",
@@ -6321,7 +6221,6 @@
       "participantplural?": "boolean",
       "canjoin": "boolean",
       "ismoderator": "boolean",
-      "usermustwaittojoin?": "boolean",
       "presentations": [
         {
           "url": "string",
@@ -6368,8 +6267,6 @@
           "groupmode?": "integer",
           "groupingid?": "integer",
           "lang?": "string",
-          "enableaitools?": "integer",
-          "enabledaiactions?": "string",
           "meetingid": "string",
           "timemodified": "integer"
         }
@@ -6442,8 +6339,6 @@
           "groupmode?": "integer",
           "groupingid?": "integer",
           "lang?": "string",
-          "enableaitools?": "integer",
-          "enabledaiactions?": "string",
           "numbering": "integer",
           "navstyle": "integer",
           "customtitles": "integer",
@@ -6647,12 +6542,6 @@
           "warningcode": "string",
           "message": "string"
         }
-      ],
-      "userresponse": [
-        {
-          "optionid": "integer",
-          "text": "string"
-        }
       ]
     },
     "mod_choice_get_choice_options": {
@@ -6732,8 +6621,6 @@
           "groupmode?": "integer",
           "groupingid?": "integer",
           "lang?": "string",
-          "enableaitools?": "integer",
-          "enabledaiactions?": "string",
           "publish?": "boolean",
           "showresults?": "integer",
           "display?": "integer",
@@ -7261,8 +7148,6 @@
           "groupmode?": "integer",
           "groupingid?": "integer",
           "lang?": "string",
-          "enableaitools?": "integer",
-          "enabledaiactions?": "string",
           "revision": "integer",
           "timemodified": "integer",
           "display": "integer",
@@ -7283,8 +7168,8 @@
     "mod_forum_get_forums_by_courses": [
       {
         "id": "integer",
-        "coursemodule": "integer",
         "course": "integer",
+        "type": "string",
         "name": "string",
         "intro": "string",
         "introformat": "integer",
@@ -7300,14 +7185,7 @@
             "repositorytype?": "string"
           }
         ],
-        "section?": "integer",
-        "visible?": "boolean",
-        "groupmode?": "integer",
-        "groupingid?": "integer",
         "lang?": "string",
-        "enableaitools?": "integer",
-        "enabledaiactions?": "string",
-        "type": "string",
         "duedate?": "integer",
         "cutoffdate?": "integer",
         "assessed": "integer",
@@ -7334,8 +7212,7 @@
         "cancreatediscussions?": "boolean",
         "lockdiscussionafter?": "integer",
         "istracked?": "boolean",
-        "unreadpostscount?": "integer",
-        "showimmediately?": "boolean"
+        "unreadpostscount?": "integer"
       }
     ],
     "mod_forum_get_discussion_posts": {
@@ -7437,9 +7314,7 @@
           "totalscore": "integer",
           "mailnow": "integer",
           "userfullname": "string",
-          "userinitials?": "string",
           "usermodifiedfullname": "string",
-          "usermodifiedinitials?": "string",
           "userpictureurl": "string",
           "usermodifiedpictureurl": "string",
           "numreplies": "integer",
@@ -7660,8 +7535,6 @@
           "groupmode?": "integer",
           "groupingid?": "integer",
           "lang?": "string",
-          "enableaitools?": "integer",
-          "enabledaiactions?": "string",
           "allowduplicatedentries": "integer",
           "displayformat": "string",
           "mainglossary": "integer",
@@ -8903,7 +8776,6 @@
           }
         }
       ],
-      "totalattempts": "integer",
       "warnings": [
         {
           "item": "string",
@@ -8950,8 +8822,6 @@
           "groupmode?": "integer",
           "groupingid?": "integer",
           "lang?": "string",
-          "enableaitools?": "integer",
-          "enabledaiactions?": "string",
           "revision?": "integer",
           "keepold?": "integer",
           "structure?": "string",
@@ -8993,8 +8863,6 @@
           "groupmode?": "integer",
           "groupingid?": "integer",
           "lang?": "string",
-          "enableaitools?": "integer",
-          "enabledaiactions?": "string",
           "timemodified": "integer"
         }
       ],
@@ -9525,8 +9393,6 @@
           "groupmode?": "integer",
           "groupingid?": "integer",
           "lang?": "string",
-          "enableaitools?": "integer",
-          "enabledaiactions?": "string",
           "timecreated?": "integer",
           "timemodified?": "integer",
           "typeid?": "integer",
@@ -9759,8 +9625,6 @@
           "groupmode?": "integer",
           "groupingid?": "integer",
           "lang?": "string",
-          "enableaitools?": "integer",
-          "enabledaiactions?": "string",
           "content": "string",
           "contentformat": "integer",
           "contentfiles": [
@@ -9822,8 +9686,6 @@
           "groupmode?": "integer",
           "groupingid?": "integer",
           "lang?": "string",
-          "enableaitools?": "integer",
-          "enabledaiactions?": "string",
           "timeopen?": "integer",
           "timeclose?": "integer",
           "timelimit?": "integer",
@@ -9863,9 +9725,7 @@
           "allowofflineattempts?": "integer",
           "autosaveperiod?": "integer",
           "hasfeedback?": "integer",
-          "hasquestions?": "integer",
-          "precreateattempts?": "integer",
-          "duedate?": "integer"
+          "hasquestions?": "integer"
         }
       ],
       "warnings": [
@@ -9913,23 +9773,7 @@
               "maxgrade": "number"
             }
           ],
-          "gradednotificationsenttime?": "integer",
-          "feedback?": {
-            "feedbacktext?": "string",
-            "feedbackformat?": "integer",
-            "feedbackinlinefiles?": [
-              {
-                "filename": "string",
-                "filepath": "string",
-                "filesize": "integer",
-                "fileurl": "string",
-                "timemodified": "integer",
-                "mimetype": "string",
-                "isexternal?": "boolean",
-                "repositorytype?": "string"
-              }
-            ]
-          }
+          "gradednotificationsenttime?": "integer"
         }
       ],
       "warnings": [
@@ -9944,22 +9788,6 @@
     "mod_quiz_get_user_best_grade": {
       "hasgrade": "boolean",
       "grade?": "number",
-      "feedback?": {
-        "feedbacktext?": "string",
-        "feedbackformat?": "integer",
-        "feedbackinlinefiles?": [
-          {
-            "filename": "string",
-            "filepath": "string",
-            "filesize": "integer",
-            "fileurl": "string",
-            "timemodified": "integer",
-            "mimetype": "string",
-            "isexternal?": "boolean",
-            "repositorytype?": "string"
-          }
-        ]
-      },
       "gradetopass?": "number",
       "warnings": [
         {
@@ -10016,23 +9844,7 @@
             "maxgrade": "number"
           }
         ],
-        "gradednotificationsenttime?": "integer",
-        "feedback?": {
-          "feedbacktext?": "string",
-          "feedbackformat?": "integer",
-          "feedbackinlinefiles?": [
-            {
-              "filename": "string",
-              "filepath": "string",
-              "filesize": "integer",
-              "fileurl": "string",
-              "timemodified": "integer",
-              "mimetype": "string",
-              "isexternal?": "boolean",
-              "repositorytype?": "string"
-            }
-          ]
-        }
+        "gradednotificationsenttime?": "integer"
       },
       "warnings": [
         {
@@ -10067,23 +9879,7 @@
             "maxgrade": "number"
           }
         ],
-        "gradednotificationsenttime?": "integer",
-        "feedback?": {
-          "feedbacktext?": "string",
-          "feedbackformat?": "integer",
-          "feedbackinlinefiles?": [
-            {
-              "filename": "string",
-              "filepath": "string",
-              "filesize": "integer",
-              "fileurl": "string",
-              "timemodified": "integer",
-              "mimetype": "string",
-              "isexternal?": "boolean",
-              "repositorytype?": "string"
-            }
-          ]
-        }
+        "gradednotificationsenttime?": "integer"
       },
       "messages": [
         "string"
@@ -10232,23 +10028,7 @@
             "maxgrade": "number"
           }
         ],
-        "gradednotificationsenttime?": "integer",
-        "feedback?": {
-          "feedbacktext?": "string",
-          "feedbackformat?": "integer",
-          "feedbackinlinefiles?": [
-            {
-              "filename": "string",
-              "filepath": "string",
-              "filesize": "integer",
-              "fileurl": "string",
-              "timemodified": "integer",
-              "mimetype": "string",
-              "isexternal?": "boolean",
-              "repositorytype?": "string"
-            }
-          ]
-        }
+        "gradednotificationsenttime?": "integer"
       },
       "additionaldata": [
         {
@@ -10444,12 +10224,9 @@
           "groupid": "integer",
           "timeopen": "integer",
           "timeclose": "integer",
-          "duedate": "integer",
           "timelimit": "integer",
           "attempts": "integer",
-          "password": "string",
-          "reason": "string",
-          "reasonformat": "integer"
+          "password": "string"
         }
       ]
     },
@@ -10496,8 +10273,6 @@
           "groupmode?": "integer",
           "groupingid?": "integer",
           "lang?": "string",
-          "enableaitools?": "integer",
-          "enabledaiactions?": "string",
           "contentfiles": [
             {
               "filename": "string",
@@ -10666,8 +10441,6 @@
           "groupmode?": "integer",
           "groupingid?": "integer",
           "lang?": "string",
-          "enableaitools?": "integer",
-          "enabledaiactions?": "string",
           "packagesize?": "integer",
           "packageurl?": "string",
           "version?": "string",
@@ -10868,8 +10641,6 @@
           "groupmode?": "integer",
           "groupingid?": "integer",
           "lang?": "string",
-          "enableaitools?": "integer",
-          "enabledaiactions?": "string",
           "externalurl": "string",
           "display": "integer",
           "displayoptions": "string",
@@ -10912,8 +10683,6 @@
           "groupmode?": "integer",
           "groupingid?": "integer",
           "lang?": "string",
-          "enableaitools?": "integer",
-          "enabledaiactions?": "string",
           "timecreated?": "integer",
           "timemodified?": "integer",
           "firstpagetitle?": "string",
@@ -11451,7 +11220,7 @@
           "id": "integer",
           "sortorder?": "integer",
           "parent?": "integer",
-          "contextid?": "integer",
+          "context?": "integer",
           "draghandle?": "boolean"
         }
       }
@@ -11512,254 +11281,7 @@
     "qbank_columnsortorder_set_columnbank_order": "null",
     "qbank_columnsortorder_set_hidden_columns": "null",
     "qbank_viewquestiontext_set_question_text_format": "null",
-    "tool_admin_presets_delete_preset": "null",
-    "aiplacement_courseassist_explain_text": "object",
-    "core_message_set_default_notification": "object",
-    "core_ai_delete_provider_instance": {
-      "result": "boolean",
-      "message": "string",
-      "messagetype": "string"
-    },
-    "core_ai_set_provider_status": {
-      "result": "boolean",
-      "message": "string",
-      "messagetype": "string"
-    },
-    "core_ai_set_provider_order": {},
-    "core_question_move_questions": "string",
-    "core_question_search_shared_banks": {
-      "sharedbanks": [
-        {
-          "value": "integer",
-          "label": "string"
-        }
-      ]
-    },
-    "core_message_get_unsent_message": {
-      "message?": "string",
-      "conversationid?": "integer",
-      "otheruserid?": "integer"
-    },
-    "editor_tiny_get_configuration": {
-      "contextid": "integer",
-      "branding": "boolean",
-      "extendedvalidelements": "string",
-      "installedlanguages": [
-        {
-          "lang": "string",
-          "name": "string"
-        }
-      ],
-      "plugins": [
-        {
-          "name": "string",
-          "settings": [
-            {
-              "name": "string",
-              "value": "string"
-            }
-          ]
-        }
-      ],
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    },
-    "tiny_media_preview": {
-      "content": "string"
-    },
-    "mod_forum_mark_posts_read": "boolean",
-    "mod_quiz_get_user_quiz_attempts": {
-      "attempts": [
-        {
-          "id?": "integer",
-          "quiz?": "integer",
-          "userid?": "integer",
-          "attempt?": "integer",
-          "uniqueid?": "integer",
-          "layout?": "string",
-          "currentpage?": "integer",
-          "preview?": "integer",
-          "state?": "string",
-          "timestart?": "integer",
-          "timefinish?": "integer",
-          "timemodified?": "integer",
-          "timemodifiedoffline?": "integer",
-          "timecheckstate?": "integer",
-          "sumgrades?": "number",
-          "gradeitemmarks?": [
-            {
-              "name": "string",
-              "grade": "number",
-              "maxgrade": "number"
-            }
-          ],
-          "gradednotificationsenttime?": "integer",
-          "feedback?": {
-            "feedbacktext?": "string",
-            "feedbackformat?": "integer",
-            "feedbackinlinefiles?": [
-              {
-                "filename": "string",
-                "filepath": "string",
-                "filesize": "integer",
-                "fileurl": "string",
-                "timemodified": "integer",
-                "mimetype": "string",
-                "isexternal?": "boolean",
-                "repositorytype?": "string"
-              }
-            ]
-          }
-        }
-      ],
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    },
-    "core_courseformat_get_section_content_items": {
-      "content_items": [
-        {}
-      ]
-    },
-    "core_courseformat_get_overview_information": {},
-    "core_courseformat_log_view_overview_information": {
-      "status": "boolean",
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    },
-    "core_course_view_module_instance_list": {
-      "status": "boolean",
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    },
-    "core_customfield_toggle_shared": "boolean",
-    "mod_forum_set_forum_subscription": {},
-    "mod_forum_set_forum_tracking": {},
-    "core_customfield_convert_category": "boolean",
-    "mod_assign_save_overrides": {
-      "ids": [
-        "integer"
-      ]
-    },
-    "mod_assign_delete_overrides": {
-      "ids": [
-        "integer"
-      ]
-    },
-    "mod_assign_get_overrides": {
-      "overrides": [
-        {
-          "id": "integer",
-          "assignid": "integer",
-          "userid": "integer",
-          "groupid": "integer",
-          "sortorder": "integer",
-          "allowsubmissionsfromdate": "integer",
-          "duedate": "integer",
-          "cutoffdate": "integer",
-          "timelimit": "integer",
-          "reason": "string",
-          "reasonformat": "integer"
-        }
-      ]
-    },
-    "mod_forum_set_read_state": {
-      "status": "boolean",
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    },
-    "mod_quiz_get_users_in_report": {
-      "extrafields": [
-        "string"
-      ],
-      "users": [
-        {
-          "id": "string",
-          "username?": "string",
-          "firstname?": "string",
-          "lastname?": "string",
-          "fullname": "string",
-          "initials?": "string",
-          "email?": "string",
-          "address?": "string",
-          "phone1?": "string",
-          "phone2?": "string",
-          "department?": "string",
-          "institution?": "string",
-          "idnumber?": "string",
-          "interests?": "string",
-          "firstaccess?": "string",
-          "lastaccess?": "string",
-          "auth?": "string",
-          "suspended?": "string",
-          "confirmed?": "string",
-          "lang?": "string",
-          "calendartype?": "string",
-          "theme?": "string",
-          "timezone?": "string",
-          "mailformat?": "string",
-          "trackforums?": "string",
-          "description?": "string",
-          "descriptionformat?": "integer",
-          "city?": "string",
-          "country?": "string",
-          "profileimageurlsmall": "string",
-          "profileimageurl": "string",
-          "customfields?": [
-            {
-              "type": "string",
-              "value": "string",
-              "displayvalue?": "string",
-              "name": "string",
-              "shortname": "string"
-            }
-          ],
-          "preferences?": [
-            {
-              "name": "string",
-              "value": "string"
-            }
-          ]
-        }
-      ],
-      "warnings": [
-        {
-          "item": "string",
-          "itemid": "integer",
-          "warningcode": "string",
-          "message": "string"
-        }
-      ]
-    }
+    "tool_admin_presets_delete_preset": "null"
   },
   "parameters": {
     "tool_admin_presets_delete_preset": {
@@ -12569,21 +12091,6 @@
       "instanceid": {
         "type": "integer",
         "required": true
-      },
-      "component": {
-        "type": "string",
-        "required": false,
-        "default": "core_course"
-      },
-      "area": {
-        "type": "string",
-        "required": false,
-        "default": "course"
-      },
-      "itemid": {
-        "type": "integer",
-        "required": false,
-        "default": 0
       }
     },
     "enrol_guest_get_instance_info": {
@@ -17562,11 +17069,6 @@
       "state": {
         "type": "integer",
         "required": true
-      },
-      "providerid": {
-        "type": "integer",
-        "required": false,
-        "default": 0
       }
     },
     "core_sms_set_gateway_status": {
@@ -18001,11 +17503,6 @@
         "type": "boolean",
         "required": false,
         "default": false
-      },
-      "marking": {
-        "type": "boolean",
-        "required": false,
-        "default": false
       }
     },
     "mod_assign_submit_grading_form": {
@@ -18020,11 +17517,6 @@
       "jsonformdata": {
         "type": "string",
         "required": true
-      },
-      "marker": {
-        "type": "boolean",
-        "required": false,
-        "default": false
       }
     },
     "mod_assign_get_participant": {
@@ -18324,11 +17816,6 @@
       "choiceid": {
         "type": "integer",
         "required": true
-      },
-      "groupid": {
-        "type": "integer",
-        "required": false,
-        "default": null
       }
     },
     "mod_choice_get_choice_options": {
@@ -21052,290 +20539,6 @@
         "items": "integer",
         "required": true
       }
-    },
-    "aiplacement_courseassist_explain_text": {
-      "contextid": {
-        "type": "integer",
-        "required": true
-      },
-      "prompttext": {
-        "type": "string",
-        "required": true
-      }
-    },
-    "core_message_set_default_notification": {
-      "preference": {
-        "type": "string",
-        "required": true
-      },
-      "state": {
-        "type": "integer",
-        "required": true
-      }
-    },
-    "core_ai_delete_provider_instance": {
-      "providerid": {
-        "type": "integer",
-        "required": true
-      }
-    },
-    "core_ai_set_provider_status": {
-      "plugin": {
-        "type": "integer",
-        "required": true
-      },
-      "state": {
-        "type": "integer",
-        "required": true
-      }
-    },
-    "core_ai_set_provider_order": {
-      "plugin": {
-        "type": "integer",
-        "required": true
-      },
-      "direction": {
-        "type": "integer",
-        "required": true
-      }
-    },
-    "core_question_move_questions": {
-      "newcontextid": {
-        "type": "integer",
-        "required": true
-      },
-      "newcategoryid": {
-        "type": "integer",
-        "required": true
-      },
-      "questionids": {
-        "type": "string",
-        "required": true
-      },
-      "returnurl": {
-        "type": "string",
-        "required": true
-      }
-    },
-    "core_question_search_shared_banks": {
-      "contextid": {
-        "type": "integer",
-        "required": true
-      },
-      "search": {
-        "type": "string",
-        "required": true
-      },
-      "requiredcapabilities": {
-        "type": "array",
-        "items": "string",
-        "required": false
-      }
-    },
-    "core_message_set_unsent_message": {
-      "message": {
-        "type": "string",
-        "required": true
-      },
-      "conversationid": {
-        "type": "integer",
-        "required": true
-      },
-      "otheruserid": {
-        "type": "integer",
-        "required": true
-      }
-    },
-    "core_message_get_unsent_message": {},
-    "editor_tiny_get_configuration": {
-      "contextlevel": {
-        "type": "string",
-        "required": true
-      },
-      "instanceid": {
-        "type": "integer",
-        "required": true
-      }
-    },
-    "tiny_media_preview": {
-      "contextid": {
-        "type": "integer",
-        "required": true
-      },
-      "content": {
-        "type": "string",
-        "required": true
-      }
-    },
-    "mod_forum_mark_posts_read": {
-      "postids": {
-        "type": "array",
-        "items": "integer",
-        "required": true
-      },
-      "discussionid": {
-        "type": "integer",
-        "required": true
-      }
-    },
-    "mod_quiz_get_user_quiz_attempts": {
-      "quizid": {
-        "type": "integer",
-        "required": true
-      },
-      "userid": {
-        "type": "integer",
-        "required": false,
-        "default": 0
-      },
-      "status": {
-        "type": "string",
-        "required": false,
-        "default": "finished"
-      },
-      "includepreviews": {
-        "type": "boolean",
-        "required": false,
-        "default": false
-      }
-    },
-    "core_courseformat_get_section_content_items": {
-      "courseid": {
-        "type": "integer",
-        "required": true
-      },
-      "sectionid": {
-        "type": "integer",
-        "required": true
-      }
-    },
-    "core_courseformat_get_overview_information": {
-      "courseid": {
-        "type": "integer",
-        "required": true
-      },
-      "modname": {
-        "type": "string",
-        "required": true
-      }
-    },
-    "core_courseformat_log_view_overview_information": {
-      "courseid": {
-        "type": "integer",
-        "required": true
-      }
-    },
-    "core_course_view_module_instance_list": {
-      "courseid": {
-        "type": "integer",
-        "required": true
-      },
-      "modname": {
-        "type": "string",
-        "required": true
-      }
-    },
-    "core_customfield_toggle_shared": {
-      "categoryid": {
-        "type": "integer",
-        "required": true
-      },
-      "component": {
-        "type": "string",
-        "required": true
-      },
-      "area": {
-        "type": "string",
-        "required": true
-      },
-      "itemid": {
-        "type": "integer",
-        "required": true
-      },
-      "state": {
-        "type": "boolean",
-        "required": true
-      }
-    },
-    "mod_forum_set_forum_subscription": {
-      "forumid": {
-        "type": "integer",
-        "required": true
-      },
-      "targetstate": {
-        "type": "boolean",
-        "required": true
-      }
-    },
-    "mod_forum_set_forum_tracking": {
-      "forumid": {
-        "type": "integer",
-        "required": true
-      },
-      "targetstate": {
-        "type": "boolean",
-        "required": true
-      }
-    },
-    "core_customfield_convert_category": {
-      "categoryid": {
-        "type": "integer",
-        "required": true
-      },
-      "component": {
-        "type": "string",
-        "required": true
-      },
-      "area": {
-        "type": "string",
-        "required": true
-      },
-      "itemid": {
-        "type": "integer",
-        "required": true
-      }
-    },
-    "mod_assign_save_overrides": {
-      "data": {
-        "type": "object",
-        "required": true
-      }
-    },
-    "mod_assign_delete_overrides": {
-      "data": {
-        "type": "object",
-        "required": true
-      }
-    },
-    "mod_assign_get_overrides": {
-      "assignid": {
-        "type": "integer",
-        "required": true
-      }
-    },
-    "mod_forum_set_read_state": {
-      "postid": {
-        "type": "integer",
-        "required": true
-      },
-      "targetstate": {
-        "type": "boolean",
-        "required": true
-      }
-    },
-    "mod_quiz_get_users_in_report": {
-      "cmid": {
-        "type": "integer",
-        "required": true
-      },
-      "mode": {
-        "type": "string",
-        "required": true
-      },
-      "params": {
-        "type": "string",
-        "required": true
-      }
     }
   },
   "services": {
@@ -21656,7 +20859,7 @@
       "kind": "write"
     },
     "enrol_manual_unenrol_users": {
-      "summary": "Removes the manual enrolment of users in a course",
+      "summary": "Manual unenrol users",
       "kind": "write"
     },
     "enrol_meta_add_instances": {
@@ -21988,7 +21191,7 @@
       "kind": "read"
     },
     "core_course_get_module": {
-      "summary": "** DEPRECATED ** Please do not call this function any more (will be removed in Moodle 6.0).",
+      "summary": "Returns html with one activity module on course page",
       "kind": "read"
     },
     "core_courseformat_file_handlers": {
@@ -22008,15 +21211,15 @@
       "kind": "write"
     },
     "core_courseformat_create_module": {
-      "summary": "** DEPRECATED ** Please do not call this function any more. ",
+      "summary": "Add module to course.",
       "kind": "write"
     },
     "core_course_edit_module": {
-      "summary": "** DEPRECATED ** Please do not call this function any more (will be removed in Moodle 6.0).",
+      "summary": "Performs an action on course module (change visibility, duplicate, delete, etc.)",
       "kind": "write"
     },
     "core_course_edit_section": {
-      "summary": "** DEPRECATED ** Please do not call this function any more (will be removed in Moodle 6.0).",
+      "summary": "Performs an action on course section (change visibility, set marker, delete)",
       "kind": "write"
     },
     "core_course_get_courses": {
@@ -22092,7 +21295,7 @@
       "kind": "write"
     },
     "core_course_get_course_content_items": {
-      "summary": "** DEPRECATED ** Please do not call this function any more. ",
+      "summary": "Fetch all the content items (activities, resources and their subtypes) for the activity picker",
       "kind": "read"
     },
     "core_course_get_activity_chooser_footer": {
@@ -22320,7 +21523,7 @@
       "kind": "read"
     },
     "core_group_get_groups_for_selector": {
-      "summary": "Get the group/(s) for a course or course module",
+      "summary": "Get the group/(s) for a course",
       "kind": "read"
     },
     "core_group_unassign_grouping": {
@@ -24020,7 +23223,7 @@
       "kind": "write"
     },
     "mod_quiz_get_user_attempts": {
-      "summary": "Return a list of attempts for the given quiz and user. ",
+      "summary": "Return a list of attempts for the given quiz and user.",
       "kind": "read"
     },
     "mod_quiz_get_user_best_grade": {
@@ -24374,110 +23577,6 @@
     "report_insights_action_executed": {
       "summary": "Stores an action executed over a group of predictions.",
       "kind": "write"
-    },
-    "aiplacement_courseassist_explain_text": {
-      "summary": "Explain text for the Course Assistance Placement",
-      "kind": "write"
-    },
-    "core_message_set_default_notification": {
-      "summary": "Set the default value for a given notification preference",
-      "kind": "write"
-    },
-    "core_ai_delete_provider_instance": {
-      "summary": "Delete a provider instance",
-      "kind": "write"
-    },
-    "core_ai_set_provider_status": {
-      "summary": "Set a providers status",
-      "kind": "write"
-    },
-    "core_ai_set_provider_order": {
-      "summary": "Set the order of a provider",
-      "kind": "write"
-    },
-    "core_question_move_questions": {
-      "summary": "Bulk move questions to a new category.",
-      "kind": "write"
-    },
-    "core_question_search_shared_banks": {
-      "summary": "Get a list of shared question banks filtered by a search term.",
-      "kind": "read"
-    },
-    "core_message_set_unsent_message": {
-      "summary": "Store an unsent message string",
-      "kind": "write"
-    },
-    "core_message_get_unsent_message": {
-      "summary": "Get an unsent message string",
-      "kind": "read"
-    },
-    "editor_tiny_get_configuration": {
-      "summary": "Returns the TinyMCE configuration for a context.",
-      "kind": "read"
-    },
-    "tiny_media_preview": {
-      "summary": "Filters the content",
-      "kind": "read"
-    },
-    "mod_forum_mark_posts_read": {
-      "summary": "Mark forum posts as read.",
-      "kind": "write"
-    },
-    "mod_quiz_get_user_quiz_attempts": {
-      "summary": "Return a list of attempts for the given quiz and user.",
-      "kind": "read"
-    },
-    "core_courseformat_get_section_content_items": {
-      "summary": "Fetch all the content items (activities, resources and their subtypes) for the activity picker",
-      "kind": "read"
-    },
-    "core_courseformat_get_overview_information": {
-      "summary": "Get the course overview information for an specific activity type.",
-      "kind": "read"
-    },
-    "core_courseformat_log_view_overview_information": {
-      "summary": "Logs the course overview information page has been visited on an external application.",
-      "kind": "write"
-    },
-    "core_course_view_module_instance_list": {
-      "summary": "Logs that a module instance list has been viewed on an external application.",
-      "kind": "write"
-    },
-    "core_customfield_toggle_shared": {
-      "summary": "Toggle shared category state",
-      "kind": "write"
-    },
-    "mod_forum_set_forum_subscription": {
-      "summary": "Subscribe or unsubscribe the user to a forum.",
-      "kind": "write"
-    },
-    "mod_forum_set_forum_tracking": {
-      "summary": "Track or not unread messages in a forum for the user.",
-      "kind": "write"
-    },
-    "core_customfield_convert_category": {
-      "summary": "Convert an entity custom field category to a shared category.",
-      "kind": "write"
-    },
-    "mod_assign_save_overrides": {
-      "summary": "Update or insert assignment overrides",
-      "kind": "write"
-    },
-    "mod_assign_delete_overrides": {
-      "summary": "Delete assignment overrides",
-      "kind": "write"
-    },
-    "mod_assign_get_overrides": {
-      "summary": "Get assignment overrides",
-      "kind": "read"
-    },
-    "mod_forum_set_read_state": {
-      "summary": "Set the read or unread state for a forum post for the current user.",
-      "kind": "write"
-    },
-    "mod_quiz_get_users_in_report": {
-      "summary": "Returns the dataset of users within the quiz report",
-      "kind": "read"
     }
   },
   "unresolved": [],

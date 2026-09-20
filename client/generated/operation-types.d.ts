@@ -5,7 +5,7 @@ export type JsonPrimitive = string | number | boolean | null;
 export type JsonValue = JsonPrimitive | JsonObject | JsonValue[];
 export interface JsonObject { [key: string]: JsonValue; }
 
-export type MoodleOperationName = "get_site_info" | "get_courses" | "get_course" | "create_course" | "update_course" | "delete_course" | "get_course_contents" | "get_users_by_field" | "create_user" | "update_user" | "delete_user" | "enrol_user" | "unenrol_user" | "get_course_groups" | "create_group" | "delete_group" | "add_group_member" | "remove_group_member" | "get_course_categories" | "get_course_category" | "get_enrolled_users" | "get_cohorts" | "get_group_members" | "get_course_groupings" | "get_activity_completion_statuses" | "get_course_completion_status" | "get_calendar_events" | "get_grade_items" | "create_course_category" | "update_course_category" | "delete_course_category" | "get_group" | "update_group" | "create_grouping" | "get_grouping" | "update_grouping" | "delete_grouping" | "add_group_to_grouping" | "remove_group_from_grouping" | "create_cohort" | "update_cohort" | "delete_cohort" | "get_cohort_members" | "search_cohorts" | "add_cohort_member" | "remove_cohort_member" | "assign_role" | "unassign_role" | "get_user_courses" | "get_course_enrolment_methods" | "get_enrolled_users_with_capability" | "search_enrolled_users" | "get_potential_enrolment_users" | "get_self_enrolment_info" | "self_enrol" | "update_user_enrolment" | "delete_user_enrolment" | "get_grades_table" | "get_user_course_grades" | "get_grade_access_information" | "get_gradebook_items" | "get_grade_tree" | "get_gradable_users" | "get_grade_feedback" | "create_grade_category" | "update_grade_value" | "set_activity_completion_status" | "override_activity_completion_status" | "mark_course_self_completed" | "upload_draft_file" | "download_file" | "get_course_assignments" | "get_assignment_submissions" | "get_assignment_grades" | "get_assignment_submission_status" | "get_assignment_participants" | "get_assignment_participant" | "start_assignment_submission" | "save_assignment_submission" | "submit_assignment_for_grading" | "save_assignment_grade" | "set_assignment_user_flags" | "get_assignment_user_flags" | "get_assignment_user_mappings" | "lock_assignment_submissions" | "unlock_assignment_submissions" | "revert_assignment_submissions_to_draft" | "set_assignment_extension" | "reveal_assignment_identities" | "copy_previous_assignment_attempt" | "remove_assignment_submission" | "view_assignment" | "view_assignment_submission_status" | "view_assignment_grading_table" | "get_course_forums" | "get_forum_discussions" | "get_forum_discussion_posts" | "get_forum_post" | "get_forum_posts_by_user" | "get_forum_access_information" | "can_add_forum_discussion" | "create_forum_discussion" | "reply_to_forum_post" | "update_forum_post" | "delete_forum_post" | "prepare_forum_post_draft" | "set_forum_subscription" | "set_forum_tracking" | "set_forum_discussion_subscription" | "set_forum_discussion_favourite" | "set_forum_discussion_pin" | "set_forum_discussion_lock" | "mark_forum_posts_read" | "view_forum" | "view_forum_discussion" | "get_course_quizzes" | "get_user_quiz_attempts" | "get_user_quiz_best_grade" | "get_quiz_review_options" | "start_quiz_attempt" | "get_quiz_attempt_data" | "get_quiz_attempt_summary" | "save_quiz_attempt" | "process_quiz_attempt" | "get_quiz_attempt_review" | "get_quiz_feedback_for_grade" | "get_quiz_access_information" | "get_quiz_attempt_access_information" | "get_quiz_required_question_types" | "view_quiz" | "view_quiz_attempt" | "view_quiz_attempt_summary" | "view_quiz_attempt_review" | "get_course_books" | "view_book" | "get_course_folders" | "view_folder" | "get_course_imscp_packages" | "view_imscp_package" | "get_course_labels" | "get_course_pages" | "view_page" | "get_course_resources" | "view_resource" | "get_course_urls" | "view_url" | "get_course_choices" | "get_choice_options" | "get_choice_results" | "submit_choice_response" | "delete_choice_responses" | "view_choice" | "get_course_scorm_packages" | "get_scorm_attempt_count" | "get_scorm_contents" | "get_scorm_user_data" | "save_scorm_tracks" | "get_scorm_tracks" | "launch_scorm_content" | "get_scorm_access_information" | "view_scorm" | "get_course_wikis" | "get_wiki_subwikis" | "get_wiki_pages" | "get_wiki_files" | "get_wiki_page" | "get_wiki_page_for_editing" | "create_wiki_page" | "update_wiki_page" | "view_wiki" | "view_wiki_page" | "get_course_feedbacks" | "get_feedback_access_information" | "get_feedback_temporary_completion" | "get_feedback_items" | "launch_feedback" | "get_feedback_page" | "submit_feedback_page" | "get_feedback_analysis" | "get_unfinished_feedback_responses" | "get_finished_feedback_responses" | "get_feedback_non_respondents" | "get_feedback_responses_analysis" | "get_last_feedback_completion" | "reorder_feedback_questions" | "view_feedback" | "get_course_h5p_activities" | "get_h5p_access_information" | "get_h5p_attempts" | "get_h5p_results" | "get_h5p_user_attempts" | "log_h5p_report_view" | "view_h5p_activity" | "get_course_databases" | "get_database_access_information" | "get_database_entries" | "get_database_entry" | "get_database_fields" | "search_database_entries" | "approve_database_entry" | "delete_database_entry" | "create_database_entry" | "update_database_entry" | "delete_database_presets" | "get_database_preset_mapping" | "view_database" | "get_course_glossaries" | "get_glossary_entries_by_letter" | "get_glossary_entries_by_date" | "get_glossary_categories" | "get_glossary_entries_by_category" | "get_glossary_authors" | "get_glossary_entries_by_author_letter" | "get_glossary_entries_by_author" | "search_glossary_entries" | "get_glossary_entries_by_term" | "get_glossary_entries_to_approve" | "get_glossary_entry" | "create_glossary_entry" | "update_glossary_entry" | "delete_glossary_entry" | "prepare_glossary_entry" | "view_glossary" | "view_glossary_entry" | "get_course_bigbluebutton_activities" | "can_join_bigbluebutton" | "get_bigbluebutton_join_url" | "get_bigbluebutton_recordings" | "get_bigbluebutton_recordings_to_import" | "update_bigbluebutton_recording" | "end_bigbluebutton_meeting" | "validate_bigbluebutton_completion" | "get_bigbluebutton_meeting_information" | "view_bigbluebutton" | "get_course_lessons" | "get_lesson" | "get_lesson_access_information" | "get_lesson_question_attempts" | "get_lesson_user_grade" | "get_lesson_attempt_grade" | "get_lesson_content_pages_viewed" | "get_lesson_user_timers" | "get_lesson_pages" | "launch_lesson_attempt" | "get_lesson_page" | "submit_lesson_page" | "finish_lesson_attempt" | "get_lesson_attempts_overview" | "get_lesson_user_attempt" | "get_lesson_possible_jumps" | "view_lesson" | "get_course_lti_tools" | "get_lti_launch_data" | "get_lti_tool_proxies" | "create_lti_tool_proxy" | "delete_lti_tool_proxy" | "get_lti_proxy_registration_request" | "get_lti_tool_types" | "get_lti_tool_types_and_proxies" | "count_lti_tool_types_and_proxies" | "create_lti_tool_type" | "update_lti_tool_type" | "delete_lti_tool_type" | "delete_course_lti_tool_type" | "set_lti_tool_activity_chooser_visibility" | "is_lti_cartridge" | "view_lti" | "get_course_workshops" | "get_workshop_access_information" | "get_workshop_user_plan" | "create_workshop_submission" | "update_workshop_submission" | "delete_workshop_submission" | "get_workshop_submissions" | "get_workshop_submission" | "get_workshop_submission_assessments" | "get_workshop_assessment" | "get_workshop_assessment_form" | "get_workshop_reviewer_assessments" | "update_workshop_assessment" | "get_workshop_grades" | "evaluate_workshop_assessment" | "get_workshop_grades_report" | "evaluate_workshop_submission" | "view_workshop" | "view_workshop_submission" | "save_assignment_grades" | "submit_assignment_grading_form" | "get_user_quiz_attempts_legacy" | "set_quiz_question_version" | "reopen_quiz_attempt" | "get_reopen_quiz_attempt_confirmation" | "add_quiz_random_questions" | "update_quiz_random_question_filter" | "save_quiz_overrides" | "delete_quiz_overrides" | "get_quiz_overrides" | "create_quiz_grade_items" | "delete_quiz_grade_items" | "update_quiz_grade_items" | "update_quiz_slots" | "get_quiz_grading_setup" | "create_quiz_grade_item_per_section" | "get_calendar_month" | "get_calendar_day" | "get_calendar_upcoming" | "move_calendar_event" | "create_calendar_events" | "delete_calendar_events" | "get_action_events_by_time" | "get_course_action_events" | "get_courses_action_events" | "get_calendar_event" | "submit_calendar_event_form" | "get_calendar_access_information" | "get_allowed_calendar_event_types" | "get_calendar_export_token" | "get_badge" | "get_user_badges" | "get_user_badge_by_hash" | "get_blog_entries" | "view_blog_entries" | "get_blog_access_information" | "create_blog_entry" | "update_blog_entry" | "delete_blog_entry" | "prepare_blog_entry" | "get_comments" | "create_comments" | "delete_comments" | "create_notes" | "delete_notes" | "get_course_notes" | "view_notes" | "get_item_ratings" | "rate_item" | "get_activity_allowed_groups" | "get_activity_group_mode" | "get_user_course_groups" | "get_groups_for_selector" | "get_recently_accessed_items" | "get_starred_courses" | "view_personal_page" | "update_question_flag" | "browse_files" | "delete_draft_files" | "get_unused_draft_area" | "get_user_preferences" | "get_private_files_information" | "view_course_user_list" | "view_user_profile" | "agree_site_policy" | "add_private_files" | "update_user_picture" | "remove_user_device" | "search_site" | "get_top_search_results" | "get_search_areas" | "view_search_results" | "get_tag_areas" | "get_tag_collections" | "get_tag_cloud" | "get_tag_index" | "get_tag_index_by_area" | "get_course_module" | "get_course_module_by_instance" | "view_course" | "search_courses" | "get_course_navigation_options" | "get_course_administration_options" | "get_course_updates" | "get_timeline_courses" | "set_favourite_courses" | "get_recent_courses" | "check_course_updates" | "get_timeline_courses_with_events" | "view_module_instance_list" | "get_course_overview" | "view_course_overview" | "get_available_filters" | "get_all_filter_states" | "get_component_strings" | "get_fontawesome_icon_map" | "get_trusted_h5p_file" | "is_push_notification_system_configured" | "get_push_preference_statuses" | "get_user_push_devices" | "set_push_device_enabled" | "get_popup_notifications" | "get_unread_popup_notification_count" | "get_guest_enrolment_information" | "validate_guest_enrolment_password" | "register_user_device" | "update_user_device_public_key" | "get_course_user_profiles" | "set_user_preferences" | "update_user_preferences" | "prepare_private_files" | "update_private_files" | "get_xapi_state" | "get_xapi_states" | "save_xapi_state" | "delete_xapi_state" | "delete_xapi_states" | "post_xapi_statements" | "view_competency" | "delete_competency_evidence" | "get_competency_scale_values" | "grade_course_competency" | "get_course_competencies" | "view_user_competency" | "view_user_competency_in_course" | "view_user_competency_in_plan" | "view_user_competency_plan" | "get_course_blocks" | "get_dashboard_blocks" | "get_addable_blocks" | "get_grade_selector_users" | "get_grade_selector_groups" | "get_point_grading_panel" | "save_point_grading_panel" | "get_scale_grading_panel" | "save_scale_grading_panel" | "get_grader_report_users" | "get_grade_items_for_selector" | "view_grade_overview_report" | "view_user_grade_report" | "record_insight_action" | "list_custom_reports" | "get_custom_report" | "view_custom_report" | "can_view_system_report" | "get_system_report" | "get_dynamic_table" | "get_tiny_editor_configuration" | "get_tiny_premium_api_key" | "get_data_privacy_access_information" | "create_data_request" | "cancel_data_request" | "contact_data_protection_officer" | "get_data_requests" | "get_policy_acceptances" | "set_policy_acceptances" | "get_course_competencies_page" | "get_learning_plan_page" | "get_user_learning_plans_page" | "get_user_competency_summary" | "get_course_user_competency_summary" | "get_plan_user_competency_summary" | "get_user_evidence_list_page" | "get_user_evidence_page" | "send_conversation_messages" | "send_instant_messages" | "delete_message_contacts" | "mute_conversations" | "unmute_conversations" | "block_message_user" | "unblock_message_user" | "get_contact_requests" | "get_received_contact_request_count" | "get_conversation_members" | "create_contact_request" | "confirm_contact_request" | "decline_contact_request" | "search_message_users" | "search_messages" | "get_conversation_between_users" | "get_self_conversation" | "get_conversation_messages" | "get_message_contacts" | "search_message_contacts" | "get_conversations" | "get_conversation" | "get_messages" | "get_conversation_counts" | "get_unread_conversation_counts" | "get_unread_conversations_count" | "get_unread_notification_count" | "get_blocked_message_users" | "get_message_member_info" | "mark_message_read" | "mark_notification_read" | "mark_all_notifications_read" | "mark_conversation_read" | "delete_conversations" | "delete_message" | "delete_message_for_all_users" | "configure_message_processor" | "get_user_notification_preferences" | "get_user_message_preferences" | "set_favourite_conversations" | "unset_favourite_conversations" | "explain_text_with_ai" | "summarise_text_with_ai" | "generate_ai_image" | "generate_ai_text" | "get_ai_policy_status" | "set_ai_policy_status" | "get_analytics_contexts" | "get_mobile_plugins" | "get_mobile_public_config" | "get_mobile_config" | "get_mobile_autologin_key" | "get_mobile_content" | "call_mobile_external_functions" | "get_mobile_qr_login_tokens" | "validate_mobile_subscription_key" | "get_policy_version" | "search_moodlenet_courses" | "verify_moodlenet_profile" | "auth_email_get_signup_settings" | "auth_email_signup_user" | "block_accessreview_get_module_data" | "block_accessreview_get_section_data" | "admin_set_block_protection" | "admin_set_plugin_order" | "admin_set_plugin_state" | "ai_delete_provider_instance" | "ai_set_action" | "ai_set_provider_order" | "ai_set_provider_status" | "auth_confirm_user" | "auth_is_age_digital_consent_verification_enabled" | "auth_is_minor" | "auth_request_password_reset" | "auth_resend_confirmation_email" | "backup_get_async_backup_links_backup" | "backup_get_async_backup_links_restore" | "backup_get_async_backup_progress" | "backup_get_copy_progress" | "backup_submit_copy_form" | "badges_disable_badges" | "badges_enable_badges" | "calendar_delete_subscription" | "calendar_get_timestamps" | "change_editmode" | "check_get_result_admintree" | "competency_add_competency_to_course" | "competency_add_competency_to_plan" | "competency_add_competency_to_template" | "competency_add_related_competency" | "competency_approve_plan" | "competency_competency_framework_viewed" | "competency_complete_plan" | "competency_count_competencies" | "competency_count_competencies_in_course" | "competency_count_competencies_in_template" | "competency_count_competency_frameworks" | "competency_count_course_module_competencies" | "competency_count_courses_using_competency" | "competency_count_templates" | "competency_count_templates_using_competency" | "competency_create_competency" | "competency_create_competency_framework" | "competency_create_plan" | "competency_create_template" | "competency_create_user_evidence_competency" | "competency_delete_competency" | "competency_delete_competency_framework" | "competency_delete_plan" | "competency_delete_template" | "competency_delete_user_evidence" | "competency_delete_user_evidence_competency" | "competency_duplicate_competency_framework" | "competency_duplicate_template" | "competency_grade_competency" | "competency_grade_competency_in_plan" | "competency_list_competencies" | "competency_list_competencies_in_template" | "competency_list_competency_frameworks" | "competency_list_course_module_competencies" | "competency_list_plan_competencies" | "competency_list_templates" | "competency_list_templates_using_competency" | "competency_list_user_plans" | "competency_move_down_competency" | "competency_move_up_competency" | "competency_plan_cancel_review_request" | "competency_plan_request_review" | "competency_plan_start_review" | "competency_plan_stop_review" | "competency_read_competency" | "competency_read_competency_framework" | "competency_read_plan" | "competency_read_template" | "competency_read_user_evidence" | "competency_remove_competency_from_course" | "competency_remove_competency_from_plan" | "competency_remove_competency_from_template" | "competency_remove_related_competency" | "competency_reopen_plan" | "competency_reorder_course_competency" | "competency_reorder_plan_competency" | "competency_reorder_template_competency" | "competency_request_review_of_user_evidence_linked_competencies" | "competency_search_competencies" | "competency_set_course_competency_ruleoutcome" | "competency_set_parent_competency" | "competency_template_has_related_data" | "competency_template_viewed" | "competency_unapprove_plan" | "competency_unlink_plan_from_template" | "competency_update_competency" | "competency_update_competency_framework" | "competency_update_course_competency_settings" | "competency_update_plan" | "competency_update_template" | "competency_user_competency_cancel_review_request" | "competency_user_competency_request_review" | "competency_user_competency_start_review" | "competency_user_competency_stop_review" | "contentbank_copy_content" | "contentbank_delete_content" | "contentbank_rename_content" | "contentbank_set_content_visibility" | "course_add_content_item_to_user_favourites" | "course_delete_modules" | "course_duplicate_course" | "course_edit_module" | "course_edit_section" | "course_get_activity_chooser_footer" | "course_get_course_content_items" | "course_get_enrolled_users_by_cmid" | "course_get_module" | "course_import_course" | "course_remove_content_item_from_user_favourites" | "course_toggle_activity_recommendation" | "courseformat_create_module" | "courseformat_file_handlers" | "courseformat_get_section_content_items" | "courseformat_get_state" | "courseformat_new_module" | "courseformat_update_course" | "create_userfeedback_action_record" | "customfield_convert_category" | "customfield_create_category" | "customfield_delete_category" | "customfield_delete_field" | "customfield_move_category" | "customfield_move_field" | "customfield_reload_template" | "customfield_toggle_shared" | "dynamic_tabs_get_content" | "fetch_notifications" | "files_upload" | "form_dynamic_form" | "form_get_filetypes_browser_data" | "get_fragment" | "get_string" | "get_strings" | "get_user_dates" | "grading_get_definitions" | "grading_get_gradingform_instances" | "grading_save_definitions" | "message_get_message_processor" | "message_get_unsent_message" | "message_set_default_notification" | "message_set_unsent_message" | "moodlenet_auth_check" | "moodlenet_get_share_info_activity" | "moodlenet_get_shared_course_info" | "moodlenet_send_activity" | "moodlenet_send_course" | "notes_get_notes" | "notes_update_notes" | "output_load_template" | "output_load_template_with_dependencies" | "output_poll_stored_progress" | "payment_get_available_gateways" | "question_get_random_question_summaries" | "question_move_questions" | "question_search_shared_banks" | "reportbuilder_audiences_delete" | "reportbuilder_columns_add" | "reportbuilder_columns_delete" | "reportbuilder_columns_reorder" | "reportbuilder_columns_sort_get" | "reportbuilder_columns_sort_reorder" | "reportbuilder_columns_sort_toggle" | "reportbuilder_conditions_add" | "reportbuilder_conditions_delete" | "reportbuilder_conditions_reorder" | "reportbuilder_conditions_reset" | "reportbuilder_filters_add" | "reportbuilder_filters_delete" | "reportbuilder_filters_reorder" | "reportbuilder_filters_reset" | "reportbuilder_reports_delete" | "reportbuilder_reports_get" | "reportbuilder_schedules_delete" | "reportbuilder_schedules_send" | "reportbuilder_schedules_toggle" | "reportbuilder_set_filters" | "search_get_relevant_users" | "session_time_remaining" | "session_touch" | "sms_set_gateway_status" | "tag_get_tags" | "tag_update_tags" | "update_inplace_editable" | "user_get_users" | "user_search_identity" | "customfield_number_recalculate_value" | "enrol_meta_add_instances" | "enrol_meta_delete_instances" | "gradingform_guide_grader_gradingpanel_fetch" | "gradingform_guide_grader_gradingpanel_store" | "gradingform_rubric_grader_gradingpanel_fetch" | "gradingform_rubric_grader_gradingpanel_store" | "media_videojs_get_language" | "paygw_paypal_create_transaction_complete" | "paygw_paypal_get_config_for_js" | "qbank_columnsortorder_set_column_size" | "qbank_columnsortorder_set_columnbank_order" | "qbank_columnsortorder_set_hidden_columns" | "qbank_editquestion_set_status" | "qbank_managecategories_move_category" | "qbank_tagquestion_submit_tags_form" | "qbank_viewquestiontext_set_question_text_format" | "quizaccess_seb_validate_quiz_keys" | "report_competency_data_for_report" | "tiny_autosave_reset_session" | "tiny_autosave_resume_session" | "tiny_autosave_update_session" | "tiny_equation_filter" | "tiny_media_preview" | "admin_presets_delete_preset" | "behat_get_entity_generator" | "dataprivacy_approve_data_request" | "dataprivacy_bulk_approve_data_requests" | "dataprivacy_bulk_deny_data_requests" | "dataprivacy_confirm_contexts_for_deletion" | "dataprivacy_create_category_form" | "dataprivacy_create_purpose_form" | "dataprivacy_delete_category" | "dataprivacy_delete_purpose" | "dataprivacy_deny_data_request" | "dataprivacy_get_activity_options" | "dataprivacy_get_category_options" | "dataprivacy_get_data_request" | "dataprivacy_get_purpose_options" | "dataprivacy_get_users" | "dataprivacy_mark_complete" | "dataprivacy_set_context_defaults" | "dataprivacy_set_context_form" | "dataprivacy_set_contextlevel_form" | "dataprivacy_submit_selected_courses_form" | "dataprivacy_tree_extra_branches" | "lp_data_for_competencies_manage_page" | "lp_data_for_competency_frameworks_manage_page" | "lp_data_for_competency_summary" | "lp_data_for_related_competencies_section" | "lp_data_for_template_competencies_page" | "lp_data_for_templates_manage_page" | "lp_list_courses_using_competency" | "lp_search_cohorts" | "lp_search_users" | "policy_submit_accept_on_behalf" | "templatelibrary_list_templates" | "templatelibrary_load_canonical_template" | "usertours_complete_tour" | "usertours_fetch_and_start_tour" | "usertours_reset_tour" | "usertours_step_shown" | "xmldb_invoke_move_action";
+export type MoodleOperationName = "get_site_info" | "get_courses" | "get_course" | "create_course" | "update_course" | "delete_course" | "get_course_contents" | "get_users_by_field" | "create_user" | "update_user" | "delete_user" | "enrol_user" | "unenrol_user" | "get_course_groups" | "create_group" | "delete_group" | "add_group_member" | "remove_group_member" | "get_course_categories" | "get_course_category" | "get_enrolled_users" | "get_cohorts" | "get_group_members" | "get_course_groupings" | "get_activity_completion_statuses" | "get_course_completion_status" | "get_calendar_events" | "get_grade_items" | "create_course_category" | "update_course_category" | "delete_course_category" | "get_group" | "update_group" | "create_grouping" | "get_grouping" | "update_grouping" | "delete_grouping" | "add_group_to_grouping" | "remove_group_from_grouping" | "create_cohort" | "update_cohort" | "delete_cohort" | "get_cohort_members" | "search_cohorts" | "add_cohort_member" | "remove_cohort_member" | "assign_role" | "unassign_role" | "get_user_courses" | "get_course_enrolment_methods" | "get_enrolled_users_with_capability" | "search_enrolled_users" | "get_potential_enrolment_users" | "get_self_enrolment_info" | "self_enrol" | "update_user_enrolment" | "delete_user_enrolment" | "get_grades_table" | "get_user_course_grades" | "get_grade_access_information" | "get_gradebook_items" | "get_grade_tree" | "get_gradable_users" | "get_grade_feedback" | "create_grade_category" | "update_grade_value" | "set_activity_completion_status" | "override_activity_completion_status" | "mark_course_self_completed" | "upload_draft_file" | "download_file" | "get_course_assignments" | "get_assignment_submissions" | "get_assignment_grades" | "get_assignment_submission_status" | "get_assignment_participants" | "get_assignment_participant" | "start_assignment_submission" | "save_assignment_submission" | "submit_assignment_for_grading" | "save_assignment_grade" | "set_assignment_user_flags" | "get_assignment_user_flags" | "get_assignment_user_mappings" | "lock_assignment_submissions" | "unlock_assignment_submissions" | "revert_assignment_submissions_to_draft" | "set_assignment_extension" | "reveal_assignment_identities" | "copy_previous_assignment_attempt" | "remove_assignment_submission" | "view_assignment" | "view_assignment_submission_status" | "view_assignment_grading_table" | "get_course_forums" | "get_forum_discussions" | "get_forum_discussion_posts" | "get_forum_post" | "get_forum_posts_by_user" | "get_forum_access_information" | "can_add_forum_discussion" | "create_forum_discussion" | "reply_to_forum_post" | "update_forum_post" | "delete_forum_post" | "prepare_forum_post_draft" | "set_forum_subscription" | "set_forum_tracking" | "set_forum_discussion_subscription" | "set_forum_discussion_favourite" | "set_forum_discussion_pin" | "set_forum_discussion_lock" | "mark_forum_posts_read" | "view_forum" | "view_forum_discussion" | "get_course_quizzes" | "get_user_quiz_attempts" | "get_user_quiz_best_grade" | "get_quiz_review_options" | "start_quiz_attempt" | "get_quiz_attempt_data" | "get_quiz_attempt_summary" | "save_quiz_attempt" | "process_quiz_attempt" | "get_quiz_attempt_review" | "get_quiz_feedback_for_grade" | "get_quiz_access_information" | "get_quiz_attempt_access_information" | "get_quiz_required_question_types" | "view_quiz" | "view_quiz_attempt" | "view_quiz_attempt_summary" | "view_quiz_attempt_review" | "get_course_books" | "view_book" | "get_course_folders" | "view_folder" | "get_course_imscp_packages" | "view_imscp_package" | "get_course_labels" | "get_course_pages" | "view_page" | "get_course_resources" | "view_resource" | "get_course_urls" | "view_url" | "get_course_choices" | "get_choice_options" | "get_choice_results" | "submit_choice_response" | "delete_choice_responses" | "view_choice" | "get_course_scorm_packages" | "get_scorm_attempt_count" | "get_scorm_contents" | "get_scorm_user_data" | "save_scorm_tracks" | "get_scorm_tracks" | "launch_scorm_content" | "get_scorm_access_information" | "view_scorm" | "get_course_wikis" | "get_wiki_subwikis" | "get_wiki_pages" | "get_wiki_files" | "get_wiki_page" | "get_wiki_page_for_editing" | "create_wiki_page" | "update_wiki_page" | "view_wiki" | "view_wiki_page" | "get_course_feedbacks" | "get_feedback_access_information" | "get_feedback_temporary_completion" | "get_feedback_items" | "launch_feedback" | "get_feedback_page" | "submit_feedback_page" | "get_feedback_analysis" | "get_unfinished_feedback_responses" | "get_finished_feedback_responses" | "get_feedback_non_respondents" | "get_feedback_responses_analysis" | "get_last_feedback_completion" | "reorder_feedback_questions" | "view_feedback" | "get_course_h5p_activities" | "get_h5p_access_information" | "get_h5p_attempts" | "get_h5p_results" | "get_h5p_user_attempts" | "log_h5p_report_view" | "view_h5p_activity" | "get_course_databases" | "get_database_access_information" | "get_database_entries" | "get_database_entry" | "get_database_fields" | "search_database_entries" | "approve_database_entry" | "delete_database_entry" | "create_database_entry" | "update_database_entry" | "delete_database_presets" | "get_database_preset_mapping" | "view_database" | "get_course_glossaries" | "get_glossary_entries_by_letter" | "get_glossary_entries_by_date" | "get_glossary_categories" | "get_glossary_entries_by_category" | "get_glossary_authors" | "get_glossary_entries_by_author_letter" | "get_glossary_entries_by_author" | "search_glossary_entries" | "get_glossary_entries_by_term" | "get_glossary_entries_to_approve" | "get_glossary_entry" | "create_glossary_entry" | "update_glossary_entry" | "delete_glossary_entry" | "prepare_glossary_entry" | "view_glossary" | "view_glossary_entry" | "get_course_bigbluebutton_activities" | "can_join_bigbluebutton" | "get_bigbluebutton_join_url" | "get_bigbluebutton_recordings" | "get_bigbluebutton_recordings_to_import" | "update_bigbluebutton_recording" | "end_bigbluebutton_meeting" | "validate_bigbluebutton_completion" | "get_bigbluebutton_meeting_information" | "view_bigbluebutton" | "get_course_lessons" | "get_lesson" | "get_lesson_access_information" | "get_lesson_question_attempts" | "get_lesson_user_grade" | "get_lesson_attempt_grade" | "get_lesson_content_pages_viewed" | "get_lesson_user_timers" | "get_lesson_pages" | "launch_lesson_attempt" | "get_lesson_page" | "submit_lesson_page" | "finish_lesson_attempt" | "get_lesson_attempts_overview" | "get_lesson_user_attempt" | "get_lesson_possible_jumps" | "view_lesson" | "get_course_lti_tools" | "get_lti_launch_data" | "get_lti_tool_proxies" | "create_lti_tool_proxy" | "delete_lti_tool_proxy" | "get_lti_proxy_registration_request" | "get_lti_tool_types" | "get_lti_tool_types_and_proxies" | "count_lti_tool_types_and_proxies" | "create_lti_tool_type" | "update_lti_tool_type" | "delete_lti_tool_type" | "delete_course_lti_tool_type" | "set_lti_tool_activity_chooser_visibility" | "is_lti_cartridge" | "view_lti" | "get_course_workshops" | "get_workshop_access_information" | "get_workshop_user_plan" | "create_workshop_submission" | "update_workshop_submission" | "delete_workshop_submission" | "get_workshop_submissions" | "get_workshop_submission" | "get_workshop_submission_assessments" | "get_workshop_assessment" | "get_workshop_assessment_form" | "get_workshop_reviewer_assessments" | "update_workshop_assessment" | "get_workshop_grades" | "evaluate_workshop_assessment" | "get_workshop_grades_report" | "evaluate_workshop_submission" | "view_workshop" | "view_workshop_submission" | "save_assignment_grades" | "submit_assignment_grading_form" | "get_user_quiz_attempts_legacy" | "set_quiz_question_version" | "reopen_quiz_attempt" | "get_reopen_quiz_attempt_confirmation" | "add_quiz_random_questions" | "update_quiz_random_question_filter" | "save_quiz_overrides" | "delete_quiz_overrides" | "get_quiz_overrides" | "create_quiz_grade_items" | "delete_quiz_grade_items" | "update_quiz_grade_items" | "update_quiz_slots" | "get_quiz_grading_setup" | "create_quiz_grade_item_per_section" | "get_calendar_month" | "get_calendar_day" | "get_calendar_upcoming" | "move_calendar_event" | "create_calendar_events" | "delete_calendar_events" | "get_action_events_by_time" | "get_course_action_events" | "get_courses_action_events" | "get_calendar_event" | "submit_calendar_event_form" | "get_calendar_access_information" | "get_allowed_calendar_event_types" | "get_calendar_export_token" | "get_badge" | "get_user_badges" | "get_user_badge_by_hash" | "get_blog_entries" | "view_blog_entries" | "get_blog_access_information" | "create_blog_entry" | "update_blog_entry" | "delete_blog_entry" | "prepare_blog_entry" | "get_comments" | "create_comments" | "delete_comments" | "create_notes" | "delete_notes" | "get_course_notes" | "view_notes" | "get_item_ratings" | "rate_item" | "get_activity_allowed_groups" | "get_activity_group_mode" | "get_user_course_groups" | "get_groups_for_selector" | "get_recently_accessed_items" | "get_starred_courses" | "view_personal_page" | "update_question_flag" | "browse_files" | "delete_draft_files" | "get_unused_draft_area" | "get_user_preferences" | "get_private_files_information" | "view_course_user_list" | "view_user_profile" | "agree_site_policy" | "add_private_files" | "update_user_picture" | "remove_user_device" | "search_site" | "get_top_search_results" | "get_search_areas" | "view_search_results" | "get_tag_areas" | "get_tag_collections" | "get_tag_cloud" | "get_tag_index" | "get_tag_index_by_area" | "get_course_module" | "get_course_module_by_instance" | "view_course" | "search_courses" | "get_course_navigation_options" | "get_course_administration_options" | "get_course_updates" | "get_timeline_courses" | "set_favourite_courses" | "get_recent_courses" | "check_course_updates" | "get_timeline_courses_with_events" | "view_module_instance_list" | "get_course_overview" | "view_course_overview" | "get_available_filters" | "get_all_filter_states" | "get_component_strings" | "get_fontawesome_icon_map" | "get_trusted_h5p_file" | "is_push_notification_system_configured" | "get_push_preference_statuses" | "get_user_push_devices" | "set_push_device_enabled" | "get_popup_notifications" | "get_unread_popup_notification_count" | "get_guest_enrolment_information" | "validate_guest_enrolment_password" | "register_user_device" | "update_user_device_public_key" | "get_course_user_profiles" | "set_user_preferences" | "update_user_preferences" | "prepare_private_files" | "update_private_files" | "get_xapi_state" | "get_xapi_states" | "save_xapi_state" | "delete_xapi_state" | "delete_xapi_states" | "post_xapi_statements" | "view_competency" | "delete_competency_evidence" | "get_competency_scale_values" | "grade_course_competency" | "get_course_competencies" | "view_user_competency" | "view_user_competency_in_course" | "view_user_competency_in_plan" | "view_user_competency_plan" | "get_course_blocks" | "get_dashboard_blocks" | "get_addable_blocks" | "get_grade_selector_users" | "get_grade_selector_groups" | "get_point_grading_panel" | "save_point_grading_panel" | "get_scale_grading_panel" | "save_scale_grading_panel" | "get_grader_report_users" | "get_grade_items_for_selector" | "view_grade_overview_report" | "view_user_grade_report" | "record_insight_action" | "list_custom_reports" | "get_custom_report" | "view_custom_report" | "can_view_system_report" | "get_system_report" | "get_dynamic_table" | "get_tiny_editor_configuration" | "get_tiny_premium_api_key" | "get_data_privacy_access_information" | "create_data_request" | "cancel_data_request" | "contact_data_protection_officer" | "get_data_requests" | "get_policy_acceptances" | "set_policy_acceptances" | "get_course_competencies_page" | "get_learning_plan_page" | "get_user_learning_plans_page" | "get_user_competency_summary" | "get_course_user_competency_summary" | "get_plan_user_competency_summary" | "get_user_evidence_list_page" | "get_user_evidence_page" | "send_conversation_messages" | "send_instant_messages" | "delete_message_contacts" | "mute_conversations" | "unmute_conversations" | "block_message_user" | "unblock_message_user" | "get_contact_requests" | "get_received_contact_request_count" | "get_conversation_members" | "create_contact_request" | "confirm_contact_request" | "decline_contact_request" | "search_message_users" | "search_messages" | "get_conversation_between_users" | "get_self_conversation" | "get_conversation_messages" | "get_message_contacts" | "search_message_contacts" | "get_conversations" | "get_conversation" | "get_messages" | "get_conversation_counts" | "get_unread_conversation_counts" | "get_unread_conversations_count" | "get_unread_notification_count" | "get_blocked_message_users" | "get_message_member_info" | "mark_message_read" | "mark_notification_read" | "mark_all_notifications_read" | "mark_conversation_read" | "delete_conversations" | "delete_message" | "delete_message_for_all_users" | "configure_message_processor" | "get_user_notification_preferences" | "get_user_message_preferences" | "set_favourite_conversations" | "unset_favourite_conversations" | "explain_text_with_ai" | "summarise_text_with_ai" | "generate_ai_image" | "generate_ai_text" | "get_ai_policy_status" | "set_ai_policy_status" | "get_analytics_contexts" | "get_mobile_plugins" | "get_mobile_public_config" | "get_mobile_config" | "get_mobile_autologin_key" | "get_mobile_content" | "call_mobile_external_functions" | "get_mobile_qr_login_tokens" | "validate_mobile_subscription_key" | "get_policy_version" | "search_moodlenet_courses" | "verify_moodlenet_profile" | "auth_email_get_signup_settings" | "auth_email_signup_user" | "block_accessreview_get_module_data" | "block_accessreview_get_section_data" | "admin_set_block_protection" | "admin_set_plugin_order" | "admin_set_plugin_state" | "ai_delete_provider_instance" | "ai_set_action" | "ai_set_provider_order" | "ai_set_provider_status" | "auth_confirm_user" | "auth_is_age_digital_consent_verification_enabled" | "auth_is_minor" | "auth_request_password_reset" | "auth_resend_confirmation_email" | "backup_get_async_backup_links_backup" | "backup_get_async_backup_links_restore" | "backup_get_async_backup_progress" | "backup_get_copy_progress" | "backup_submit_copy_form" | "badges_disable_badges" | "badges_enable_badges" | "calendar_delete_subscription" | "calendar_get_timestamps" | "change_editmode" | "check_get_result_admintree" | "competency_add_competency_to_course" | "competency_add_competency_to_plan" | "competency_add_competency_to_template" | "competency_add_related_competency" | "competency_approve_plan" | "competency_competency_framework_viewed" | "competency_complete_plan" | "competency_count_competencies" | "competency_count_competencies_in_course" | "competency_count_competencies_in_template" | "competency_count_competency_frameworks" | "competency_count_course_module_competencies" | "competency_count_courses_using_competency" | "competency_count_templates" | "competency_count_templates_using_competency" | "competency_create_competency" | "competency_create_competency_framework" | "competency_create_plan" | "competency_create_template" | "competency_create_user_evidence_competency" | "competency_delete_competency" | "competency_delete_competency_framework" | "competency_delete_plan" | "competency_delete_template" | "competency_delete_user_evidence" | "competency_delete_user_evidence_competency" | "competency_duplicate_competency_framework" | "competency_duplicate_template" | "competency_grade_competency" | "competency_grade_competency_in_plan" | "competency_list_competencies" | "competency_list_competencies_in_template" | "competency_list_competency_frameworks" | "competency_list_course_module_competencies" | "competency_list_plan_competencies" | "competency_list_templates" | "competency_list_templates_using_competency" | "competency_list_user_plans" | "competency_move_down_competency" | "competency_move_up_competency" | "competency_plan_cancel_review_request" | "competency_plan_request_review" | "competency_plan_start_review" | "competency_plan_stop_review" | "competency_read_competency" | "competency_read_competency_framework" | "competency_read_plan" | "competency_read_template" | "competency_read_user_evidence" | "competency_remove_competency_from_course" | "competency_remove_competency_from_plan" | "competency_remove_competency_from_template" | "competency_remove_related_competency" | "competency_reopen_plan" | "competency_reorder_course_competency" | "competency_reorder_plan_competency" | "competency_reorder_template_competency" | "competency_request_review_of_user_evidence_linked_competencies" | "competency_search_competencies" | "competency_set_course_competency_ruleoutcome" | "competency_set_parent_competency" | "competency_template_has_related_data" | "competency_template_viewed" | "competency_unapprove_plan" | "competency_unlink_plan_from_template" | "competency_update_competency" | "competency_update_competency_framework" | "competency_update_course_competency_settings" | "competency_update_plan" | "competency_update_template" | "competency_user_competency_cancel_review_request" | "competency_user_competency_request_review" | "competency_user_competency_start_review" | "competency_user_competency_stop_review" | "contentbank_copy_content" | "contentbank_delete_content" | "contentbank_rename_content" | "contentbank_set_content_visibility" | "course_add_content_item_to_user_favourites" | "course_delete_modules" | "course_duplicate_course" | "course_edit_module" | "course_edit_section" | "course_get_activity_chooser_footer" | "course_get_course_content_items" | "course_get_enrolled_users_by_cmid" | "course_get_module" | "course_import_course" | "course_remove_content_item_from_user_favourites" | "course_toggle_activity_recommendation" | "courseformat_create_module" | "courseformat_file_handlers" | "courseformat_get_section_content_items" | "courseformat_get_state" | "courseformat_new_module" | "courseformat_update_course" | "create_userfeedback_action_record" | "customfield_convert_category" | "customfield_create_category" | "customfield_delete_category" | "customfield_delete_field" | "customfield_move_category" | "customfield_move_field" | "customfield_reload_template" | "customfield_toggle_shared" | "dynamic_tabs_get_content" | "fetch_notifications" | "files_upload" | "form_dynamic_form" | "form_get_filetypes_browser_data" | "get_fragment" | "get_string" | "get_strings" | "get_user_dates" | "grading_get_definitions" | "grading_get_gradingform_instances" | "grading_save_definitions" | "message_get_message_processor" | "message_get_unsent_message" | "message_set_default_notification" | "message_set_unsent_message" | "moodlenet_auth_check" | "moodlenet_get_share_info_activity" | "moodlenet_get_shared_course_info" | "moodlenet_send_activity" | "moodlenet_send_course" | "notes_get_notes" | "notes_update_notes" | "output_load_template" | "output_load_template_with_dependencies" | "output_poll_stored_progress" | "payment_get_available_gateways" | "question_get_random_question_summaries" | "question_move_questions" | "question_search_shared_banks" | "reportbuilder_audiences_delete" | "reportbuilder_columns_add" | "reportbuilder_columns_delete" | "reportbuilder_columns_reorder" | "reportbuilder_columns_sort_get" | "reportbuilder_columns_sort_reorder" | "reportbuilder_columns_sort_toggle" | "reportbuilder_conditions_add" | "reportbuilder_conditions_delete" | "reportbuilder_conditions_reorder" | "reportbuilder_conditions_reset" | "reportbuilder_filters_add" | "reportbuilder_filters_delete" | "reportbuilder_filters_reorder" | "reportbuilder_filters_reset" | "reportbuilder_reports_delete" | "reportbuilder_reports_get" | "reportbuilder_schedules_delete" | "reportbuilder_schedules_send" | "reportbuilder_schedules_toggle" | "reportbuilder_set_filters" | "search_get_relevant_users" | "session_time_remaining" | "session_touch" | "sms_set_gateway_status" | "tag_get_tags" | "tag_update_tags" | "update_inplace_editable" | "user_get_users" | "user_search_identity" | "customfield_number_recalculate_value" | "enrol_meta_add_instances" | "enrol_meta_delete_instances" | "gradingform_guide_grader_gradingpanel_fetch" | "gradingform_guide_grader_gradingpanel_store" | "gradingform_rubric_grader_gradingpanel_fetch" | "gradingform_rubric_grader_gradingpanel_store" | "media_videojs_get_language" | "paygw_paypal_create_transaction_complete" | "paygw_paypal_get_config_for_js" | "qbank_columnsortorder_set_column_size" | "qbank_columnsortorder_set_columnbank_order" | "qbank_columnsortorder_set_hidden_columns" | "qbank_editquestion_set_status" | "qbank_managecategories_move_category" | "qbank_tagquestion_submit_tags_form" | "qbank_viewquestiontext_set_question_text_format" | "quizaccess_seb_validate_quiz_keys" | "report_competency_data_for_report" | "tiny_autosave_reset_session" | "tiny_autosave_resume_session" | "tiny_autosave_update_session" | "tiny_equation_filter" | "tiny_media_preview" | "admin_presets_delete_preset" | "behat_get_entity_generator" | "dataprivacy_approve_data_request" | "dataprivacy_bulk_approve_data_requests" | "dataprivacy_bulk_deny_data_requests" | "dataprivacy_confirm_contexts_for_deletion" | "dataprivacy_create_category_form" | "dataprivacy_create_purpose_form" | "dataprivacy_delete_category" | "dataprivacy_delete_purpose" | "dataprivacy_deny_data_request" | "dataprivacy_get_activity_options" | "dataprivacy_get_category_options" | "dataprivacy_get_data_request" | "dataprivacy_get_purpose_options" | "dataprivacy_get_users" | "dataprivacy_mark_complete" | "dataprivacy_set_context_defaults" | "dataprivacy_set_context_form" | "dataprivacy_set_contextlevel_form" | "dataprivacy_submit_selected_courses_form" | "dataprivacy_tree_extra_branches" | "lp_data_for_competencies_manage_page" | "lp_data_for_competency_frameworks_manage_page" | "lp_data_for_competency_summary" | "lp_data_for_related_competencies_section" | "lp_data_for_template_competencies_page" | "lp_data_for_templates_manage_page" | "lp_list_courses_using_competency" | "lp_search_cohorts" | "lp_search_users" | "policy_submit_accept_on_behalf" | "templatelibrary_list_templates" | "templatelibrary_load_canonical_template" | "usertours_complete_tour" | "usertours_fetch_and_start_tour" | "usertours_reset_tour" | "usertours_step_shown" | "xmldb_invoke_move_action" | "grades_get_enrolled_users_for_search_widget" | "grades_get_groups_for_search_widget" | "output_load_fontawesome_icon_map" | "mod_assign_delete_overrides" | "mod_assign_get_overrides" | "mod_assign_save_overrides" | "mod_chat_get_chat_latest_messages" | "mod_chat_get_chat_users" | "mod_chat_get_chats_by_courses" | "mod_chat_get_session_messages" | "mod_chat_get_sessions" | "mod_chat_login_user" | "mod_chat_send_chat_message" | "mod_chat_view_chat" | "mod_chat_view_sessions" | "mod_forum_set_read_state" | "mod_quiz_get_users_in_report" | "mod_survey_get_questions" | "mod_survey_get_surveys_by_courses" | "mod_survey_submit_answers" | "mod_survey_view_survey" | "report_insights_set_fixed_prediction" | "report_insights_set_notuseful_prediction";
 
 export interface GetSiteInfoParameters {}
 
@@ -4211,6 +4211,114 @@ export interface XmldbInvokeMoveActionParameters {
   position: number;
 }
 
+export interface GradesGetEnrolledUsersForSearchWidgetParameters {
+  course_id: number;
+  actionbaseurl: string;
+  group_id?: number;
+}
+
+export interface GradesGetGroupsForSearchWidgetParameters {
+  course_id: number;
+  course_module_id?: number;
+}
+
+export interface OutputLoadFontawesomeIconMapParameters {}
+
+export interface ModAssignDeleteOverridesParameters {
+  data: JsonObject;
+}
+
+export interface ModAssignGetOverridesParameters {
+  assignid: number;
+}
+
+export interface ModAssignSaveOverridesParameters {
+  data: JsonObject;
+}
+
+export interface ModChatGetChatLatestMessagesParameters {
+  chatsid: string;
+  chatlasttime?: number;
+}
+
+export interface ModChatGetChatUsersParameters {
+  chatsid: string;
+}
+
+export interface ModChatGetChatsByCoursesParameters {
+  course_ids?: number[];
+}
+
+export interface ModChatGetSessionMessagesParameters {
+  chatid: number;
+  sessionstart: number;
+  sessionend: number;
+  group_id?: number;
+}
+
+export interface ModChatGetSessionsParameters {
+  chatid: number;
+  group_id?: number;
+  showall?: boolean;
+}
+
+export interface ModChatLoginUserParameters {
+  chatid: number;
+  group_id?: number;
+}
+
+export interface ModChatSendChatMessageParameters {
+  chatsid: string;
+  messagetext: string;
+  beepid?: string;
+}
+
+export interface ModChatViewChatParameters {
+  chatid: number;
+}
+
+export interface ModChatViewSessionsParameters {
+  course_module_id: number;
+  start?: number;
+  end?: number;
+}
+
+export interface ModForumSetReadStateParameters {
+  postid: number;
+  targetstate: boolean;
+}
+
+export interface ModQuizGetUsersInReportParameters {
+  course_module_id: number;
+  mode: string;
+  params: string;
+}
+
+export interface ModSurveyGetQuestionsParameters {
+  surveyid: number;
+}
+
+export interface ModSurveyGetSurveysByCoursesParameters {
+  course_ids?: number[];
+}
+
+export interface ModSurveySubmitAnswersParameters {
+  surveyid: number;
+  answers: JsonObject[];
+}
+
+export interface ModSurveyViewSurveyParameters {
+  surveyid: number;
+}
+
+export interface ReportInsightsSetFixedPredictionParameters {
+  predictionid: number;
+}
+
+export interface ReportInsightsSetNotusefulPredictionParameters {
+  predictionid: number;
+}
+
 export interface GetSiteInfoResponse {
   site_name: string;
   site_url: string;
@@ -4474,6 +4582,7 @@ export interface GetGradeItemsResponse {
       averageformatted?: string;
       feedback?: string;
       feedbackformat?: number;
+      parentcategoryid?: number;
     }[];
   }[];
   warnings: {
@@ -5019,9 +5128,29 @@ export interface GetCourseAssignmentsResponse {
     timemodified: number;
     assignments: {
       id: number;
-      cmid: number;
+      coursemodule: number;
       course: number;
       name: string;
+      intro: string;
+      introformat: number;
+      introfiles?: {
+        filename: string;
+        filepath: string;
+        filesize: number;
+        fileurl: string;
+        timemodified: number;
+        mimetype: string;
+        isexternal?: boolean;
+        repositorytype?: string;
+      }[];
+      section?: number;
+      visible?: boolean;
+      groupmode?: number;
+      groupingid?: number;
+      lang?: string;
+      enableaitools?: number;
+      enabledaiactions?: string;
+      cmid: number;
       nosubmissions: number;
       submissiondrafts: number;
       sendnotifications: number;
@@ -5046,6 +5175,7 @@ export interface GetCourseAssignmentsResponse {
       markingworkflow: number;
       markingallocation: number;
       markercount: number;
+      optionalmarkercount?: number;
       multimarkmethod: string;
       multimarkrounding: number;
       markinganonymous: number;
@@ -5060,18 +5190,6 @@ export interface GetCourseAssignmentsResponse {
         subtype: string;
         name: string;
         value: string;
-      }[];
-      intro?: string;
-      introformat?: number;
-      introfiles?: {
-        filename: string;
-        filepath: string;
-        filesize: number;
-        fileurl: string;
-        timemodified: number;
-        mimetype: string;
-        isexternal?: boolean;
-        repositorytype?: string;
       }[];
       introattachments?: {
         filename: string;
@@ -5926,6 +6044,7 @@ export interface GetCourseQuizzesResponse {
     hasfeedback?: number;
     hasquestions?: number;
     precreateattempts?: number;
+    duedate?: number;
   }[];
   warnings: {
     item: string;
@@ -9901,6 +10020,7 @@ export interface GetQuizOverridesResponse {
     groupid: number;
     timeopen: number;
     timeclose: number;
+    duedate: number;
     timelimit: number;
     attempts: number;
     password: string;
@@ -10586,21 +10706,37 @@ export type GetTagIndexByAreaResponse = {
 export interface GetCourseModuleResponse {
   cm: {
     id: number;
+    coursemodule: number;
     course: number;
-    module: number;
     name: string;
+    intro: string;
+    introformat: number;
+    introfiles?: {
+      filename: string;
+      filepath: string;
+      filesize: number;
+      fileurl: string;
+      timemodified: number;
+      mimetype: string;
+      isexternal?: boolean;
+      repositorytype?: string;
+    }[];
+    section?: number;
+    visible?: number;
+    groupmode?: number;
+    groupingid?: number;
+    lang?: string;
+    enableaitools?: number;
+    enabledaiactions?: string;
+    module: number;
     modname: string;
     instance: number;
-    section: number;
     sectionnum: number;
-    groupmode: number;
-    groupingid: number;
     completion: number;
     idnumber?: string;
     added?: number;
     score?: number;
     indent?: number;
-    visible?: number;
     visibleoncoursepage?: number;
     visibleold?: number;
     completiongradeitemnumber?: number;
@@ -10635,21 +10771,37 @@ export interface GetCourseModuleResponse {
 export interface GetCourseModuleByInstanceResponse {
   cm: {
     id: number;
+    coursemodule: number;
     course: number;
-    module: number;
     name: string;
+    intro: string;
+    introformat: number;
+    introfiles?: {
+      filename: string;
+      filepath: string;
+      filesize: number;
+      fileurl: string;
+      timemodified: number;
+      mimetype: string;
+      isexternal?: boolean;
+      repositorytype?: string;
+    }[];
+    section?: number;
+    visible?: number;
+    groupmode?: number;
+    groupingid?: number;
+    lang?: string;
+    enableaitools?: number;
+    enabledaiactions?: string;
+    module: number;
     modname: string;
     instance: number;
-    section: number;
     sectionnum: number;
-    groupmode: number;
-    groupingid: number;
     completion: number;
     idnumber?: string;
     added?: number;
     score?: number;
     indent?: number;
-    visible?: number;
     visibleoncoursepage?: number;
     visibleold?: number;
     completiongradeitemnumber?: number;
@@ -12350,6 +12502,7 @@ export interface GetMobilePublicConfigResponse {
   tool_mobile_androidappid?: string;
   tool_mobile_setuplink?: string;
   tool_mobile_qrcodetype?: number;
+  tool_mobile_enabledeeplinkautologin?: boolean;
   warnings: {
     item: string;
     itemid: number;
@@ -13887,6 +14040,365 @@ export type UsertoursStepShownResponse = Record<string, never>;
 
 export type XmldbInvokeMoveActionResponse = null;
 
+export interface GradesGetEnrolledUsersForSearchWidgetResponse {
+  users: {
+    id: string;
+    profileimage?: string;
+    url?: string;
+    fullname?: string;
+    email?: string;
+    active: boolean;
+  }[];
+  warnings: {
+    item: string;
+    itemid: number;
+    warningcode: string;
+    message: string;
+  }[];
+}
+
+export interface GradesGetGroupsForSearchWidgetResponse {
+  groups: {
+    id: string;
+    name: string;
+    groupimageurl?: string;
+  }[];
+  warnings: {
+    item: string;
+    itemid: number;
+    warningcode: string;
+    message: string;
+  }[];
+}
+
+export type OutputLoadFontawesomeIconMapResponse = {
+  component: string;
+  pix: string;
+  to: string;
+}[];
+
+export interface ModAssignDeleteOverridesResponse {
+  ids: number[];
+}
+
+export interface ModAssignGetOverridesResponse {
+  overrides: {
+    id: number;
+    assignid: number;
+    userid: number;
+    groupid: number;
+    sortorder: number;
+    allowsubmissionsfromdate: number;
+    duedate: number;
+    cutoffdate: number;
+    timelimit: number;
+    reason: string;
+    reasonformat: number;
+  }[];
+}
+
+export interface ModAssignSaveOverridesResponse {
+  ids: number[];
+}
+
+export interface ModChatGetChatLatestMessagesResponse {
+  messages: {
+    id: number;
+    userid: number;
+    system: boolean;
+    message: string;
+    timestamp: number;
+  }[];
+  chatnewlasttime: number;
+  warnings: {
+    item: string;
+    itemid: number;
+    warningcode: string;
+    message: string;
+  }[];
+}
+
+export interface ModChatGetChatUsersResponse {
+  users: {
+    id: number;
+    fullname: string;
+    profileimageurl: string;
+  }[];
+  warnings: {
+    item: string;
+    itemid: number;
+    warningcode: string;
+    message: string;
+  }[];
+}
+
+export interface ModChatGetChatsByCoursesResponse {
+  chats: {
+    id: number;
+    coursemodule: number;
+    course: number;
+    name: string;
+    intro: string;
+    introformat: number;
+    introfiles?: {
+      filename: string;
+      filepath: string;
+      filesize: number;
+      fileurl: string;
+      timemodified: number;
+      mimetype: string;
+      isexternal?: boolean;
+      repositorytype?: string;
+    }[];
+    section?: number;
+    visible?: boolean;
+    groupmode?: number;
+    groupingid?: number;
+    lang?: string;
+    chatmethod?: string;
+    keepdays?: number;
+    studentlogs?: number;
+    chattime?: number;
+    schedule?: number;
+    timemodified?: number;
+  }[];
+  warnings: {
+    item: string;
+    itemid: number;
+    warningcode: string;
+    message: string;
+  }[];
+}
+
+export interface ModChatGetSessionMessagesResponse {
+  messages: Record<string, never>[];
+  warnings: {
+    item: string;
+    itemid: number;
+    warningcode: string;
+    message: string;
+  }[];
+}
+
+export interface ModChatGetSessionsResponse {
+  sessions: {
+    sessionstart: number;
+    sessionend: number;
+    sessionusers: {
+      userid: number;
+      messagecount: number;
+    }[];
+    iscomplete: boolean;
+  }[];
+  warnings: {
+    item: string;
+    itemid: number;
+    warningcode: string;
+    message: string;
+  }[];
+}
+
+export interface ModChatLoginUserResponse {
+  chatsid: string;
+  warnings: {
+    item: string;
+    itemid: number;
+    warningcode: string;
+    message: string;
+  }[];
+}
+
+export interface ModChatSendChatMessageResponse {
+  messageid: number;
+  warnings: {
+    item: string;
+    itemid: number;
+    warningcode: string;
+    message: string;
+  }[];
+}
+
+export interface ModChatViewChatResponse {
+  status: boolean;
+  warnings: {
+    item: string;
+    itemid: number;
+    warningcode: string;
+    message: string;
+  }[];
+}
+
+export interface ModChatViewSessionsResponse {
+  status: boolean;
+  warnings: {
+    item: string;
+    itemid: number;
+    warningcode: string;
+    message: string;
+  }[];
+}
+
+export interface ModForumSetReadStateResponse {
+  status: boolean;
+  warnings: {
+    item: string;
+    itemid: number;
+    warningcode: string;
+    message: string;
+  }[];
+}
+
+export interface ModQuizGetUsersInReportResponse {
+  extrafields: string[];
+  users: {
+    id: string;
+    username?: string;
+    firstname?: string;
+    lastname?: string;
+    fullname: string;
+    initials?: string;
+    email?: string;
+    address?: string;
+    phone1?: string;
+    phone2?: string;
+    department?: string;
+    institution?: string;
+    idnumber?: string;
+    interests?: string;
+    firstaccess?: string;
+    lastaccess?: string;
+    auth?: string;
+    suspended?: string;
+    confirmed?: string;
+    lang?: string;
+    calendartype?: string;
+    theme?: string;
+    timezone?: string;
+    mailformat?: string;
+    trackforums?: string;
+    description?: string;
+    descriptionformat?: number;
+    city?: string;
+    country?: string;
+    profileimageurlsmall: string;
+    profileimageurl: string;
+    customfields?: {
+      type: string;
+      value: string;
+      displayvalue?: string;
+      name: string;
+      shortname: string;
+    }[];
+    preferences?: {
+      name: string;
+      value: string;
+    }[];
+  }[];
+  warnings: {
+    item: string;
+    itemid: number;
+    warningcode: string;
+    message: string;
+  }[];
+}
+
+export interface ModSurveyGetQuestionsResponse {
+  questions: {
+    id: number;
+    text: string;
+    shorttext: string;
+    multi: string;
+    intro: string;
+    type: number;
+    options: string;
+    parent: number;
+  }[];
+  warnings: {
+    item: string;
+    itemid: number;
+    warningcode: string;
+    message: string;
+  }[];
+}
+
+export interface ModSurveyGetSurveysByCoursesResponse {
+  surveys: {
+    id: number;
+    coursemodule: number;
+    course: number;
+    name: string;
+    intro: string;
+    introformat: number;
+    introfiles?: {
+      filename: string;
+      filepath: string;
+      filesize: number;
+      fileurl: string;
+      timemodified: number;
+      mimetype: string;
+      isexternal?: boolean;
+      repositorytype?: string;
+    }[];
+    section?: number;
+    visible?: boolean;
+    groupmode?: number;
+    groupingid?: number;
+    lang?: string;
+    template?: number;
+    days?: number;
+    questions?: string;
+    surveydone?: number;
+    timecreated?: number;
+    timemodified?: number;
+  }[];
+  warnings: {
+    item: string;
+    itemid: number;
+    warningcode: string;
+    message: string;
+  }[];
+}
+
+export interface ModSurveySubmitAnswersResponse {
+  status: boolean;
+  warnings: {
+    item: string;
+    itemid: number;
+    warningcode: string;
+    message: string;
+  }[];
+}
+
+export interface ModSurveyViewSurveyResponse {
+  status: boolean;
+  warnings: {
+    item: string;
+    itemid: number;
+    warningcode: string;
+    message: string;
+  }[];
+}
+
+export interface ReportInsightsSetFixedPredictionResponse {
+  success: boolean;
+  warnings: {
+    item: string;
+    itemid: number;
+    warningcode: string;
+    message: string;
+  }[];
+}
+
+export interface ReportInsightsSetNotusefulPredictionResponse {
+  success: boolean;
+  warnings: {
+    item: string;
+    itemid: number;
+    warningcode: string;
+    message: string;
+  }[];
+}
+
 export interface MoodleOperationParameters {
   get_site_info: GetSiteInfoParameters;
   get_courses: GetCoursesParameters;
@@ -14653,6 +15165,29 @@ export interface MoodleOperationParameters {
   usertours_reset_tour: UsertoursResetTourParameters;
   usertours_step_shown: UsertoursStepShownParameters;
   xmldb_invoke_move_action: XmldbInvokeMoveActionParameters;
+  grades_get_enrolled_users_for_search_widget: GradesGetEnrolledUsersForSearchWidgetParameters;
+  grades_get_groups_for_search_widget: GradesGetGroupsForSearchWidgetParameters;
+  output_load_fontawesome_icon_map: OutputLoadFontawesomeIconMapParameters;
+  mod_assign_delete_overrides: ModAssignDeleteOverridesParameters;
+  mod_assign_get_overrides: ModAssignGetOverridesParameters;
+  mod_assign_save_overrides: ModAssignSaveOverridesParameters;
+  mod_chat_get_chat_latest_messages: ModChatGetChatLatestMessagesParameters;
+  mod_chat_get_chat_users: ModChatGetChatUsersParameters;
+  mod_chat_get_chats_by_courses: ModChatGetChatsByCoursesParameters;
+  mod_chat_get_session_messages: ModChatGetSessionMessagesParameters;
+  mod_chat_get_sessions: ModChatGetSessionsParameters;
+  mod_chat_login_user: ModChatLoginUserParameters;
+  mod_chat_send_chat_message: ModChatSendChatMessageParameters;
+  mod_chat_view_chat: ModChatViewChatParameters;
+  mod_chat_view_sessions: ModChatViewSessionsParameters;
+  mod_forum_set_read_state: ModForumSetReadStateParameters;
+  mod_quiz_get_users_in_report: ModQuizGetUsersInReportParameters;
+  mod_survey_get_questions: ModSurveyGetQuestionsParameters;
+  mod_survey_get_surveys_by_courses: ModSurveyGetSurveysByCoursesParameters;
+  mod_survey_submit_answers: ModSurveySubmitAnswersParameters;
+  mod_survey_view_survey: ModSurveyViewSurveyParameters;
+  report_insights_set_fixed_prediction: ReportInsightsSetFixedPredictionParameters;
+  report_insights_set_notuseful_prediction: ReportInsightsSetNotusefulPredictionParameters;
 }
 
 export interface MoodleOperationResponses {
@@ -15421,6 +15956,29 @@ export interface MoodleOperationResponses {
   usertours_reset_tour: UsertoursResetTourResponse;
   usertours_step_shown: UsertoursStepShownResponse;
   xmldb_invoke_move_action: XmldbInvokeMoveActionResponse;
+  grades_get_enrolled_users_for_search_widget: GradesGetEnrolledUsersForSearchWidgetResponse;
+  grades_get_groups_for_search_widget: GradesGetGroupsForSearchWidgetResponse;
+  output_load_fontawesome_icon_map: OutputLoadFontawesomeIconMapResponse;
+  mod_assign_delete_overrides: ModAssignDeleteOverridesResponse;
+  mod_assign_get_overrides: ModAssignGetOverridesResponse;
+  mod_assign_save_overrides: ModAssignSaveOverridesResponse;
+  mod_chat_get_chat_latest_messages: ModChatGetChatLatestMessagesResponse;
+  mod_chat_get_chat_users: ModChatGetChatUsersResponse;
+  mod_chat_get_chats_by_courses: ModChatGetChatsByCoursesResponse;
+  mod_chat_get_session_messages: ModChatGetSessionMessagesResponse;
+  mod_chat_get_sessions: ModChatGetSessionsResponse;
+  mod_chat_login_user: ModChatLoginUserResponse;
+  mod_chat_send_chat_message: ModChatSendChatMessageResponse;
+  mod_chat_view_chat: ModChatViewChatResponse;
+  mod_chat_view_sessions: ModChatViewSessionsResponse;
+  mod_forum_set_read_state: ModForumSetReadStateResponse;
+  mod_quiz_get_users_in_report: ModQuizGetUsersInReportResponse;
+  mod_survey_get_questions: ModSurveyGetQuestionsResponse;
+  mod_survey_get_surveys_by_courses: ModSurveyGetSurveysByCoursesResponse;
+  mod_survey_submit_answers: ModSurveySubmitAnswersResponse;
+  mod_survey_view_survey: ModSurveyViewSurveyResponse;
+  report_insights_set_fixed_prediction: ReportInsightsSetFixedPredictionResponse;
+  report_insights_set_notuseful_prediction: ReportInsightsSetNotusefulPredictionResponse;
 }
 
 export interface TypedMoodleClient {
@@ -16194,6 +16752,29 @@ export interface TypedMoodleClient {
   usertours_reset_tour(parameters: UsertoursResetTourParameters): Promise<UsertoursResetTourResponse>;
   usertours_step_shown(parameters: UsertoursStepShownParameters): Promise<UsertoursStepShownResponse>;
   xmldb_invoke_move_action(parameters: XmldbInvokeMoveActionParameters): Promise<XmldbInvokeMoveActionResponse>;
+  grades_get_enrolled_users_for_search_widget(parameters: GradesGetEnrolledUsersForSearchWidgetParameters): Promise<GradesGetEnrolledUsersForSearchWidgetResponse>;
+  grades_get_groups_for_search_widget(parameters: GradesGetGroupsForSearchWidgetParameters): Promise<GradesGetGroupsForSearchWidgetResponse>;
+  output_load_fontawesome_icon_map(parameters?: OutputLoadFontawesomeIconMapParameters): Promise<OutputLoadFontawesomeIconMapResponse>;
+  mod_assign_delete_overrides(parameters: ModAssignDeleteOverridesParameters): Promise<ModAssignDeleteOverridesResponse>;
+  mod_assign_get_overrides(parameters: ModAssignGetOverridesParameters): Promise<ModAssignGetOverridesResponse>;
+  mod_assign_save_overrides(parameters: ModAssignSaveOverridesParameters): Promise<ModAssignSaveOverridesResponse>;
+  mod_chat_get_chat_latest_messages(parameters: ModChatGetChatLatestMessagesParameters): Promise<ModChatGetChatLatestMessagesResponse>;
+  mod_chat_get_chat_users(parameters: ModChatGetChatUsersParameters): Promise<ModChatGetChatUsersResponse>;
+  mod_chat_get_chats_by_courses(parameters: ModChatGetChatsByCoursesParameters): Promise<ModChatGetChatsByCoursesResponse>;
+  mod_chat_get_session_messages(parameters: ModChatGetSessionMessagesParameters): Promise<ModChatGetSessionMessagesResponse>;
+  mod_chat_get_sessions(parameters: ModChatGetSessionsParameters): Promise<ModChatGetSessionsResponse>;
+  mod_chat_login_user(parameters: ModChatLoginUserParameters): Promise<ModChatLoginUserResponse>;
+  mod_chat_send_chat_message(parameters: ModChatSendChatMessageParameters): Promise<ModChatSendChatMessageResponse>;
+  mod_chat_view_chat(parameters: ModChatViewChatParameters): Promise<ModChatViewChatResponse>;
+  mod_chat_view_sessions(parameters: ModChatViewSessionsParameters): Promise<ModChatViewSessionsResponse>;
+  mod_forum_set_read_state(parameters: ModForumSetReadStateParameters): Promise<ModForumSetReadStateResponse>;
+  mod_quiz_get_users_in_report(parameters: ModQuizGetUsersInReportParameters): Promise<ModQuizGetUsersInReportResponse>;
+  mod_survey_get_questions(parameters: ModSurveyGetQuestionsParameters): Promise<ModSurveyGetQuestionsResponse>;
+  mod_survey_get_surveys_by_courses(parameters: ModSurveyGetSurveysByCoursesParameters): Promise<ModSurveyGetSurveysByCoursesResponse>;
+  mod_survey_submit_answers(parameters: ModSurveySubmitAnswersParameters): Promise<ModSurveySubmitAnswersResponse>;
+  mod_survey_view_survey(parameters: ModSurveyViewSurveyParameters): Promise<ModSurveyViewSurveyResponse>;
+  report_insights_set_fixed_prediction(parameters: ReportInsightsSetFixedPredictionParameters): Promise<ReportInsightsSetFixedPredictionResponse>;
+  report_insights_set_notuseful_prediction(parameters: ReportInsightsSetNotusefulPredictionParameters): Promise<ReportInsightsSetNotusefulPredictionResponse>;
 }
 
 export type MoodleOperationParameter<TName extends MoodleOperationName> = MoodleOperationParameters[TName];

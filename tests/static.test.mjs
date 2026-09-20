@@ -19,7 +19,7 @@ test('every operation has a unique friendly command', () => {
   const contract = loadContractFromFile();
   const commands = contract.operations.map((operation) => operation.name.replaceAll('_', '-'));
   assert.equal(new Set(commands).size, commands.length);
-  assert.ok(contract.operations.every((operation) => operation.compatibility.from >= '5.0'));
+  assert.ok(contract.operations.every((operation) => operation.compatibility.from >= '4.5'));
 });
 
 test('CLI prints contract-generated help', async () => {

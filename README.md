@@ -1,13 +1,13 @@
 # Moodle Core CLI
 
-Moodle Core CLI is a friendly Node.js client library and command-line interface for Moodle 5.0 and later core web services. The current release is verified through Moodle 5.2. It does not require a Moodle plugin and it does not expose arbitrary web service calls.
+Moodle Core CLI is a friendly Node.js client library and command-line interface for Moodle 4.5 and later core web services. The current release is verified through the official Moodle 5.3 beta source. It does not require a Moodle plugin and it does not expose arbitrary web service calls.
 
 The package provides stable, friendly operations such as `create_course` while internally handling Moodle function names, nested REST parameters, version checks, and response normalization.
 
 ## Requirements
 
 - Node.js 22 or later.
-- Moodle 5.0 or later.
+- Moodle 4.5 or later, through Moodle 5.3.
 - Moodle web services and the REST protocol enabled.
 - A web service token whose service contains the functions used by the desired operations.
 - `core_webservice_get_site_info` in the service when automatic version detection is used.
@@ -47,7 +47,7 @@ The first operation automatically calls `core_webservice_get_site_info` to detec
 const moodle = createMoodleClient({
   baseUrl: 'https://moodle.example.com',
   token: process.env.MOODLE_TOKEN,
-  moodleVersion: '5.0'
+  moodleVersion: '4.5'
 });
 ```
 
@@ -89,7 +89,7 @@ Connection values can also be provided explicitly:
 moodle-core get-courses \
   --url https://moodle.example.com \
   --token your-token \
-  --moodle-version 5.0
+  --moodle-version 4.5
 ```
 
 CLI output is JSON. Errors are written as a structured JSON object to stderr and produce a non-zero exit code.
@@ -102,19 +102,23 @@ Local file access is disabled by default. Upload and download commands require `
 
 ## API coverage
 
-The canonical contract currently exposes 765 friendly operations. Its supported scope is:
+The canonical contract currently exposes 788 friendly operations. Its supported scope is:
 
-- Every standard external function declared by Moodle in the supported 5.0, 5.1, and 5.2 branches, including administrative and AJAX-capable external functions.
-- Every function assigned to Moodle's official mobile service in Moodle 5.0, 5.1, and 5.2.
+- Every standard external function declared by Moodle in the supported 4.5, 5.0, 5.1, 5.2, and 5.3 branches, including administrative and AJAX-capable external functions.
+- Every function assigned to Moodle's official mobile service in those branches.
 - The upload and authenticated plugin-file endpoints used by Moodle web services.
 
 The version-specific audits currently prove:
 
 | Moodle branch | All declared | Covered | Official mobile | Covered |
 | --- | ---: | ---: | ---: | ---: |
+| 4.5 | 759 | 759 | 438 | 438 |
 | 5.0 | 754 | 754 | 426 | 426 |
 | 5.1 | 761 | 761 | 432 | 432 |
 | 5.2 | 755 | 755 | 430 | 430 |
+| 5.3 beta | 760 | 760 | 431 | 431 |
+
+Moodle 5.3 support is based on the official `v5.3.0-beta` source snapshot and remains preliminary until Moodle publishes the stable branch.
 
 Moodle can add site-specific functions through third-party or local plugins. Those functions are intentionally not discovered or called dynamically. Supporting one requires adding it to the static contract.
 
@@ -145,7 +149,7 @@ npm run pack:check
 To audit a Moodle source checkout:
 
 ```bash
-npm run coverage:audit -- /path/to/moodle --version 5.2 --strict
+npm run coverage:audit -- /path/to/moodle --version 5.3 --strict --require-all
 ```
 
 Project documentation, variable names, function names, and source comments are written in English.
