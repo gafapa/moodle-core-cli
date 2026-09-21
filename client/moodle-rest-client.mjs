@@ -1175,7 +1175,7 @@ const adapters = {
       courseid: input.course_id,
       name: input.name,
       description: input.description ?? '',
-      idnumber: input.idnumber
+      idnumber: input.idnumber ?? ''
     }] }),
     response: (payload) => ({ id: payload[0].id, name: payload[0].name })
   },
@@ -1195,7 +1195,7 @@ const adapters = {
       id: input.grouping_id,
       name: input.name,
       description: input.description ?? '',
-      idnumber: input.idnumber
+      idnumber: input.idnumber ?? ''
     }] }),
     response: (_payload, input) => ({ updated: true, grouping_id: input.grouping_id })
   },

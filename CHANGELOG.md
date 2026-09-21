@@ -4,6 +4,7 @@
 
 - Keep the durable SQLite state store open until asynchronous apply, resume, and verification operations settle.
 - Add a regression guard for the CLI state-store lifecycle discovered by disposable cross-version qualification.
+- Send an explicit empty grouping ID number so Moodle 5.3 can validate the response from `core_group_create_groupings`.
 
 ## 0.3.1 - 2026-09-22
 

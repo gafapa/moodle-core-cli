@@ -436,7 +436,7 @@ test('maps the complete grouping lifecycle and group assignments', async () => {
   const transport = createTransport({
     core_group_create_groupings(parameters) {
       assert.deepEqual(parameters, {
-        groupings: [{ courseid: 42, name: 'Labs', description: '', idnumber: undefined }]
+        groupings: [{ courseid: 42, name: 'Labs', description: '', idnumber: '' }]
       });
       return [{ id: 12, name: 'Labs' }];
     },
@@ -446,7 +446,7 @@ test('maps the complete grouping lifecycle and group assignments', async () => {
     },
     core_group_update_groupings(parameters) {
       assert.deepEqual(parameters, {
-        groupings: [{ id: 12, name: 'Laboratories', description: 'Lab groups', idnumber: undefined }]
+        groupings: [{ id: 12, name: 'Laboratories', description: 'Lab groups', idnumber: '' }]
       });
       return null;
     },
