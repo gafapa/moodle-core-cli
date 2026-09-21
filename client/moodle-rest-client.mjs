@@ -111,14 +111,18 @@ async function resolveAllowedDestination(destinationPath, allowedRoots) {
   }
   const absoluteDestination = path.resolve(destinationPath);
   const roots = await resolveAllowedRoots(allowedRoots);
-  const lexicalRoot = roots.find((root) => pathBelongsToRoot(absoluteDestination, root));
-  if (!lexicalRoot) {
+  const rootIndex = allowedRoots.findIndex((root) =>
+    pathBelongsToRoot(absoluteDestination, path.resolve(root))
+  );
+  if (rootIndex < 0) {
     throw new MoodlePermissionError('The download destination is outside the allowed file roots.', {
       destinationPath: absoluteDestination
     });
   }
+  const lexicalRoot = path.resolve(allowedRoots[rootIndex]);
+  const realRoot = roots[rootIndex];
   const relativeParent = path.relative(lexicalRoot, path.dirname(absoluteDestination));
-  let currentParent = lexicalRoot;
+  let currentParent = realRoot;
   for (const segment of relativeParent.split(path.sep).filter(Boolean)) {
     currentParent = path.join(currentParent, segment);
     let stats;
@@ -139,7 +143,7 @@ async function resolveAllowedDestination(destinationPath, allowedRoots) {
       });
     }
     const realCurrentParent = await fs.promises.realpath(currentParent);
-    if (!pathBelongsToRoot(realCurrentParent, lexicalRoot)) {
+    if (!pathBelongsToRoot(realCurrentParent, realRoot)) {
       throw new MoodlePermissionError('The download destination resolves outside the allowed file roots.', {
         destinationPath: absoluteDestination
       });
