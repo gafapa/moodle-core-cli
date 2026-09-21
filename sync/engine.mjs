@@ -66,7 +66,8 @@ function currentEntityDigest(action, model) {
   if (action.kind === 'grouping.update') {
     return contentDigest(model.groupings.find((entry) => entry.source_id === action.target_id));
   }
-  if (['module.update', 'assignment_content.update', 'page_content.update', 'resource_asset.replace'].includes(action.kind)) {
+  if (['module.update', 'assignment_content.update', 'page_content.update', 'label_content.update',
+    'url_content.update', 'resource_asset.replace'].includes(action.kind)) {
     return contentDigest(model.sections.flatMap((section) => section.modules)
       .find((entry) => entry.source_id === action.target_id));
   }
@@ -182,6 +183,24 @@ function verifyResults(plan, model, results) {
           asset.filepath === targetAsset.filepath && asset.filename === targetAsset.filename
           && asset.sha256 && asset.sha256 === targetAsset.sha256));
         if (!assetsMatch) failures.push({ action_id: action.action_id, reason: 'page_asset_readback_mismatch' });
+      }
+      continue;
+    }
+    if (action.kind === 'label_content.update' || action.kind === 'url_content.update') {
+      entity = model.sections.flatMap((section) => section.modules)
+        .find((entry) => entry.source_id === action.target_id);
+      const comparable = action.kind === 'url_content.update'
+        ? { name: entity?.name, ...(entity?.authoring?.settings ?? {}) }
+        : (entity?.authoring?.settings ?? {});
+      if (!fieldsMatch(comparable, action.fields)) {
+        failures.push({ action_id: action.action_id, reason: 'readback_mismatch' });
+      }
+      if (action.expected_assets) {
+        const targetAssets = entity?.authoring?.files ?? [];
+        const assetsMatch = action.expected_assets.every((asset) => targetAssets.some((targetAsset) =>
+          asset.filepath === targetAsset.filepath && asset.filename === targetAsset.filename
+          && asset.sha256 && asset.sha256 === targetAsset.sha256));
+        if (!assetsMatch) failures.push({ action_id: action.action_id, reason: 'editor_asset_readback_mismatch' });
       }
       continue;
     }

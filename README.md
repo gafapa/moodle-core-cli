@@ -18,6 +18,8 @@ Moodle version compatibility does not grant access by itself. The external servi
 
 The package now provides the Core-only foundation for profile-based, no-backup course synchronization. Planning is read-only and writes an immutable JSON plan. Applying requires the saved plan digest and `--allow-write`.
 
+The shared planner models native editor content and assets for Pages, Text and media activities, and URL resources. A destination adapter must advertise the corresponding typed capability before the planner emits an identity-preserving content update.
+
 The same command exposes durable recovery and verification with `--job-id`, `--history`, `--cancel-job`, `--resume-job`, and `--verify-plan`. A timed-out write is recorded as an unknown outcome and reconciled before resume; it is never replayed blindly.
 
 ```powershell

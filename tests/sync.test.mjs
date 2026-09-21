@@ -681,6 +681,67 @@ test('Page editor assets are staged as one draft for identity-preserving updates
   assert.equal(plan.action_summary.estimated_transfer_bytes, 12);
 });
 
+test('Label and URL updates preserve identity and stage native editor assets', () => {
+  const asset = {
+    filename: 'ícono.svg', filepath: '/media/', filesize: 9, content_hash: 'sha1-icon', sha256: 'sha256-icon',
+    url: 'https://source.example/webservice/pluginfile.php/1/mod_label/intro/0/media/icon.svg'
+  };
+  const source = model({
+    provider: 'moodlia', siteUrl: 'https://source.example', courseId: 7, fullname: 'Course', shortname: 'COURSE',
+    sections: [{ id: 10, section: 0, name: 'General', modules: [
+      {
+        id: 20, modname: 'label', name: 'Text', visible: true, authoring_completeness: 'complete',
+        authoring: { kind: 'label', settings: {
+          content: '<img src="@@PLUGINFILE@@/media/%C3%ADcono.svg">', content_format: 1
+        }, files: [asset] }
+      },
+      {
+        id: 21, modname: 'url', name: 'Reference', visible: true, authoring_completeness: 'complete',
+        authoring: { kind: 'url', settings: {
+          external_url: 'https://example.org/new', intro: '<p>Updated</p>', intro_format: 1,
+          display: 'open', print_intro: true
+        }, files: [] }
+      }
+    ] }]
+  });
+  const target = model({
+    provider: 'moodlia', siteUrl: 'https://target.example', courseId: 8, fullname: 'Course', shortname: 'COURSE',
+    sections: [{ id: 11, section: 0, name: 'General', modules: [
+      {
+        id: 40, modname: 'label', name: 'Old text', visible: true, authoring_completeness: 'complete',
+        authoring: { kind: 'label', settings: { content: '<p>Old</p>', content_format: 1 }, files: [] }
+      },
+      {
+        id: 41, modname: 'url', name: 'Old reference', visible: true, authoring_completeness: 'complete',
+        authoring: { kind: 'url', settings: {
+          external_url: 'https://example.org/old', intro: '', intro_format: 1,
+          display: 'open', print_intro: false
+        }, files: [] }
+      }
+    ] }]
+  });
+  const plan = createCourseSyncPlan({
+    source,
+    target,
+    mapping: { modules: { 'module:20': 40, 'module:21': 41 } },
+    capabilities: {
+      module_asset_stage: true,
+      label_content_update: { available: true, supported_fields: ['content', 'content_format'] },
+      url_content_update: { available: true, supported_fields: [
+        'name', 'external_url', 'intro', 'intro_format', 'display', 'print_intro', 'popup_width', 'popup_height'
+      ] }
+    }
+  });
+
+  assert.deepEqual(plan.actions.map((action) => action.kind), [
+    'module_asset.stage', 'label_content.update', 'url_content.update'
+  ]);
+  assert.equal(plan.actions[1].target_id, 40);
+  assert.equal(plan.actions[2].target_id, 41);
+  assert.equal(plan.actions[1].asset_stage_source_key, plan.actions[0].source_key);
+  assert.deepEqual(plan.actions[1].depends_on, [plan.actions[0].action_id]);
+});
+
 test('resource and folder creation stages verified assets before publishing the module', () => {
   const file = {
     filename: 'guía.pdf', filepath: '/docs/', filesize: 4, mimetype: 'application/pdf',
