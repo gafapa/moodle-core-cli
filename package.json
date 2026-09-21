@@ -37,6 +37,10 @@
       "types": "./sync/index.d.ts",
       "import": "./sync/index.mjs"
     },
+    "./workflows": {
+      "types": "./workflows/index.d.ts",
+      "import": "./workflows/index.mjs"
+    },
     "./adapters/core": {
       "types": "./adapters/core/index.d.ts",
       "import": "./adapters/core/index.mjs"
@@ -48,6 +52,7 @@
     "capabilities/",
     "profiles/",
     "sync/",
+    "workflows/",
     "adapters/",
     "contract/operations.json",
     "docs/",

@@ -149,6 +149,17 @@ See [API coverage](docs/API-COVERAGE.md) for the exact scope and audit procedure
 
 Use `moodle-core --help` for the complete command list and `moodle-core <command> --help` for operation parameters.
 
+Evidence-based local workflows compose the audited Core operations without requiring a Moodle plugin:
+
+```powershell
+moodle-core course audit --course-id 42
+moodle-core course progress --course-id 42 --maximum-users 100
+moodle-core enrolments sync --course-id 42 --desired-file desired-enrolments.json --plan-file enrolments.plan.json
+moodle-core enrolments sync --apply-plan enrolments.plan.json --plan-digest "sha256:..." --allow-write --yes
+```
+
+The progress workflow preserves denied or unavailable completion and grade reads as explicit unknown evidence. Enrolment synchronization is intentionally add-only: it never removes existing users or roles, and applying requires the exact immutable plan digest.
+
 ## Type generation
 
 Parameter types are generated from the friendly contract. Response types are generated from Moodle's official `external_*` return descriptions and committed as a reproducible snapshot:

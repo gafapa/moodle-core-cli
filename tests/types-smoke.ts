@@ -3,6 +3,7 @@ import {
   type GetConversationsResponse,
   type MoodleOperationResponse
 } from 'moodle-core-cli';
+import { auditCourse } from 'moodle-core-cli/workflows';
 
 const client = createMoodleClient({
   baseUrl: 'https://moodle.example.com',
@@ -21,3 +22,4 @@ const coursesPromise: Promise<MoodleOperationResponse<'get_courses'>> = client.g
 
 void conversationsPromise;
 void coursesPromise;
+void auditCourse;

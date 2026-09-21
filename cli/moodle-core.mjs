@@ -14,6 +14,14 @@ import {
   runCapabilitiesCommand,
   runCourseSyncCommand
 } from './sync-commands.mjs';
+import {
+  printCourseAuditHelp,
+  printCourseProgressHelp,
+  printEnrolmentSyncHelp,
+  runCourseAudit,
+  runCourseProgress,
+  runEnrolmentSync
+} from './workflow-commands.mjs';
 
 let debugEnabled = false;
 
@@ -80,6 +88,9 @@ function printHelp(contract, operation = null) {
     console.log('  capabilities             Inspect live Core synchronization capabilities');
     console.log('  course sync              Plan or apply cross-site course synchronization');
     console.log('  sync-course              Alias for course sync');
+    console.log('  course audit             Evidence-based read-only course audit');
+    console.log('  course progress          Aggregate visible progress and grade evidence');
+    console.log('  enrolments sync          Plan or apply add-only manual enrolments');
     for (const entry of contract.operations) {
       console.log(`  ${toKebabCase(entry.name).padEnd(24)} ${entry.summary}`);
     }
@@ -131,6 +142,9 @@ async function main() {
   const { positional, options } = parseArguments(process.argv.slice(2));
   const command = positional[0];
   const syncCommand = (command === 'course' && positional[1] === 'sync') || command === 'sync-course';
+  const auditCommand = (command === 'course' && positional[1] === 'audit') || command === 'audit-course';
+  const progressCommand = (command === 'course' && positional[1] === 'progress') || command === 'course-progress';
+  const enrolmentSyncCommand = (command === 'enrolments' && positional[1] === 'sync') || command === 'sync-enrolments';
   const operation = contract.operations.find((entry) => toKebabCase(entry.name) === command);
 
   if (command === 'capabilities') {
@@ -153,6 +167,22 @@ async function main() {
       ...options,
       allow_write: booleanOption(options, 'allow_write')
     });
+    console.log(JSON.stringify(result, null, booleanOption(options, 'compact') ? 0 : 2));
+    return;
+  }
+  if (auditCommand || progressCommand || enrolmentSyncCommand) {
+    if (options.help) {
+      if (auditCommand) printCourseAuditHelp();
+      else if (progressCommand) printCourseProgressHelp();
+      else printEnrolmentSyncHelp();
+      return;
+    }
+    debugEnabled = booleanOption(options, 'debug');
+    const result = auditCommand
+      ? await runCourseAudit(options)
+      : progressCommand
+        ? await runCourseProgress(options)
+        : await runEnrolmentSync(options);
     console.log(JSON.stringify(result, null, booleanOption(options, 'compact') ? 0 : 2));
     return;
   }
