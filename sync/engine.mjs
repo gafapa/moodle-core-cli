@@ -334,6 +334,23 @@ function verifyResults(plan, model, results) {
       }
       continue;
     }
+    if (action.kind === 'course_completion.set') {
+      const result = resultByAction.get(action.action_id)?.result;
+      const actual = model.course_completion;
+      const expectedIds = (result?.required_module_ids ?? [])
+        .map(Number).sort((left, right) => left - right);
+      const actualIds = (actual?.required_modules ?? [])
+        .map((entry) => Number(entry.source_module_id)).sort((left, right) => left - right);
+      if (!actual
+        || contentDigest(expectedIds) !== contentDigest(actualIds)
+        || actual.activity_aggregation !== (action.fields.require_all_activities ? 'all' : 'any')
+        || actual.criteria_aggregation !== action.fields.criteria_aggregation
+        || (action.fields.required_course_grade_percent !== undefined
+          && Number(actual.required_course_grade_percent) !== Number(action.fields.required_course_grade_percent))) {
+        failures.push({ action_id: action.action_id, reason: 'course_completion_readback_mismatch' });
+      }
+      continue;
+    }
     if (action.kind === 'book_asset.transfer') {
       const chapterResult = resultByAction.get(action.action_id)?.result;
       const files = chapterResult?.files ?? chapterResult?.uploaded_files ?? [];

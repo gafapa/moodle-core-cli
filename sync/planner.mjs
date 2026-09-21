@@ -1491,6 +1491,91 @@ export function createCourseSyncPlan({
       }
     }
   }
+  if (source.course_completion) {
+    const completion = source.course_completion;
+    if ((completion.losses ?? []).length > 0) {
+      unsupported.push({
+        kind: 'course_completion.set', source_key: `course:${source.course.source_id}`,
+        reason: 'source_completion_incomplete', losses: completion.losses
+      });
+    } else if (completion.enabled) {
+      const requiredModules = [];
+      let unresolvedModule = null;
+      for (const requirement of completion.required_modules ?? []) {
+        const sourceKey = requirement.source_key;
+        const sourceModule = allModules(source).find((module) => module.sync_key === sourceKey);
+        const mappedId = sourceModule ? mapping?.modules?.[sourceModule.sync_key] : null;
+        const createAction = actions.find((action) => action.kind === 'module.create'
+          && action.source_key === sourceKey);
+        if (!sourceKey || (mappedId === undefined && !createAction)) {
+          unresolvedModule = sourceKey ?? `module:${requirement.source_module_id}`;
+          break;
+        }
+        requiredModules.push({ source_key: sourceKey, target_id: mappedId ?? null });
+      }
+      if (unresolvedModule) {
+        unsupported.push({
+          kind: 'course_completion.set', source_key: `course:${source.course.source_id}`,
+          reason: 'required_activity_mapping_unavailable', required_module: unresolvedModule
+        });
+      } else {
+        const expectedTargetIds = requiredModules.map((entry) => Number(entry.target_id)).filter((id) => id > 0).sort();
+        const targetCompletion = target.course_completion;
+        const targetIds = (targetCompletion?.required_modules ?? [])
+          .map((entry) => Number(entry.source_module_id)).filter((id) => id > 0).sort();
+        const sameExistingConfiguration = target.course.source_id !== null
+          && expectedTargetIds.length === requiredModules.length
+          && contentDigest({
+            ids: expectedTargetIds,
+            activities: completion.activity_aggregation,
+            criteria: completion.criteria_aggregation,
+            grade_enabled: completion.grade_criterion_enabled,
+            grade_percent: completion.required_course_grade_percent
+          }) === contentDigest({
+            ids: targetIds,
+            activities: targetCompletion?.activity_aggregation,
+            criteria: targetCompletion?.criteria_aggregation,
+            grade_enabled: targetCompletion?.grade_criterion_enabled,
+            grade_percent: targetCompletion?.required_course_grade_percent
+          });
+        if (!sameExistingConfiguration) {
+          if (targetCompletion?.locked) {
+            unsupported.push({
+              kind: 'course_completion.set', source_key: `course:${source.course.source_id}`,
+              reason: 'target_completion_criteria_locked'
+            });
+          } else if (!capabilitySupports(capabilities, 'course_completion_set', [
+            'required_modules', 'require_all_activities', 'required_course_grade_percent', 'criteria_aggregation'
+          ])) {
+            unsupported.push({
+              kind: 'course_completion.set', source_key: `course:${source.course.source_id}`,
+              reason: 'target_capability_unavailable'
+            });
+          } else {
+            addAction(actions, {
+              kind: 'course_completion.set', source_key: `completion:course:${source.course.source_id}`,
+              reference_source_keys: requiredModules.map((entry) => entry.source_key),
+              fields: {
+                required_modules: requiredModules,
+                require_all_activities: completion.activity_aggregation === 'all',
+                ...(completion.grade_criterion_enabled
+                  ? { required_course_grade_percent: completion.required_course_grade_percent } : {}),
+                criteria_aggregation: completion.criteria_aggregation
+              },
+              effects: ['completion_configuration.write', 'grading_configuration.write']
+            });
+          }
+        }
+      }
+    } else if (target.course_completion?.enabled
+      && (target.course_completion.required_modules?.length > 0
+        || target.course_completion.grade_criterion_enabled)) {
+      unsupported.push({
+        kind: 'course_completion.disable', source_key: `course:${source.course.source_id}`,
+        reason: 'completion_disable_not_supported'
+      });
+    }
+  }
   const skipped = [];
   if (unsupportedPolicy === 'skip') {
     const skippedKeys = new Set(unsupported.map((entry) => entry.source_key).filter(Boolean));

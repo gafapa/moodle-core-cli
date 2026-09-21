@@ -23,14 +23,16 @@ import {
 
 function model({
   provider = 'core', siteUrl, courseId, fullname, shortname, visible = true,
-  sections = [], groups = [], groupings = []
+  sections = [], groups = [], groupings = [], courseCompletion = null, gradebook = null
 }) {
   return createCourseSyncModel({
     site: { provider, site_url: siteUrl, moodle_version: '5.3' },
     course: { id: courseId, fullname, shortname, visible },
     sections,
     groups,
-    groupings
+    groupings,
+    courseCompletion,
+    gradebook
   });
 }
 
@@ -1208,6 +1210,46 @@ test('definition synchronization protects existing activities and explicit losse
     capabilities: { module_update: true }
   });
   assert.equal(protectedPlan.unsupported.some((entry) => entry.reason === 'existing_definition_update_protected'), true);
+});
+
+test('course completion criteria resolve activity identities and protect locked targets', () => {
+  const page = {
+    id: 20, modname: 'page', name: 'Required reading', visible: true,
+    authoring_completeness: 'complete',
+    authoring: { kind: 'page', settings: { content: '<p>Read this.</p>', content_format: 1 }, files: [] }
+  };
+  const source = model({
+    provider: 'moodlia', siteUrl: 'https://source.example', courseId: 7,
+    fullname: 'Course', shortname: 'COURSE',
+    sections: [{ id: 10, section: 0, name: 'General', modules: [page] }],
+    courseCompletion: {
+      enabled: true, locked: false, criteria_aggregation: 'all', activity_aggregation: 'all',
+      required_modules: [{ source_key: 'module:20', source_module_id: 20 }],
+      grade_criterion_enabled: true, required_course_grade_percent: 80, losses: []
+    }
+  });
+  const target = model({
+    provider: 'moodlia', siteUrl: 'https://target.example', courseId: 8,
+    fullname: 'Course', shortname: 'COURSE',
+    sections: [{ id: 90, section: 0, name: 'General', modules: [] }]
+  });
+  const plan = createCourseSyncPlan({
+    source, target, mapping: { sections: { 'section:10': 90 } },
+    capabilities: { module_create: true, course_completion_set: true }
+  });
+  assert.deepEqual(plan.actions.map((action) => action.kind), ['module.create', 'course_completion.set']);
+  assert.deepEqual(plan.actions[1].depends_on, [plan.actions[0].action_id]);
+  assert.equal(plan.actions[1].fields.required_modules[0].source_key, 'module:20');
+
+  target.course_completion = {
+    enabled: true, locked: true, criteria_aggregation: 'any', activity_aggregation: 'any',
+    required_modules: [], grade_criterion_enabled: false, required_course_grade_percent: 0, losses: []
+  };
+  const locked = createCourseSyncPlan({
+    source, target, mapping: { sections: { 'section:10': 90 } },
+    capabilities: { module_create: true, course_completion_set: true }
+  });
+  assert.equal(locked.unsupported.some((entry) => entry.reason === 'target_completion_criteria_locked'), true);
 });
 
 test('new Workshops preserve rubric definitions with more than four levels', () => {

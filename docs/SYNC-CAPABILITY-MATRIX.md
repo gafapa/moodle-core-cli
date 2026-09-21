@@ -19,6 +19,7 @@ This matrix describes the current implementation, not the complete long-term roa
 | Standalone question banks | Partial APIs | Ownership-safe round trip not proven | Normalized portable blueprint for supported question types | Create a new mapped bank and import once; existing-content changes are protected | Partial preview |
 | Database activity fields | Read-only field APIs vary | Authoring destination unsupported | Portable definitions for supported field types | Create fields in a new activity; destination field IDs are remapped and existing definitions are protected | Partial preview |
 | Feedback items | Participant-oriented reads only | Authoring destination unsupported | Portable definitions and item dependencies for supported item types | Create ordered items in a new activity and remap backward dependencies; existing definitions are protected | Partial preview |
+| Course completion criteria | Status reads only | Configuration authoring unsupported | Activity and course-grade criteria with source activity identities | Remap required activity IDs and set unlocked criteria; disabling and locked criteria are protected | Partial preview |
 | Quizzes and private question banks | Partial APIs | Ownership-safe round trip not proven | Typed operations exist | Slot and ownership transformation pending | Pending |
 | Learner submissions, grades, attempts, logs | Excluded | Excluded | Excluded | Excluded | Out of scope |
 

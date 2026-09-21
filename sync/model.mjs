@@ -73,7 +73,8 @@ function normalizeSection(section, index) {
 
 export function createCourseSyncModel({
   site, course, sections = [], groups = [], groupings = [], exclusions = [], targetCreation = null,
-  completeness = {}, losses = [], unknowns = [], capabilityEvidence = {}
+  completeness = {}, losses = [], unknowns = [], capabilityEvidence = {}, courseCompletion = null,
+  gradebook = null
 }) {
   if (!site || !course) throw new TypeError('site and course are required.');
   const normalizedGroups = groups.map((group) => ({
@@ -132,6 +133,8 @@ export function createCourseSyncModel({
         .map((groupId) => normalizedGroups.find((group) => group.source_id === Number(groupId))?.sync_key)
         .filter(Boolean)
     })),
+    course_completion: courseCompletion ? structuredClone(courseCompletion) : null,
+    gradebook: gradebook ? structuredClone(gradebook) : null,
     assets: [],
     exclusions: [...exclusions],
     losses: structuredClone(losses),
