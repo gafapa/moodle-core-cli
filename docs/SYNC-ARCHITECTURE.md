@@ -10,7 +10,11 @@ The preview synchronizes selected metadata and proven structure plus selected po
 
 ## Decision: local state
 
-The default store uses Node's synchronous SQLite API and therefore requires Node 22.5 or newer. SQLite keeps immutable plans, jobs, course bindings, entity mappings, and external approvals together without adding a native third-party database dependency. The in-memory store remains available for deterministic tests.
+The default store uses Node's synchronous SQLite API and therefore requires
+Node 22.13 or newer, where `node:sqlite` is available without a process flag.
+SQLite keeps immutable plans, jobs, course bindings, entity mappings, and
+external approvals together without adding a native third-party database
+dependency. The in-memory store remains available for deterministic tests.
 
 The database never stores Moodle tokens. Profiles contain environment-variable references only. A deployment must keep one writer per state database and protect both the database and plan files with operating-system permissions.
 

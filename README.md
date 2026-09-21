@@ -6,7 +6,7 @@ The package provides stable, friendly operations such as `create_course` while i
 
 ## Requirements
 
-- Node.js 22 or later.
+- Node.js 22.13 or later.
 - Moodle 4.5 or later, through Moodle 5.3.
 - Moodle web services and the REST protocol enabled.
 - A web service token whose service contains the functions used by the desired operations.
