@@ -1063,6 +1063,59 @@ test('new assignments preserve checklist and marking-guide definitions', () => {
   }
 });
 
+test('new standalone question banks import normalized portable blueprints once', () => {
+  const blueprint = {
+    schema: 'moodlia.question_bank_blueprint.v1',
+    bank_scope: 'course_shared',
+    categories: [{
+      source_category_id: 1, source_parent_id: 0, name: 'Unit questions',
+      questions: [{
+        source_question_id: 1, question_type: 'truefalse', name: 'Earth',
+        question_text: '<p>The Earth is round.</p>', options: { correct_answer: true }
+      }]
+    }]
+  };
+  const bank = {
+    id: 20, modname: 'qbank', name: 'Shared bank', visible: true, authoring_completeness: 'complete',
+    authoring: { kind: 'question_bank', blueprint, losses: [] }
+  };
+  const source = model({
+    provider: 'moodlia', siteUrl: 'https://source.example', courseId: 7,
+    fullname: 'Course', shortname: 'COURSE',
+    sections: [{ id: 10, section: 0, name: 'General', modules: [bank] }]
+  });
+  const target = model({
+    provider: 'moodlia', siteUrl: 'https://target.example', courseId: 8,
+    fullname: 'Course', shortname: 'COURSE',
+    sections: [{ id: 90, section: 0, name: 'General', modules: [] }]
+  });
+  const capabilities = { module_create: true, question_bank_import: true };
+  const plan = createCourseSyncPlan({
+    source, target, mapping: { sections: { 'section:10': 90 } }, capabilities
+  });
+  assert.deepEqual(plan.actions.map((action) => action.kind), ['module.create', 'question_bank.import']);
+  assert.deepEqual(plan.actions[1].depends_on, [plan.actions[0].action_id]);
+
+  target.sections[0].modules = [{
+    ...structuredClone(source.sections[0].modules[0]),
+    source_id: 80,
+    sync_key: 'module:80'
+  }];
+  const unchanged = createCourseSyncPlan({
+    source,
+    target,
+    mapping: { sections: { 'section:10': 90 }, modules: { 'module:20': 80 } },
+    capabilities
+  });
+  assert.equal(unchanged.actions.length, 0);
+  assert.equal(unchanged.unsupported.length, 0);
+
+  source.sections[0].modules[0].authoring.blueprint.categories[0].questions[0].question_text =
+    '<img src="@@PLUGINFILE@@/earth.png">';
+  const withAsset = createCourseSyncPlan({ source, target, capabilities });
+  assert.equal(withAsset.unsupported[0].reason, 'native_question_asset_manifest_unavailable');
+});
+
 test('new Workshops preserve rubric definitions with more than four levels', () => {
   const levels = Array.from({ length: 6 }, (_, index) => ({
     definition: `Level ${index + 1}`,

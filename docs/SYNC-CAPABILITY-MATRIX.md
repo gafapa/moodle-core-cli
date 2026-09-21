@@ -16,7 +16,8 @@ This matrix describes the current implementation, not the complete long-term roa
 | File resources and folders | Structural reads are incomplete | Publication unsupported | File manifests and SHA-256 verification | Exact creation; resource replacement; folder update blocked | Partial preview |
 | Assignments and grading forms | Authoring round trip not proven | Unsupported | Selected authoring fields, two native editor-file manifests, rubrics, binary checklists, and marking guides | New assignment/grading form and identity-preserving content/file updates; existing grading definitions protected | Partial preview |
 | Workshop forms | Definition reads/writes not proven | Unsupported | Portable definitions for four standard strategies | New Workshop/form; existing definitions protected | Partial preview |
-| Questions and quizzes | Partial APIs | Ownership-safe round trip not proven | Typed operations exist | Version/context transformation pending | Pending |
+| Standalone question banks | Partial APIs | Ownership-safe round trip not proven | Normalized portable blueprint for supported question types | Create a new mapped bank and import once; existing-content changes are protected | Partial preview |
+| Quizzes and private question banks | Partial APIs | Ownership-safe round trip not proven | Typed operations exist | Slot and ownership transformation pending | Pending |
 | Learner submissions, grades, attempts, logs | Excluded | Excluded | Excluded | Excluded | Out of scope |
 
 `unsupported_policy=error` is the default. `skip` removes the unsupported entity and dependent actions from the executable graph and records them in `skipped`. `degrade` succeeds only for a named registered transformation; it is not a universal lossy switch.

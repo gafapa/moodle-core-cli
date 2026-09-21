@@ -400,6 +400,73 @@ export function createCourseSyncPlan({
   const targetModules = allModules(target);
   for (const sourceSection of source.sections) {
     for (const sourceModule of sourceSection.modules) {
+      if (sourceModule.module_type === 'qbank') {
+        if (sourceModule.authoring_completeness !== 'complete') {
+          unsupported.push({ kind: 'question_bank.authoring', source_key: sourceModule.sync_key,
+            reason: 'source_authoring_incomplete' });
+          continue;
+        }
+        const blueprint = sourceModule.authoring?.blueprint;
+        if (!blueprint || /@@PLUGINFILE@@|\/(?:webservice\/)?pluginfile\.php/i.test(JSON.stringify(blueprint))) {
+          unsupported.push({ kind: 'question_bank.assets', source_key: sourceModule.sync_key,
+            reason: blueprint ? 'native_question_asset_manifest_unavailable' : 'source_authoring_unavailable' });
+          continue;
+        }
+        const targetModule = targetEntityByMapping(targetModules, mapping, 'modules', sourceModule);
+        const targetSection = targetSectionByMapping(target, mapping, sourceSection);
+        if (!targetModule) {
+          const parentWillBeCreated = actions.some((action) =>
+            action.kind === 'section.create' && action.source_key === sourceSection.sync_key);
+          if (!targetSection && !parentWillBeCreated) {
+            unsupported.push({ kind: 'module.create', source_key: sourceModule.sync_key,
+              reason: 'target_section_unresolved' });
+            continue;
+          }
+          if (!capabilitySupports(capabilities, 'module_create', ['module_type', 'name', 'visible', 'settings'])
+            || !capabilitySupports(capabilities, 'question_bank_import', ['blueprint'])) {
+            unsupported.push({ kind: 'question_bank.create', source_key: sourceModule.sync_key,
+              reason: 'target_capability_unavailable' });
+            continue;
+          }
+          addAction(actions, {
+            kind: 'module.create', entity_namespace: 'modules', source_key: sourceModule.sync_key,
+            parent_source_key: sourceSection.sync_key,
+            target_section_number: targetSection?.section_number ?? null,
+            target_id: null,
+            fields: {
+              module_type: 'qbank', name: sourceModule.name,
+              ...(sourceModule.visible === null ? {} : { visible: sourceModule.visible }),
+              settings: {}
+            },
+            effects: ['content.write']
+          });
+          addAction(actions, {
+            kind: 'question_bank.import', source_key: `question-bank:${sourceModule.sync_key}`,
+            parent_source_key: sourceModule.sync_key,
+            target_module_id: null,
+            target_id: null,
+            fields: { blueprint },
+            effects: ['content.write', 'grading_configuration.write']
+          });
+          continue;
+        }
+        const moduleUpdates = changedFields(sourceModule, targetModule, ['name', 'visible']);
+        if (Object.keys(moduleUpdates).length > 0) {
+          if (capabilitySupports(capabilities, 'module_update', Object.keys(moduleUpdates))) {
+            addAction(actions, {
+              kind: 'module.update', entity_namespace: 'modules', source_key: sourceModule.sync_key,
+              target_id: targetModule.source_id, fields: moduleUpdates,
+              expected_target_digest: contentDigest(targetModule), effects: ['content.write']
+            });
+          } else unsupported.push({ kind: 'module.update', source_key: sourceModule.sync_key,
+            reason: 'target_capability_unavailable' });
+        }
+        if (contentDigest(blueprint) !== contentDigest(targetModule.authoring?.blueprint ?? null)) {
+          unsupported.push({ kind: 'question_bank.update', source_key: sourceModule.sync_key,
+            reason: 'existing_question_bank_update_protected' });
+        }
+        continue;
+      }
       if (sourceModule.module_type === 'assign') {
         if (!['complete', 'selected'].includes(sourceModule.authoring_completeness)) {
           unsupported.push({ kind: 'assignment.authoring', source_key: sourceModule.sync_key, reason: 'source_authoring_unavailable' });

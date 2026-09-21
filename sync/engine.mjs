@@ -281,6 +281,18 @@ function verifyResults(plan, model, results) {
       }
       continue;
     }
+    if (action.kind === 'question_bank.import') {
+      const createdModule = plan.actions.find((candidate) =>
+        candidate.kind === 'module.create' && candidate.source_key === action.parent_source_key);
+      const moduleId = action.target_module_id
+        ?? resultEntityId(resultByAction.get(createdModule?.action_id)?.result);
+      entity = model.sections.flatMap((section) => section.modules)
+        .find((entry) => entry.source_id === moduleId);
+      if (contentDigest(entity?.authoring?.blueprint ?? null) !== contentDigest(action.fields.blueprint)) {
+        failures.push({ action_id: action.action_id, reason: 'question_bank_readback_mismatch' });
+      }
+      continue;
+    }
     if (action.kind === 'book_asset.transfer') {
       const chapterResult = resultByAction.get(action.action_id)?.result;
       const files = chapterResult?.files ?? chapterResult?.uploaded_files ?? [];
