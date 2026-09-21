@@ -67,7 +67,7 @@ function resolveActionReferences(action, context) {
     }
     return value;
   };
-  return { ...action, fields: resolveValue(action.fields) };
+  return resolveValue(action);
 }
 
 function currentEntityDigest(action, model) {
@@ -441,14 +441,14 @@ export class CourseSyncEngine {
         activeResult.resolved_fields = executableAction.fields;
         let result;
         if (action.kind === 'module_asset.stage') {
-          result = await withAssetMaterials(sourceAdapter, action.assets, (materials) =>
-            targetAdapter.stageModuleAssets(action, materials, context));
+          result = await withAssetMaterials(sourceAdapter, executableAction.assets, (materials) =>
+            targetAdapter.stageModuleAssets(executableAction, materials, context));
         } else if (action.kind === 'resource_asset.replace') {
-          result = await withAssetMaterials(sourceAdapter, [action.asset], ([material]) =>
-            targetAdapter.replaceResourceAsset(action, material, context));
+          result = await withAssetMaterials(sourceAdapter, [executableAction.asset], ([material]) =>
+            targetAdapter.replaceResourceAsset(executableAction, material, context));
         } else if (action.kind === 'book_asset.transfer') {
-          result = await withAssetMaterials(sourceAdapter, action.assets, (materials) =>
-            targetAdapter.publishBookChapterAssets(action, materials, context));
+          result = await withAssetMaterials(sourceAdapter, executableAction.assets, (materials) =>
+            targetAdapter.publishBookChapterAssets(executableAction, materials, context));
         } else {
           result = await targetAdapter.applySyncAction(executableAction, context);
         }

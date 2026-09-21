@@ -164,6 +164,49 @@ test('planner makes portable content depend on newly created linked activities',
   assert.deepEqual(link.depends_on, [destination.action_id]);
 });
 
+test('Book chapters and assignment editors depend on newly created linked activities', () => {
+  const linkedUrl = 'https://source.example/mod/page/view.php?id=20';
+  const source = model({
+    provider: 'moodlia', siteUrl: 'https://source.example', courseId: 7, fullname: 'Course', shortname: 'COURSE',
+    sections: [{ id: 10, section: 0, modules: [
+      { id: 20, modname: 'page', name: 'Destination', authoring_completeness: 'complete',
+        authoring: { kind: 'page', settings: { content: '<p>Destination</p>', content_format: 1 }, files: [] } },
+      { id: 21, modname: 'book', name: 'Book', authoring_completeness: 'complete',
+        authoring: { kind: 'book', settings: {}, chapters: [{
+          chapter_id: 30, title: 'Chapter', content: `<a href="${linkedUrl}">Page</a>`, content_format: 1
+        }] } },
+      { id: 22, modname: 'assign', name: 'Task', authoring_completeness: 'complete',
+        authoring: { kind: 'assignment', settings: {}, content: {
+          intro: `<a href="${linkedUrl}">Intro</a>`, intro_format: 1,
+          activity: `<a href="${linkedUrl}">Instructions</a>`, activity_format: 1
+        }, losses: [] } }
+    ] }]
+  });
+  const target = model({
+    provider: 'moodlia', siteUrl: 'https://target.example', courseId: 8, fullname: 'Course', shortname: 'COURSE',
+    sections: [{ id: 11, section: 0, modules: [] }]
+  });
+  const plan = createCourseSyncPlan({
+    source,
+    target,
+    capabilities: {
+      module_create: { available: true, supported_fields: ['module_type', 'name', 'visible', 'settings'] },
+      book_chapter_create: {
+        available: true,
+        supported_fields: ['title', 'content', 'content_format', 'subchapter', 'hidden', 'order']
+      }
+    }
+  });
+  const destination = plan.actions.find((action) => action.source_key === 'module:20');
+  const chapter = plan.actions.find((action) => action.source_key === 'chapter:30');
+  const assignment = plan.actions.find((action) => action.source_key === 'module:22');
+  assert.match(chapter.fields.content, /moodlia-sync:\/\/modules\/module%3A20/);
+  assert.match(assignment.fields.settings.intro, /moodlia-sync:\/\/modules\/module%3A20/);
+  assert.match(assignment.fields.settings.activity, /moodlia-sync:\/\/modules\/module%3A20/);
+  assert.ok(chapter.depends_on.includes(destination.action_id));
+  assert.ok(assignment.depends_on.includes(destination.action_id));
+});
+
 test('profiles keep token values outside configuration and descriptions', () => {
   const profiles = parseProfiles({
     schema_version: 1,

@@ -87,13 +87,6 @@ function authoredContentHasFiles(content) {
   return /@@PLUGINFILE@@|\/(?:webservice\/)?pluginfile\.php(?:\/|\?)/i.test(String(content ?? ''));
 }
 
-function containsSourceSiteReference(content, sourceSiteUrl) {
-  const value = String(content ?? '');
-  if (!value || !sourceSiteUrl) return false;
-  const origin = new URL(sourceSiteUrl).origin;
-  return value.includes(`${origin}/mod/`) || value.includes(`${origin}/course/`);
-}
-
 function allModules(model) {
   return model.sections.flatMap((section) => section.modules);
 }
@@ -350,11 +343,35 @@ export function createCourseSyncPlan({
           unsupported.push({ kind: 'assignment.assets', source_key: sourceModule.sync_key, reason: 'native_editor_asset_manifest_incomplete' });
           continue;
         }
-        if (containsSourceSiteReference(authoring.content?.intro, source.site.site_url)
-          || containsSourceSiteReference(authoring.content?.activity, source.site.site_url)) {
-          unsupported.push({ kind: 'assignment.internal_links', source_key: sourceModule.sync_key, reason: 'internal_link_mapping_unavailable' });
+        const introReferences = rewriteMoodleHtmlReferences(authoring.content?.intro ?? '', {
+          sourceSiteUrl: source.site.site_url,
+          targetSiteUrl: target.site.site_url,
+          sourceModel: source,
+          targetModel: target,
+          mapping
+        });
+        const activityReferences = rewriteMoodleHtmlReferences(authoring.content?.activity ?? '', {
+          sourceSiteUrl: source.site.site_url,
+          targetSiteUrl: target.site.site_url,
+          sourceModel: source,
+          targetModel: target,
+          mapping
+        });
+        const blockedReferences = [...introReferences.blocked, ...activityReferences.blocked];
+        if (blockedReferences.length > 0) {
+          unsupported.push({ kind: 'assignment.internal_links', source_key: sourceModule.sync_key,
+            reason: blockedReferences[0].reason });
           continue;
         }
+        const referenceSourceKeys = [...new Set([
+          ...introReferences.reference_source_keys,
+          ...activityReferences.reference_source_keys
+        ])];
+        const portableContent = {
+          ...(authoring.content ?? {}),
+          intro: introReferences.html,
+          activity: activityReferences.html
+        };
         if ((authoring.losses ?? []).length > 0) {
           unsupported.push({
             kind: 'assignment.settings', source_key: sourceModule.sync_key,
@@ -378,8 +395,8 @@ export function createCourseSyncPlan({
             ...(sourceModule.visible === null ? {} : { visible: sourceModule.visible }),
             settings: {
               ...(authoring.settings ?? {}),
-              intro: String(authoring.content?.intro ?? ''),
-              activity: String(authoring.content?.activity ?? '')
+              intro: portableContent.intro,
+              activity: portableContent.activity
             },
             transformation: (authoring.losses ?? []).length > 0 ? 'assignment_selected_settings' : null
           };
@@ -391,7 +408,9 @@ export function createCourseSyncPlan({
             kind: 'module.create', entity_namespace: 'modules', source_key: sourceModule.sync_key,
             parent_source_key: sourceSection.sync_key,
             target_section_number: targetSection?.section_number ?? null,
-            target_id: null, fields, effects: ['content.write']
+            target_id: null,
+            ...(referenceSourceKeys.length > 0 ? { reference_source_keys: referenceSourceKeys } : {}),
+            fields, effects: ['content.write']
           });
           if (authoring.rubric) {
             if (capabilitySupports(capabilities, 'assignment_rubric_set', ['name', 'description', 'criteria', 'options'])) {
@@ -408,7 +427,7 @@ export function createCourseSyncPlan({
           }
           continue;
         }
-        const contentUpdates = changedFields(authoring.content ?? {}, targetModule.authoring?.content ?? {}, [
+        const contentUpdates = changedFields(portableContent, targetModule.authoring?.content ?? {}, [
           'intro', 'intro_format', 'activity', 'activity_format'
         ]);
         if (sourceModule.name !== targetModule.name) contentUpdates.name = sourceModule.name;
@@ -417,6 +436,7 @@ export function createCourseSyncPlan({
             addAction(actions, {
               kind: 'assignment_content.update', source_key: sourceModule.sync_key,
               target_id: targetModule.source_id, fields: contentUpdates,
+              ...(referenceSourceKeys.length > 0 ? { reference_source_keys: referenceSourceKeys } : {}),
               expected_target_digest: contentDigest(targetModule), effects: ['content.write']
             });
           } else unsupported.push({ kind: 'assignment_content.update', source_key: sourceModule.sync_key, reason: 'target_capability_unavailable' });
@@ -863,10 +883,6 @@ export function createCourseSyncPlan({
         });
         continue;
       }
-      if (chapters.some((chapter) => containsSourceSiteReference(chapter.content, source.site.site_url))) {
-        unsupported.push({ kind: 'book.internal_links', source_key: sourceModule.sync_key, reason: 'internal_link_mapping_unavailable' });
-        continue;
-      }
       const hasAssets = chapters.some((chapter) => (chapter.files ?? []).length > 0);
       if (hasAssets
         && !capabilitySupports(capabilities, 'book_asset_transfer', ['filename', 'filepath', 'filesize', 'content_hash', 'content'])) {
@@ -941,9 +957,22 @@ export function createCourseSyncPlan({
         const targetChapter = mappedId === undefined
           ? null
           : targetChapters.find((chapter) => Number(chapter.chapter_id) === Number(mappedId));
+        const references = rewriteMoodleHtmlReferences(sourceChapter.content ?? '', {
+          sourceSiteUrl: source.site.site_url,
+          targetSiteUrl: target.site.site_url,
+          sourceModel: source,
+          targetModel: target,
+          mapping
+        });
+        if (references.blocked.length > 0) {
+          unsupported.push({ kind: 'book.internal_links', source_key: sourceKey,
+            reason: references.blocked[0].reason });
+          previousSourceKey = sourceKey;
+          continue;
+        }
         const fields = {
           title: String(sourceChapter.title ?? ''),
-          content: String(sourceChapter.content ?? ''),
+          content: references.html,
           content_format: Number(sourceChapter.content_format ?? 1),
           subchapter: Boolean(sourceChapter.subchapter),
           hidden: Boolean(sourceChapter.hidden),
@@ -962,6 +991,8 @@ export function createCourseSyncPlan({
             after_source_key: previousSourceKey,
             target_module_id: targetModule?.source_id ?? null,
             target_id: null,
+            ...(references.reference_source_keys.length > 0
+              ? { reference_source_keys: references.reference_source_keys } : {}),
             fields,
             effects: ['content.write']
           });
@@ -983,6 +1014,8 @@ export function createCourseSyncPlan({
                 parent_source_key: sourceModule.sync_key,
                 target_module_id: targetModule.source_id,
                 target_id: targetChapter.chapter_id,
+                ...(references.reference_source_keys.length > 0
+                  ? { reference_source_keys: references.reference_source_keys } : {}),
                 fields: updates,
                 expected_target_digest: contentDigest(targetChapter),
                 effects: ['content.write']
@@ -1019,6 +1052,8 @@ export function createCourseSyncPlan({
             parent_module_source_key: sourceModule.sync_key,
             target_module_id: targetModule?.source_id ?? null,
             target_chapter_id: targetChapter?.chapter_id ?? null,
+            ...(references.reference_source_keys.length > 0
+              ? { reference_source_keys: references.reference_source_keys } : {}),
             assets: sourceFiles.map((asset) => ({
               filename: String(asset.filename),
               filepath: String(asset.filepath ?? '/'),
