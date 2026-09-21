@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.2 - 2026-09-22
+
+- Keep the durable SQLite state store open until asynchronous apply, resume, and verification operations settle.
+- Add a regression guard for the CLI state-store lifecycle discovered by disposable cross-version qualification.
+
 ## 0.3.1 - 2026-09-22
 
 - Export a stable CLI outcome-code contract for validation, capability gaps, conflicts, remote failures, partial execution, and verification failures.

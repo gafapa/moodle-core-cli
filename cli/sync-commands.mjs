@@ -207,10 +207,10 @@ export async function runCourseSyncCommand(options) {
       }
       const targetAdapter = adapterForProfile(loadResolvedProfile(options, targetName), { allowWrite: resuming });
       if (verifying) {
-        return engine.verify({ planId, targetAdapter, jobId: options.verify_job_id });
+        return await engine.verify({ planId, targetAdapter, jobId: options.verify_job_id });
       }
       if (!options.allow_write) throw new MoodleValidationError('Resuming a job requires --allow-write.');
-      return engine.apply({
+      return await engine.apply({
         planId,
         planDigest: requiredOption(options, 'plan_digest'),
         resumeJobId: job.job_id,
@@ -249,7 +249,7 @@ export async function runCourseSyncCommand(options) {
       store.savePlan(plan);
       const sourceAdapter = adapterForProfile(loadResolvedProfile(options, sourceProfileName));
       const targetAdapter = adapterForProfile(loadResolvedProfile(options, targetProfileName), { allowWrite: true });
-      return engine.apply({
+      return await engine.apply({
         planId: plan.plan_id,
         planDigest: approvedDigest,
         sourceAdapter,

@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { spawnSync } from 'node:child_process';
+import fs from 'node:fs';
 import path from 'node:path';
 import {
   applyManualEnrolmentSync,
@@ -135,4 +136,10 @@ test('CLI exposes grouped synchronization lifecycle aliases', () => {
   assert.equal(help.status, 0, help.stderr);
   assert.match(help.stdout, /sync resume --job-id/);
   assert.match(help.stdout, /sync verify --plan-id/);
+});
+
+test('CLI awaits asynchronous sync work before closing durable state', () => {
+  const source = fs.readFileSync(path.resolve('cli/sync-commands.mjs'), 'utf8');
+  assert.doesNotMatch(source, /return engine\.(?:apply|verify)\(/);
+  assert.equal((source.match(/return await engine\.(?:apply|verify)\(/g) ?? []).length, 3);
 });
