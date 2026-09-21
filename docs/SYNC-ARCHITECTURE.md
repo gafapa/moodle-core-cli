@@ -32,6 +32,8 @@ Planning performs reads only. Applying requires all of the following:
 
 The executor persists intent before every write, records attempts and correlation IDs, stores returned identifiers immediately, and reads the target again after writes. It checks entity preconditions immediately before updates. Timeout-like failures become `unknown_outcome` and must be reconciled before resume. A readback mismatch is a verification failure, not success. A cancellation request stops scheduling new actions between writes. Cross-server transactions and automatic rollback are not claimed.
 
+Asset actions prefer a protected per-action temporary cache. Downloads are streamed to exclusive files while SHA-256 and byte counts are computed, then destination uploads stream those files into one owner-scoped draft. The cache is removed after success or failure. Adapters without streamed transfer retain the bounded in-memory compatibility path.
+
 ## Identity and mappings
 
 Remote numeric IDs are scoped to their own Moodle site. A binding ID hashes the source site/course and target site/course. Entity mappings then associate opaque source sync keys with destination IDs by namespace. Names and positions are not identity.

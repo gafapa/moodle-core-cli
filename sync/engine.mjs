@@ -1,4 +1,7 @@
 import { createHash, randomUUID } from 'node:crypto';
+import fs from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
 import { contentDigest } from './canonical.mjs';
 import { selectedCourseFields } from './model.mjs';
 import { courseBindingId, createCourseSyncPlan, validateSyncPlan } from './planner.mjs';
@@ -8,6 +11,44 @@ function resultEntityId(result) {
     ?? result?.module_id ?? result?.chapter_id;
   const id = Number(value);
   return Number.isInteger(id) && id > 0 ? id : null;
+}
+
+async function withAssetMaterials(sourceAdapter, assets, callback) {
+  let cacheDirectory = null;
+  try {
+    const materials = [];
+    for (let index = 0; index < assets.length; index += 1) {
+      const asset = assets[index];
+      let material;
+      if (typeof sourceAdapter.downloadAssetToFile === 'function') {
+        cacheDirectory ??= await fs.mkdtemp(path.join(os.tmpdir(), 'moodlia-sync-'));
+        const destinationPath = path.join(cacheDirectory, `${index}.asset`);
+        const downloaded = await sourceAdapter.downloadAssetToFile(asset, destinationPath);
+        if (downloaded) {
+          material = { asset, filePath: downloaded.path, sha256: downloaded.sha256, filesize: downloaded.filesize };
+        }
+      }
+      if (!material) {
+        const data = await sourceAdapter.downloadAsset(asset);
+        material = {
+          asset,
+          data,
+          sha256: createHash('sha256').update(data).digest('hex'),
+          filesize: data.byteLength
+        };
+      }
+      if (asset.sha256 && material.sha256 !== asset.sha256) {
+        throw new TypeError(`Source asset changed after planning: ${asset.filename}.`);
+      }
+      if (Number(asset.filesize ?? 0) !== Number(material.filesize)) {
+        throw new TypeError(`Source asset size changed after planning: ${asset.filename}.`);
+      }
+      materials.push(material);
+    }
+    return await callback(materials);
+  } finally {
+    if (cacheDirectory) await fs.rm(cacheDirectory, { recursive: true, force: true });
+  }
 }
 
 function fieldsMatch(entity, fields) {
@@ -347,34 +388,14 @@ export class CourseSyncEngine {
         this.stateStore.saveJob(job);
         let result;
         if (action.kind === 'module_asset.stage') {
-          const assetsWithData = [];
-          for (const asset of action.assets) {
-            const data = await sourceAdapter.downloadAsset(asset);
-            const sha256 = createHash('sha256').update(data).digest('hex');
-            if (asset.sha256 && sha256 !== asset.sha256) {
-              throw new TypeError(`Source asset changed after planning: ${asset.filename}.`);
-            }
-            assetsWithData.push({ asset, data });
-          }
-          result = await targetAdapter.stageModuleAssets(action, assetsWithData, context);
+          result = await withAssetMaterials(sourceAdapter, action.assets, (materials) =>
+            targetAdapter.stageModuleAssets(action, materials, context));
         } else if (action.kind === 'resource_asset.replace') {
-          const data = await sourceAdapter.downloadAsset(action.asset);
-          const sha256 = createHash('sha256').update(data).digest('hex');
-          if (action.asset.sha256 && sha256 !== action.asset.sha256) {
-            throw new TypeError(`Source asset changed after planning: ${action.asset.filename}.`);
-          }
-          result = await targetAdapter.replaceResourceAsset(action, data, context);
+          result = await withAssetMaterials(sourceAdapter, [action.asset], ([material]) =>
+            targetAdapter.replaceResourceAsset(action, material, context));
         } else if (action.kind === 'book_asset.transfer') {
-          const assetsWithData = [];
-          for (const asset of action.assets) {
-            const data = await sourceAdapter.downloadAsset(asset);
-            const sha256 = createHash('sha256').update(data).digest('hex');
-            if (asset.sha256 && sha256 !== asset.sha256) {
-              throw new TypeError(`Source asset changed after planning: ${asset.filename}.`);
-            }
-            assetsWithData.push({ asset, data });
-          }
-          result = await targetAdapter.publishBookChapterAssets(action, assetsWithData, context);
+          result = await withAssetMaterials(sourceAdapter, action.assets, (materials) =>
+            targetAdapter.publishBookChapterAssets(action, materials, context));
         } else {
           result = await targetAdapter.applySyncAction(action, context);
         }

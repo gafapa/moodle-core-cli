@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
@@ -394,6 +395,64 @@ test('sync engine records a verification failure after a non-converging write', 
     /readback verification/
   );
   assert.equal([...store.jobs.values()][0].status, 'verification_failed');
+});
+
+test('sync engine streams assets through a temporary cache and removes it after publication', async () => {
+  const bytes = new TextEncoder().encode('streamed asset');
+  const sha256 = createHash('sha256').update(bytes).digest('hex');
+  const asset = {
+    filename: 'guide.pdf', filepath: '/', filesize: bytes.byteLength,
+    content_hash: 'moodle-content-hash', sha256, url: 'https://source.example/file'
+  };
+  const source = model({
+    provider: 'moodlia', siteUrl: 'https://source.example', courseId: 7, fullname: 'Course', shortname: 'COURSE',
+    sections: [{ id: 10, section: 0, name: 'General', modules: [{
+      id: 20, modname: 'resource', name: 'Guide', visible: true,
+      authoring_completeness: 'complete',
+      authoring: { kind: 'resource', settings: { intro: '', intro_format: 1 }, files: [asset] }
+    }] }]
+  });
+  let target = model({
+    provider: 'moodlia', siteUrl: 'https://target.example', courseId: 8, fullname: 'Course', shortname: 'COURSE',
+    sections: [{ id: 11, section: 0, name: 'General', modules: [] }]
+  });
+  let cachedPath;
+  const sourceAdapter = {
+    async exportCourse() { return source; },
+    async downloadAssetToFile(_asset, destinationPath) {
+      cachedPath = destinationPath;
+      await fs.writeFile(destinationPath, bytes);
+      return { path: destinationPath, filesize: bytes.byteLength, sha256 };
+    }
+  };
+  const targetAdapter = {
+    async exportCourse() { return target; },
+    async syncCapabilities() { return { module_create: true, module_asset_stage: true }; },
+    async stageModuleAssets(_action, materials) {
+      assert.equal(materials.length, 1);
+      assert.deepEqual(await fs.readFile(materials[0].filePath), Buffer.from(bytes));
+      return { draft_item_id: 77, files: [{ filename: 'guide.pdf' }] };
+    },
+    async applySyncAction(action) {
+      assert.equal(action.kind, 'module.create');
+      target = model({
+        provider: 'moodlia', siteUrl: 'https://target.example', courseId: 8, fullname: 'Course', shortname: 'COURSE',
+        sections: [{ id: 11, section: 0, name: 'General', modules: [{
+          id: 40, modname: 'resource', name: 'Guide', visible: true,
+          authoring_completeness: 'complete',
+          authoring: { kind: 'resource', settings: { intro: '', intro_format: 1 }, files: [asset] }
+        }] }]
+      });
+      return { module_id: 40 };
+    }
+  };
+  const engine = createCourseSyncEngine({ stateStore: new MemorySyncStateStore() });
+  const plan = await engine.plan({ sourceAdapter, targetAdapter, sourceCourseId: 7, targetCourseId: 8 });
+  const job = await engine.apply({
+    planId: plan.plan_id, planDigest: plan.digest, sourceAdapter, targetAdapter
+  });
+  assert.equal(job.status, 'succeeded');
+  await assert.rejects(() => fs.access(cachedPath));
 });
 
 test('three-way planning preserves target-only edits and blocks concurrent changes', () => {
