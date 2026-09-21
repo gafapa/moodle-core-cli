@@ -67,11 +67,15 @@ async function readLimitedLocalFile(filePath, maximumBytes) {
       fileHandle.stat(),
       fs.promises.lstat(filePath)
     ]);
+    // Node 22 on Windows reports dev=0 for path stats while the open handle has
+    // a volume identifier. Treat zero as unavailable and still compare inode.
+    const sameDevice = pathStats.dev === 0 || handleStats.dev === 0 || handleStats.dev === pathStats.dev;
+    const sameInode = pathStats.ino === 0 || handleStats.ino === 0 || handleStats.ino === pathStats.ino;
     if (
       pathStats.isSymbolicLink() ||
       !handleStats.isFile() ||
-      handleStats.dev !== pathStats.dev ||
-      handleStats.ino !== pathStats.ino
+      !sameDevice ||
+      !sameInode
     ) {
       throw new MoodlePermissionError('The upload source must be a stable regular file, not a symbolic link.', {
         filePath
