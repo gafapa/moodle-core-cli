@@ -1499,3 +1499,50 @@ test('resume reconciles a timed-out write before deciding whether it is safe to 
   assert.equal(resumed.results[0].reconciled_at !== undefined, true);
   assert.equal(writes, 1);
 });
+
+test('resume reconciles a create that committed before Moodle returned an invalid response', async () => {
+  const source = model({ siteUrl: 'https://source.example', courseId: 7, fullname: 'Course', shortname: 'COURSE' });
+  source.groupings = [{
+    sync_key: 'grouping:12', source_id: 12, name: 'Unicode á', description: '', idnumber: null,
+    group_source_keys: []
+  }];
+  source.digest = contentDigest({ ...source, extracted_at: undefined, digest: undefined });
+  let target = model({ siteUrl: 'https://target.example', courseId: 8, fullname: 'Course', shortname: 'COURSE' });
+  let writes = 0;
+  const sourceAdapter = { async exportCourse() { return source; } };
+  const targetAdapter = {
+    async exportCourse() { return target; },
+    async syncCapabilities() { return { grouping_create: true }; },
+    async applySyncAction(action) {
+      writes += 1;
+      target.groupings = [{
+        ...source.groupings[0], source_id: 92, sync_key: 'grouping:92'
+      }];
+      target.digest = contentDigest({ ...target, extracted_at: undefined, digest: undefined });
+      const error = new Error('Moodle returned a response that did not match its declared schema.');
+      error.code = 'validation_error';
+      throw error;
+    }
+  };
+  const store = new MemorySyncStateStore();
+  const engine = createCourseSyncEngine({ stateStore: store });
+  const plan = await engine.plan({ sourceAdapter, targetAdapter, sourceCourseId: 7, targetCourseId: 8 });
+  await assert.rejects(() => engine.apply({
+    planId: plan.plan_id, planDigest: plan.digest, sourceAdapter, targetAdapter, jobId: 'job-invalid-response'
+  }), /declared schema/);
+  const resumed = await engine.apply({
+    planId: plan.plan_id,
+    planDigest: plan.digest,
+    sourceAdapter,
+    targetAdapter,
+    resumeJobId: 'job-invalid-response'
+  });
+  assert.equal(resumed.status, 'succeeded');
+  assert.equal(resumed.results[0].result.id, 92);
+  assert.equal(resumed.results[0].reconciled_at !== undefined, true);
+  assert.equal(resumed.results[0].error, undefined);
+  assert.equal(resumed.results[0].previous_error.code, 'validation_error');
+  assert.equal(resumed.error, undefined);
+  assert.equal(store.getBinding(plan.binding_id).entity_mappings.groupings['grouping:12'], 92);
+  assert.equal(writes, 1);
+});

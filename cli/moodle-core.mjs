@@ -181,16 +181,22 @@ export async function runMoodleCoreCli(argv = process.argv.slice(2)) {
       return;
     }
     debugEnabled = booleanOption(options, 'debug');
+    const { job_id: groupedJobId, plan_id: groupedPlanId, binding_id: groupedBindingId,
+      ...groupedBaseOptions } = options;
     const groupedOptions = syncSubcommand === 'status'
-      ? { ...options, job_id: options.job_id }
+      ? { ...groupedBaseOptions, job_id: groupedJobId }
       : syncSubcommand === 'resume'
-        ? { ...options, resume_job: options.job_id }
+        ? { ...groupedBaseOptions, resume_job: groupedJobId }
         : syncSubcommand === 'verify'
-          ? { ...options, verify_plan: options.plan_id ?? options.binding_id, verify_job_id: options.job_id }
+          ? {
+              ...groupedBaseOptions,
+              verify_plan: groupedPlanId ?? groupedBindingId,
+              verify_job_id: groupedJobId
+            }
           : syncSubcommand === 'history'
-            ? { ...options, history: true }
+            ? { ...groupedBaseOptions, history: true }
             : syncSubcommand === 'cancel'
-              ? { ...options, cancel_job: options.job_id }
+              ? { ...groupedBaseOptions, cancel_job: groupedJobId }
               : options;
     const result = await runCourseSyncCommand({
       ...groupedOptions,

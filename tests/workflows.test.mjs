@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import {
   applyManualEnrolmentSync,
@@ -136,6 +137,22 @@ test('CLI exposes grouped synchronization lifecycle aliases', () => {
   assert.equal(help.status, 0, help.stderr);
   assert.match(help.stdout, /sync resume --job-id/);
   assert.match(help.stdout, /sync verify --plan-id/);
+});
+
+test('grouped resume maps job-id to one lifecycle mode', () => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'moodle-core-grouped-sync-'));
+  try {
+    const result = spawnSync(process.execPath, [
+      path.resolve('cli/moodle-core.mjs'), 'sync', 'resume',
+      '--job-id', 'missing-job', '--plan-digest', 'sha256:missing', '--allow-write',
+      '--state', path.join(directory, 'state.sqlite')
+    ], { encoding: 'utf8' });
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /Unknown sync job/);
+    assert.doesNotMatch(result.stderr, /cannot be combined/);
+  } finally {
+    fs.rmSync(directory, { recursive: true, force: true });
+  }
 });
 
 test('CLI awaits asynchronous sync work before closing durable state', () => {

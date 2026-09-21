@@ -5,6 +5,8 @@
 - Keep the durable SQLite state store open until asynchronous apply, resume, and verification operations settle.
 - Add a regression guard for the CLI state-store lifecycle discovered by disposable cross-version qualification.
 - Send an explicit empty grouping ID number so Moodle 5.3 can validate the response from `core_group_create_groupings`.
+- Map grouped resume, verify, and cancel identifiers without leaving conflicting lifecycle options behind.
+- Reconcile uniquely matching group and grouping creations when Moodle commits a write before returning an invalid response.
 
 ## 0.3.1 - 2026-09-22
 

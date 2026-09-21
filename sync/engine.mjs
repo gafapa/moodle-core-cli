@@ -57,6 +57,17 @@ function fieldsMatch(entity, fields) {
   return entity && Object.entries(fields).every(([name, value]) => entity[name] === value);
 }
 
+function reconcileCreateResult(action, model) {
+  const collections = {
+    'group.create': model.groups,
+    'grouping.create': model.groupings
+  };
+  const candidates = (collections[action.kind] ?? [])
+    .filter((entity) => fieldsMatch(entity, action.fields));
+  if (candidates.length !== 1) return null;
+  return { id: candidates[0].source_id, name: candidates[0].name };
+}
+
 function resolveActionReferences(action, context) {
   const resolveValue = (value) => {
     if (typeof value === 'string' && value.includes('moodlia-sync://')) {
@@ -501,15 +512,42 @@ export class CourseSyncEngine {
       throw new TypeError('Source or target changed after the sync plan was created.');
     }
     if (resumedJob) {
-      for (const result of resumedJob.results.filter((entry) => entry.status === 'unknown_outcome')) {
-        const action = plan.actions.find((entry) => entry.action_id === result.action_id);
-        if (!action) throw new TypeError('The interrupted job references an unknown action.');
-        const failures = verifyResults({ ...plan, actions: [action] }, freshTarget, [result]);
-        if (failures.length > 0) {
-          throw new TypeError('An action has an ambiguous outcome and requires reconciliation before resume.');
+      for (const action of plan.actions) {
+        if (resumedJob.results.some((entry) => entry.action_id === action.action_id && entry.status === 'succeeded')) {
+          continue;
         }
-        result.status = 'succeeded';
-        result.reconciled_at = new Date().toISOString();
+        const result = resumedJob.results.findLast((entry) => entry.action_id === action.action_id);
+        if (!result || !['failed', 'unknown_outcome'].includes(result.status)) continue;
+        const reconciledResult = reconcileCreateResult(action, freshTarget);
+        if (reconciledResult) {
+          result.status = 'succeeded';
+          result.result = reconciledResult;
+          if (result.error) result.previous_error = result.error;
+          delete result.error;
+          result.reconciled_at = new Date().toISOString();
+          if (action.entity_namespace && action.source_key) {
+            const binding = this.stateStore.getBinding(plan.binding_id) ?? {
+              schema_version: 1,
+              binding_id: plan.binding_id,
+              source: plan.source,
+              target: plan.target,
+              entity_mappings: {}
+            };
+            binding.entity_mappings[action.entity_namespace] ??= {};
+            binding.entity_mappings[action.entity_namespace][action.source_key] = reconciledResult.id;
+            binding.updated_at = new Date().toISOString();
+            this.stateStore.saveBinding(binding);
+          }
+          continue;
+        }
+        if (result.status === 'unknown_outcome') {
+          const failures = verifyResults({ ...plan, actions: [action] }, freshTarget, [result]);
+          if (failures.length > 0) {
+            throw new TypeError('An action has an ambiguous outcome and requires reconciliation before resume.');
+          }
+          result.status = 'succeeded';
+          result.reconciled_at = new Date().toISOString();
+        }
       }
       this.stateStore.saveJob(resumedJob);
       const completedIds = new Set(resumedJob.results
@@ -546,6 +584,7 @@ export class CourseSyncEngine {
       updated_at: new Date().toISOString(),
       results: []
     };
+    delete job.error;
     this.stateStore.saveJob(job);
     const createdEntities = new Map();
     for (const completed of job.results) {
