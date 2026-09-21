@@ -1118,6 +1118,55 @@ test('new standalone question banks import normalized portable blueprints once',
   assert.equal(withAsset.unsupported[0].reason, 'native_question_asset_manifest_unavailable');
 });
 
+test('new quizzes import private questions and journal slots separately', () => {
+  const blueprint = {
+    schema: 'moodlia.question_bank_blueprint.v1', bank_scope: 'quiz_private',
+    categories: [{
+      source_category_id: 1, source_parent_id: 0, name: 'Quiz questions',
+      questions: [{
+        source_question_id: 1, question_type: 'truefalse', name: 'Earth',
+        question_text: '<p>Round?</p>', options: { correct_answer: true }
+      }]
+    }]
+  };
+  const source = model({
+    provider: 'moodlia', siteUrl: 'https://source.example', courseId: 7,
+    fullname: 'Course', shortname: 'COURSE', sections: [{
+      id: 10, section: 0, name: 'General', modules: [{
+        id: 20, modname: 'quiz', name: 'Quiz', visible: true,
+        authoring_completeness: 'complete', authoring: {
+          kind: 'quiz', settings: { questions_per_page: 1 },
+          blueprint, slots: [{ source_question_id: 1, slot: 1, page: 1, max_mark: 2 }],
+          losses: ['quiz_review_and_access_configuration_not_exported']
+        }
+      }]
+    }]
+  });
+  const target = model({
+    provider: 'moodlia', siteUrl: 'https://target.example', courseId: 8,
+    fullname: 'Course', shortname: 'COURSE',
+    sections: [{ id: 90, section: 0, name: 'General', modules: [] }]
+  });
+  const capabilities = {
+    module_create: true, quiz_questions_import: true, quiz_slot_create: true, quiz_slot_update: true
+  };
+  const blocked = createCourseSyncPlan({
+    source, target, mapping: { sections: { 'section:10': 90 } }, capabilities
+  });
+  assert.equal(blocked.actions.length, 0);
+  assert.equal(blocked.unsupported[0].transformation, 'quiz_selected_settings');
+  const plan = createCourseSyncPlan({
+    source, target, mapping: { sections: { 'section:10': 90 } }, capabilities,
+    unsupportedPolicy: 'degrade'
+  });
+  assert.deepEqual(plan.actions.map((action) => action.kind), [
+    'module.create', 'quiz_questions.import', 'quiz_slot.create', 'quiz_slot.update'
+  ]);
+  assert.deepEqual(plan.actions[1].depends_on, [plan.actions[0].action_id]);
+  assert.deepEqual(plan.actions[2].depends_on.sort(), [plan.actions[0].action_id, plan.actions[1].action_id].sort());
+  assert.deepEqual(plan.actions[3].depends_on, [plan.actions[2].action_id]);
+});
+
 test('new Database and Feedback activities preserve portable definitions', () => {
   const modules = [{
     id: 20, modname: 'data', name: 'Research log', visible: true,

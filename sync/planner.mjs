@@ -400,6 +400,113 @@ export function createCourseSyncPlan({
   const targetModules = allModules(target);
   for (const sourceSection of source.sections) {
     for (const sourceModule of sourceSection.modules) {
+      if (sourceModule.module_type === 'quiz') {
+        if (sourceModule.authoring_completeness !== 'complete') {
+          unsupported.push({ kind: 'quiz.authoring', source_key: sourceModule.sync_key,
+            reason: 'source_authoring_incomplete' });
+          continue;
+        }
+        const authoring = sourceModule.authoring ?? {};
+        if (!authoring.blueprint || (authoring.slots ?? []).some((slot) => !slot.source_question_id)) {
+          unsupported.push({ kind: 'quiz.questions', source_key: sourceModule.sync_key,
+            reason: 'source_question_mapping_incomplete' });
+          continue;
+        }
+        if (/@@PLUGINFILE@@|\/(?:webservice\/)?pluginfile\.php/i.test(JSON.stringify(authoring.blueprint))) {
+          unsupported.push({ kind: 'quiz.assets', source_key: sourceModule.sync_key,
+            reason: 'native_question_asset_manifest_unavailable' });
+          continue;
+        }
+        if ((authoring.losses ?? []).length > 0) {
+          unsupported.push({
+            kind: 'quiz.settings', source_key: sourceModule.sync_key,
+            reason: 'selected_configuration_incomplete', losses: authoring.losses,
+            degradable: true, transformation: 'quiz_selected_settings'
+          });
+          if (unsupportedPolicy !== 'degrade') continue;
+        }
+        const targetModule = targetEntityByMapping(targetModules, mapping, 'modules', sourceModule);
+        const targetSection = targetSectionByMapping(target, mapping, sourceSection);
+        if (!targetModule) {
+          const parentWillBeCreated = actions.some((action) =>
+            action.kind === 'section.create' && action.source_key === sourceSection.sync_key);
+          if (!targetSection && !parentWillBeCreated) {
+            unsupported.push({ kind: 'module.create', source_key: sourceModule.sync_key,
+              reason: 'target_section_unresolved' });
+            continue;
+          }
+          if (!capabilitySupports(capabilities, 'module_create', ['module_type', 'name', 'visible', 'settings'])
+            || !capabilitySupports(capabilities, 'quiz_questions_import', ['blueprint'])
+            || !capabilitySupports(capabilities, 'quiz_slot_create', ['source_question_id', 'slot'])
+            || !capabilitySupports(capabilities, 'quiz_slot_update', ['slot', 'max_mark'])) {
+            unsupported.push({ kind: 'quiz.create', source_key: sourceModule.sync_key,
+              reason: 'target_capability_unavailable' });
+            continue;
+          }
+          addAction(actions, {
+            kind: 'module.create', entity_namespace: 'modules', source_key: sourceModule.sync_key,
+            parent_source_key: sourceSection.sync_key,
+            target_section_number: targetSection?.section_number ?? null,
+            target_id: null,
+            fields: {
+              module_type: 'quiz', name: sourceModule.name,
+              ...(sourceModule.visible === null ? {} : { visible: sourceModule.visible }),
+              settings: authoring.settings ?? {}, transformation: 'quiz_selected_settings'
+            },
+            effects: ['content.write']
+          });
+          const importSourceKey = `quiz-questions:${sourceModule.sync_key}`;
+          addAction(actions, {
+            kind: 'quiz_questions.import', entity_namespace: 'question_imports',
+            source_key: importSourceKey, parent_source_key: sourceModule.sync_key,
+            target_module_id: null, target_id: null,
+            fields: { blueprint: authoring.blueprint },
+            effects: ['content.write', 'grading_configuration.write']
+          });
+          for (const slot of authoring.slots ?? []) {
+            const slotSourceKey = `quiz-slot:${sourceModule.sync_key}:${slot.slot}`;
+            addAction(actions, {
+              kind: 'quiz_slot.create', entity_namespace: 'quiz_slots', source_key: slotSourceKey,
+              parent_source_key: sourceModule.sync_key, question_import_source_key: importSourceKey,
+              target_module_id: null, target_id: null,
+              fields: { source_question_id: slot.source_question_id, slot: slot.slot },
+              effects: ['content.write', 'grading_configuration.write']
+            });
+            addAction(actions, {
+              kind: 'quiz_slot.update', source_key: `quiz-slot-mark:${sourceModule.sync_key}:${slot.slot}`,
+              parent_source_key: slotSourceKey, module_source_key: sourceModule.sync_key,
+              target_module_id: null,
+              fields: { slot: slot.slot, max_mark: slot.max_mark },
+              effects: ['content.write', 'grading_configuration.write']
+            });
+          }
+          continue;
+        }
+        const moduleUpdates = changedFields(sourceModule, targetModule, ['name', 'visible']);
+        if (Object.keys(moduleUpdates).length > 0) {
+          if (capabilitySupports(capabilities, 'module_update', Object.keys(moduleUpdates))) {
+            addAction(actions, {
+              kind: 'module.update', entity_namespace: 'modules', source_key: sourceModule.sync_key,
+              target_id: targetModule.source_id, fields: moduleUpdates,
+              expected_target_digest: contentDigest(targetModule), effects: ['content.write']
+            });
+          } else unsupported.push({ kind: 'module.update', source_key: sourceModule.sync_key,
+            reason: 'target_capability_unavailable' });
+        }
+        if (contentDigest(authoring.settings ?? {}) !== contentDigest(targetModule.authoring?.settings ?? {})) {
+          unsupported.push({ kind: 'quiz.settings_update', source_key: sourceModule.sync_key,
+            reason: 'target_capability_unavailable' });
+        }
+        if (contentDigest({ blueprint: authoring.blueprint, slots: authoring.slots ?? [] })
+          !== contentDigest({
+            blueprint: targetModule.authoring?.blueprint,
+            slots: targetModule.authoring?.slots ?? []
+          })) {
+          unsupported.push({ kind: 'quiz.definition_update', source_key: sourceModule.sync_key,
+            reason: 'existing_quiz_definition_update_protected' });
+        }
+        continue;
+      }
       if (['data', 'feedback'].includes(sourceModule.module_type)) {
         if (!['complete', 'selected'].includes(sourceModule.authoring_completeness)) {
           unsupported.push({
@@ -1622,6 +1729,7 @@ export function createCourseSyncPlan({
       action.after_source_key,
       action.asset_stage_source_key,
       action.dependency_source_key,
+      action.question_import_source_key,
       action.group_source_key,
       action.grouping_source_key,
       ...(action.reference_source_keys ?? [])
@@ -1629,7 +1737,9 @@ export function createCourseSyncPlan({
     action.depends_on = [...new Set(actions
       .filter((candidate) => candidate.action_id !== action.action_id
         && dependencySourceKeys.includes(candidate.source_key)
-        && (candidate.kind.endsWith('.create') || candidate.kind === 'module_asset.stage'))
+        && (candidate.kind.endsWith('.create')
+          || candidate.kind === 'module_asset.stage'
+          || candidate.kind === 'quiz_questions.import'))
       .map((candidate) => candidate.action_id))].sort();
   }
   const selectedEntityKeys = [
@@ -1647,6 +1757,7 @@ export function createCourseSyncPlan({
     action.parent_source_key,
     action.parent_module_source_key,
     action.dependency_source_key,
+    action.question_import_source_key,
     action.group_source_key,
     action.grouping_source_key
   ].filter(Boolean)));

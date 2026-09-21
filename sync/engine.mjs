@@ -9,7 +9,7 @@ import { resolveDeferredMoodleReferences } from './references.mjs';
 
 function resultEntityId(result) {
   const value = result?.id ?? result?.course_id ?? result?.section_id ?? result?.group_id ?? result?.grouping_id
-    ?? result?.module_id ?? result?.chapter_id ?? result?.field_id ?? result?.item_id;
+    ?? result?.module_id ?? result?.chapter_id ?? result?.field_id ?? result?.item_id ?? result?.slot_id;
   const id = Number(value);
   return Number.isInteger(id) && id > 0 ? id : null;
 }
@@ -331,6 +331,33 @@ function verifyResults(plan, model, results) {
         .find((entry) => entry.source_id === moduleId);
       if (contentDigest(entity?.authoring?.blueprint ?? null) !== contentDigest(action.fields.blueprint)) {
         failures.push({ action_id: action.action_id, reason: 'question_bank_readback_mismatch' });
+      }
+      continue;
+    }
+    if (['quiz_questions.import', 'quiz_slot.create', 'quiz_slot.update'].includes(action.kind)) {
+      const moduleSourceKey = action.kind === 'quiz_slot.update'
+        ? action.module_source_key : action.parent_source_key;
+      const createdModule = plan.actions.find((candidate) =>
+        candidate.kind === 'module.create' && candidate.source_key === moduleSourceKey);
+      const moduleId = action.target_module_id
+        ?? resultEntityId(resultByAction.get(createdModule?.action_id)?.result);
+      entity = model.sections.flatMap((section) => section.modules)
+        .find((entry) => entry.source_id === moduleId);
+      if (action.kind === 'quiz_questions.import') {
+        if (contentDigest(entity?.authoring?.blueprint ?? null)
+          !== contentDigest(action.fields.blueprint)) {
+          failures.push({ action_id: action.action_id, reason: 'quiz_question_readback_mismatch' });
+        }
+      } else {
+        const slot = (entity?.authoring?.slots ?? [])
+          .find((entry) => Number(entry.slot) === Number(action.fields.slot));
+        if (!slot
+          || (action.kind === 'quiz_slot.create'
+            && Number(slot.source_question_id) !== Number(action.fields.source_question_id))
+          || (action.kind === 'quiz_slot.update'
+            && Number(slot.max_mark) !== Number(action.fields.max_mark))) {
+          failures.push({ action_id: action.action_id, reason: 'quiz_slot_readback_mismatch' });
+        }
       }
       continue;
     }
