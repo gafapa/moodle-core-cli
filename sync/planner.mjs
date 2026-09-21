@@ -400,6 +400,146 @@ export function createCourseSyncPlan({
   const targetModules = allModules(target);
   for (const sourceSection of source.sections) {
     for (const sourceModule of sourceSection.modules) {
+      if (['data', 'feedback'].includes(sourceModule.module_type)) {
+        if (!['complete', 'selected'].includes(sourceModule.authoring_completeness)) {
+          unsupported.push({
+            kind: `${sourceModule.module_type}.authoring`, source_key: sourceModule.sync_key,
+            reason: 'source_authoring_unavailable'
+          });
+          continue;
+        }
+        const authoring = sourceModule.authoring ?? {};
+        const definitions = sourceModule.module_type === 'data'
+          ? (authoring.fields ?? []) : (authoring.items ?? []);
+        if (/@@PLUGINFILE@@|\/(?:webservice\/)?pluginfile\.php/i.test(JSON.stringify(authoring))) {
+          unsupported.push({
+            kind: `${sourceModule.module_type}.assets`, source_key: sourceModule.sync_key,
+            reason: 'native_editor_asset_manifest_unavailable'
+          });
+          continue;
+        }
+        if ((authoring.losses ?? []).length > 0) {
+          unsupported.push({
+            kind: `${sourceModule.module_type}.settings`, source_key: sourceModule.sync_key,
+            reason: 'selected_configuration_incomplete', losses: authoring.losses,
+            degradable: true, transformation: `${sourceModule.module_type}_selected_settings`
+          });
+          if (unsupportedPolicy !== 'degrade') continue;
+        }
+        const targetModule = targetEntityByMapping(targetModules, mapping, 'modules', sourceModule);
+        const targetSection = targetSectionByMapping(target, mapping, sourceSection);
+        if (!targetModule) {
+          const parentWillBeCreated = actions.some((action) =>
+            action.kind === 'section.create' && action.source_key === sourceSection.sync_key);
+          if (!targetSection && !parentWillBeCreated) {
+            unsupported.push({ kind: 'module.create', source_key: sourceModule.sync_key,
+              reason: 'target_section_unresolved' });
+            continue;
+          }
+          const definitionCapability = sourceModule.module_type === 'data'
+            ? 'database_field_create' : 'feedback_item_create';
+          const definitionFields = sourceModule.module_type === 'data'
+            ? ['type', 'name', 'description', 'required', 'options']
+            : ['type', 'name', 'definition', 'position', 'label', 'required', 'source_depend_item_id', 'depend_value'];
+          if (!capabilitySupports(capabilities, 'module_create', ['module_type', 'name', 'visible', 'settings'])
+            || !capabilitySupports(capabilities, definitionCapability, definitionFields)) {
+            unsupported.push({
+              kind: `${sourceModule.module_type}.create`, source_key: sourceModule.sync_key,
+              reason: 'target_capability_unavailable'
+            });
+            continue;
+          }
+          if (sourceModule.module_type === 'feedback') {
+            const knownItems = new Set();
+            const forwardDependency = definitions.find((item) => {
+              const dependency = Number(item.source_depend_item_id ?? 0);
+              const valid = dependency === 0 || knownItems.has(dependency);
+              knownItems.add(Number(item.source_item_id));
+              return !valid;
+            });
+            if (forwardDependency) {
+              unsupported.push({
+                kind: 'feedback.dependencies', source_key: sourceModule.sync_key,
+                reason: 'forward_item_dependency_not_portable'
+              });
+              continue;
+            }
+          }
+          addAction(actions, {
+            kind: 'module.create', entity_namespace: 'modules', source_key: sourceModule.sync_key,
+            parent_source_key: sourceSection.sync_key,
+            target_section_number: targetSection?.section_number ?? null,
+            target_id: null,
+            fields: {
+              module_type: sourceModule.module_type, name: sourceModule.name,
+              ...(sourceModule.visible === null ? {} : { visible: sourceModule.visible }),
+              settings: authoring.settings ?? {},
+              ...((authoring.losses ?? []).length > 0
+                ? { transformation: `${sourceModule.module_type}_selected_settings` } : {})
+            },
+            effects: ['content.write']
+          });
+          for (const definition of definitions) {
+            if (sourceModule.module_type === 'data') {
+              addAction(actions, {
+                kind: 'database_field.create', entity_namespace: 'database_fields',
+                source_key: `database-field:${sourceModule.sync_key}:${definition.source_field_id}`,
+                parent_source_key: sourceModule.sync_key, target_module_id: null, target_id: null,
+                fields: {
+                  type: definition.type, name: definition.name,
+                  description: definition.description, required: definition.required,
+                  options: definition.options ?? {}
+                },
+                effects: ['content.write']
+              });
+            } else {
+              const dependencySourceKey = Number(definition.source_depend_item_id ?? 0) > 0
+                ? `feedback-item:${sourceModule.sync_key}:${definition.source_depend_item_id}` : null;
+              addAction(actions, {
+                kind: 'feedback_item.create', entity_namespace: 'feedback_items',
+                source_key: `feedback-item:${sourceModule.sync_key}:${definition.source_item_id}`,
+                parent_source_key: sourceModule.sync_key, target_module_id: null, target_id: null,
+                ...(dependencySourceKey ? { dependency_source_key: dependencySourceKey } : {}),
+                fields: {
+                  type: definition.type, name: definition.name,
+                  definition: definition.definition ?? {}, position: definition.position,
+                  label: definition.label, required: definition.required,
+                  source_depend_item_id: Number(definition.source_depend_item_id ?? 0),
+                  depend_value: definition.depend_value
+                },
+                effects: ['content.write']
+              });
+            }
+          }
+          continue;
+        }
+        const moduleUpdates = changedFields(sourceModule, targetModule, ['name', 'visible']);
+        if (Object.keys(moduleUpdates).length > 0) {
+          if (capabilitySupports(capabilities, 'module_update', Object.keys(moduleUpdates))) {
+            addAction(actions, {
+              kind: 'module.update', entity_namespace: 'modules', source_key: sourceModule.sync_key,
+              target_id: targetModule.source_id, fields: moduleUpdates,
+              expected_target_digest: contentDigest(targetModule), effects: ['content.write']
+            });
+          } else unsupported.push({ kind: 'module.update', source_key: sourceModule.sync_key,
+            reason: 'target_capability_unavailable' });
+        }
+        if (contentDigest(authoring.settings ?? {}) !== contentDigest(targetModule.authoring?.settings ?? {})) {
+          unsupported.push({
+            kind: `${sourceModule.module_type}.settings_update`, source_key: sourceModule.sync_key,
+            reason: 'target_capability_unavailable'
+          });
+        }
+        const targetDefinitions = sourceModule.module_type === 'data'
+          ? (targetModule.authoring?.fields ?? []) : (targetModule.authoring?.items ?? []);
+        if (contentDigest(definitions) !== contentDigest(targetDefinitions)) {
+          unsupported.push({
+            kind: `${sourceModule.module_type}.definition_update`, source_key: sourceModule.sync_key,
+            reason: 'existing_definition_update_protected'
+          });
+        }
+        continue;
+      }
       if (sourceModule.module_type === 'qbank') {
         if (sourceModule.authoring_completeness !== 'complete') {
           unsupported.push({ kind: 'question_bank.authoring', source_key: sourceModule.sync_key,
@@ -1396,6 +1536,7 @@ export function createCourseSyncPlan({
       action.parent_source_key,
       action.after_source_key,
       action.asset_stage_source_key,
+      action.dependency_source_key,
       action.group_source_key,
       action.grouping_source_key,
       ...(action.reference_source_keys ?? [])
@@ -1420,6 +1561,7 @@ export function createCourseSyncPlan({
     action.source_key,
     action.parent_source_key,
     action.parent_module_source_key,
+    action.dependency_source_key,
     action.group_source_key,
     action.grouping_source_key
   ].filter(Boolean)));

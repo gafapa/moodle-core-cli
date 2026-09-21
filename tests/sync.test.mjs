@@ -1116,6 +1116,100 @@ test('new standalone question banks import normalized portable blueprints once',
   assert.equal(withAsset.unsupported[0].reason, 'native_question_asset_manifest_unavailable');
 });
 
+test('new Database and Feedback activities preserve portable definitions', () => {
+  const modules = [{
+    id: 20, modname: 'data', name: 'Research log', visible: true,
+    authoring_completeness: 'complete',
+    authoring: {
+      kind: 'database', settings: { comments: true }, losses: [],
+      fields: [{
+        source_field_id: 1, type: 'text', name: 'Topic', description: '',
+        required: true, options: { param1: '' }
+      }]
+    }
+  }, {
+    id: 21, modname: 'feedback', name: 'Survey', visible: true,
+    authoring_completeness: 'complete',
+    authoring: {
+      kind: 'feedback', settings: { anonymous: 'anonymous' }, losses: [],
+      items: [{
+        source_item_id: 1, type: 'multichoice', name: 'Useful?',
+        definition: { subtype: 'radio', choices: ['Yes', 'No'], horizontal: false },
+        position: 1, label: '', required: true, source_depend_item_id: 0, depend_value: ''
+      }, {
+        source_item_id: 2, type: 'textfield', name: 'Why?',
+        definition: { size: 30, max_length: 255 }, position: 2, label: '', required: false,
+        source_depend_item_id: 1, depend_value: 'Yes'
+      }]
+    }
+  }];
+  const source = model({
+    provider: 'moodlia', siteUrl: 'https://source.example', courseId: 7,
+    fullname: 'Course', shortname: 'COURSE',
+    sections: [{ id: 10, section: 0, name: 'General', modules }]
+  });
+  const target = model({
+    provider: 'moodlia', siteUrl: 'https://target.example', courseId: 8,
+    fullname: 'Course', shortname: 'COURSE',
+    sections: [{ id: 90, section: 0, name: 'General', modules: [] }]
+  });
+  const plan = createCourseSyncPlan({
+    source, target, mapping: { sections: { 'section:10': 90 } },
+    capabilities: { module_create: true, database_field_create: true, feedback_item_create: true }
+  });
+  assert.deepEqual(plan.actions.map((action) => action.kind), [
+    'module.create', 'database_field.create',
+    'module.create', 'feedback_item.create', 'feedback_item.create'
+  ]);
+  assert.deepEqual(plan.actions[1].depends_on, [plan.actions[0].action_id]);
+  assert.deepEqual(plan.actions[4].depends_on.sort(), [plan.actions[2].action_id, plan.actions[3].action_id].sort());
+  assert.equal(plan.actions[4].dependency_source_key, plan.actions[3].source_key);
+});
+
+test('definition synchronization protects existing activities and explicit losses', () => {
+  const source = model({
+    provider: 'moodlia', siteUrl: 'https://source.example', courseId: 7,
+    fullname: 'Course', shortname: 'COURSE',
+    sections: [{ id: 10, section: 0, name: 'General', modules: [{
+      id: 20, modname: 'data', name: 'Database', visible: true,
+      authoring_completeness: 'complete',
+      authoring: {
+        kind: 'database', settings: {},
+        losses: ['default_sort_field_requires_destination_field_mapping'],
+        fields: [{ source_field_id: 1, type: 'text', name: 'Topic', description: '', required: false, options: {} }]
+      }
+    }] }]
+  });
+  const target = model({
+    provider: 'moodlia', siteUrl: 'https://target.example', courseId: 8,
+    fullname: 'Course', shortname: 'COURSE',
+    sections: [{ id: 90, section: 0, name: 'General', modules: [] }]
+  });
+  const blocked = createCourseSyncPlan({
+    source, target, mapping: { sections: { 'section:10': 90 } },
+    capabilities: { module_create: true, database_field_create: true }
+  });
+  assert.equal(blocked.actions.length, 0);
+  assert.equal(blocked.unsupported[0].degradable, true);
+  const degraded = createCourseSyncPlan({
+    source, target, mapping: { sections: { 'section:10': 90 } }, unsupportedPolicy: 'degrade',
+    capabilities: { module_create: true, database_field_create: true }
+  });
+  assert.deepEqual(degraded.actions.map((action) => action.kind), ['module.create', 'database_field.create']);
+
+  target.sections[0].modules = [{
+    ...structuredClone(source.sections[0].modules[0]), source_id: 80, sync_key: 'module:80',
+    authoring: { ...structuredClone(source.sections[0].modules[0].authoring), losses: [], fields: [] }
+  }];
+  source.sections[0].modules[0].authoring.losses = [];
+  const protectedPlan = createCourseSyncPlan({
+    source, target,
+    mapping: { sections: { 'section:10': 90 }, modules: { 'module:20': 80 } },
+    capabilities: { module_update: true }
+  });
+  assert.equal(protectedPlan.unsupported.some((entry) => entry.reason === 'existing_definition_update_protected'), true);
+});
+
 test('new Workshops preserve rubric definitions with more than four levels', () => {
   const levels = Array.from({ length: 6 }, (_, index) => ({
     definition: `Level ${index + 1}`,

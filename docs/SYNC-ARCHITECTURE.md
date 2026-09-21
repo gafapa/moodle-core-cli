@@ -6,7 +6,7 @@
 
 `moodlia` depends on this package and adds the MoodlIA provider. Its adaptive adapter selects a provider for each capability instead of selecting one backend for an entire command. `moodlia-sync-mcp` exposes the same engine to MCP clients under a separate authorization boundary.
 
-The preview synchronizes selected metadata and proven structure plus selected portable authoring through MoodlIA: section summaries, Pages, Labels, URLs, resources, folders, Books, standalone question banks without embedded files, assignments with rubrics, checklists or marking guides, and Workshop grading forms. Section, activity, Book, and assignment editor files are staged as one destination draft per owner and file area, preserving nested paths and Unicode names. The capability matrix distinguishes create/update gaps. Learner submissions, grades, attempts, and historical completion remain excluded.
+The preview synchronizes selected metadata and proven structure plus selected portable authoring through MoodlIA: section summaries, Pages, Labels, URLs, resources, folders, Books, standalone question banks without embedded files, assignments with rubrics, checklists or marking guides, Workshop grading forms, Database fields, and Feedback items. Database and Feedback definitions are created only in new activities; destination IDs and backward item dependencies are remapped, while existing definitions remain protected. Section, activity, Book, and assignment editor files are staged as one destination draft per owner and file area, preserving nested paths and Unicode names. The capability matrix distinguishes create/update gaps. Learner submissions, grades, attempts, and historical completion remain excluded.
 
 The provider-neutral model and immutable plan use schema version 2. The model records field states (`unknown`, `explicit_null`, `explicit_empty`, or `present`), extraction completeness, losses, unknown scopes, capability evidence, and owner-bound asset keys. Plans expose changed actions separately from unchanged and unknown entities. Version 1 preview plans are intentionally rejected instead of being reinterpreted.
 
@@ -44,7 +44,7 @@ Section zero is matched only with section zero. Other existing sections require 
 
 Core capability availability is the intersection of the static versioned contract and the functions returned for the current token by `core_webservice_get_site_info`. Moodle Core does not expose a general permission probe, so write permission remains `unknown` until an authorized request is attempted.
 
-MoodlIA 0.1.211 provides `get_sync_capabilities`, multi-file editor publication, and identity-preserving typed content updates. It evaluates category-scoped course creation and course-scoped structure, activity, grading-form, Book, and Workshop capabilities. Older plugins remain usable for legacy direct commands, but adaptive synchronization does not promote a declared write operation to an available capability without contextual evidence.
+MoodlIA 0.1.211 provides `get_sync_capabilities`, multi-file editor publication, and identity-preserving typed content updates. It evaluates category-scoped course creation and course-scoped structure, activity, grading-form, Book, Workshop, question-bank, Database-field, and Feedback-item capabilities. Older plugins remain usable for legacy direct commands, but adaptive synchronization does not promote a declared write operation to an available capability without contextual evidence.
 
 ## Compatibility
 

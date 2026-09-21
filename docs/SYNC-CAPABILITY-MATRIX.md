@@ -17,6 +17,8 @@ This matrix describes the current implementation, not the complete long-term roa
 | Assignments and grading forms | Authoring round trip not proven | Unsupported | Selected authoring fields, two native editor-file manifests, rubrics, binary checklists, and marking guides | New assignment/grading form and identity-preserving content/file updates; existing grading definitions protected | Partial preview |
 | Workshop forms | Definition reads/writes not proven | Unsupported | Portable definitions for four standard strategies | New Workshop/form; existing definitions protected | Partial preview |
 | Standalone question banks | Partial APIs | Ownership-safe round trip not proven | Normalized portable blueprint for supported question types | Create a new mapped bank and import once; existing-content changes are protected | Partial preview |
+| Database activity fields | Read-only field APIs vary | Authoring destination unsupported | Portable definitions for supported field types | Create fields in a new activity; destination field IDs are remapped and existing definitions are protected | Partial preview |
+| Feedback items | Participant-oriented reads only | Authoring destination unsupported | Portable definitions and item dependencies for supported item types | Create ordered items in a new activity and remap backward dependencies; existing definitions are protected | Partial preview |
 | Quizzes and private question banks | Partial APIs | Ownership-safe round trip not proven | Typed operations exist | Slot and ownership transformation pending | Pending |
 | Learner submissions, grades, attempts, logs | Excluded | Excluded | Excluded | Excluded | Out of scope |
 

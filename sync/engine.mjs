@@ -9,7 +9,7 @@ import { resolveDeferredMoodleReferences } from './references.mjs';
 
 function resultEntityId(result) {
   const value = result?.id ?? result?.course_id ?? result?.section_id ?? result?.group_id ?? result?.grouping_id
-    ?? result?.module_id ?? result?.chapter_id;
+    ?? result?.module_id ?? result?.chapter_id ?? result?.field_id ?? result?.item_id;
   const id = Number(value);
   return Number.isInteger(id) && id > 0 ? id : null;
 }
@@ -278,6 +278,47 @@ function verifyResults(plan, model, results) {
         .find((entry) => entry.source_id === createdId);
       if (contentDigest(entity?.authoring?.grading_form ?? null) !== contentDigest(action.fields)) {
         failures.push({ action_id: action.action_id, reason: 'workshop_form_readback_mismatch' });
+      }
+      continue;
+    }
+    if (action.kind === 'database_field.create' || action.kind === 'feedback_item.create') {
+      const createdModule = plan.actions.find((candidate) =>
+        candidate.kind === 'module.create' && candidate.source_key === action.parent_source_key);
+      const moduleId = action.target_module_id
+        ?? resultEntityId(resultByAction.get(createdModule?.action_id)?.result);
+      entity = model.sections.flatMap((section) => section.modules)
+        .find((entry) => entry.source_id === moduleId);
+      if (action.kind === 'database_field.create') {
+        const fields = entity?.authoring?.fields ?? [];
+        const expected = {
+          source_field_id: Number(action.source_key.split(':').at(-1)),
+          type: action.fields.type,
+          name: action.fields.name,
+          description: action.fields.description,
+          required: action.fields.required,
+          options: action.fields.options
+        };
+        if (contentDigest(fields.find((field) => field.source_field_id === expected.source_field_id) ?? null)
+          !== contentDigest(expected)) {
+          failures.push({ action_id: action.action_id, reason: 'database_field_readback_mismatch' });
+        }
+      } else {
+        const items = entity?.authoring?.items ?? [];
+        const expected = {
+          source_item_id: Number(action.source_key.split(':').at(-1)),
+          type: action.fields.type,
+          name: action.fields.name,
+          definition: action.fields.definition,
+          position: action.fields.position,
+          label: action.fields.label,
+          required: action.fields.required,
+          source_depend_item_id: action.fields.source_depend_item_id,
+          depend_value: action.fields.depend_value
+        };
+        if (contentDigest(items.find((item) => item.source_item_id === expected.source_item_id) ?? null)
+          !== contentDigest(expected)) {
+          failures.push({ action_id: action.action_id, reason: 'feedback_item_readback_mismatch' });
+        }
       }
       continue;
     }
