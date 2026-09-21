@@ -456,6 +456,10 @@ test('Book chapters are planned only when native editor assets are not required'
     filename: 'image.png', filepath: '/', filesize: 10, mimetype: 'image/png',
     content_hash: 'source-sha1', sha256: 'source-sha256',
     url: 'https://source.example/webservice/pluginfile.php/1/mod_book/chapter/30/image.png'
+  }, {
+    filename: 'diagram.svg', filepath: '/media/', filesize: 20, mimetype: 'image/svg+xml',
+    content_hash: 'source-sha1-2', sha256: 'source-sha256-2',
+    url: 'https://source.example/webservice/pluginfile.php/2/mod_book/chapter/30/media/diagram.svg'
   }];
   const assetPlan = createCourseSyncPlan({
     source,
@@ -471,6 +475,39 @@ test('Book chapters are planned only when native editor assets are not required'
   assert.deepEqual(assetPlan.actions.map((action) => action.kind), [
     'module.create', 'book_chapter.create', 'book_asset.transfer'
   ]);
+  assert.equal(assetPlan.actions[2].assets.length, 2);
+  assert.equal(assetPlan.action_summary.asset_transfers, 1);
+  assert.equal(assetPlan.action_summary.estimated_transfer_bytes, 30);
+
+  target.sections[0].modules = [{
+    source_id: 40,
+    sync_key: 'module:40',
+    module_type: 'book',
+    name: 'Handbook',
+    visible: true,
+    authoring_completeness: 'complete',
+    authoring: {
+      kind: 'book',
+      settings: { numbering: 'numbers', custom_titles: false },
+      chapters: [{
+        ...structuredClone(source.sections[0].modules[0].authoring.chapters[0]),
+        chapter_id: 50,
+        page_number: 1,
+        files: [
+          ...structuredClone(source.sections[0].modules[0].authoring.chapters[0].files),
+          { filename: 'local-note.txt', filepath: '/', content_hash: 'target-only', filesize: 4 }
+        ]
+      }]
+    }
+  }];
+  const unchangedPlan = createCourseSyncPlan({
+    source,
+    target,
+    capabilities: assetPlan.capability_snapshot,
+    mapping: { modules: { 'module:20': 40 }, chapters: { 'chapter:30': 50 } }
+  });
+  assert.equal(unchangedPlan.actions.some((action) => action.kind === 'book_asset.transfer'), false);
+  assert.equal(unchangedPlan.divergences[0].reason, 'target_only_files_preserved');
 });
 
 test('portable Page, Label, and URL definitions use exact MoodlIA module creation', () => {
@@ -493,6 +530,59 @@ test('portable Page, Label, and URL definitions use exact MoodlIA module creatio
     capabilities: { module_create: { available: true, supported_fields: ['module_type', 'name', 'visible', 'settings'] } }
   });
   assert.deepEqual(plan.actions.map((action) => action.fields.module_type), ['page', 'label', 'url']);
+});
+
+test('Page editor assets are staged as one draft for identity-preserving updates', () => {
+  const assets = [
+    { filename: 'hero image.jpg', filepath: '/', filesize: 5, content_hash: 'sha1-a', sha256: 'sha256-a', url: 'https://source.example/a' },
+    { filename: 'flow.svg', filepath: '/diagrams/', filesize: 7, content_hash: 'sha1-b', sha256: 'sha256-b', url: 'https://source.example/b' }
+  ];
+  const source = model({
+    provider: 'moodlia', siteUrl: 'https://source.example', courseId: 7, fullname: 'Course', shortname: 'COURSE',
+    sections: [{ id: 10, section: 0, name: 'General', modules: [{
+      id: 20, modname: 'page', name: 'Portable Page', visible: true,
+      authoring_completeness: 'complete',
+      authoring: {
+        kind: 'page',
+        settings: {
+          content: '<img src="@@PLUGINFILE@@/hero%20image.jpg"><img src="@@PLUGINFILE@@/diagrams/flow.svg">',
+          content_format: 1,
+          print_intro: false,
+          print_last_modified: true
+        },
+        files: assets
+      }
+    }] }]
+  });
+  const target = model({
+    provider: 'moodlia', siteUrl: 'https://target.example', courseId: 8, fullname: 'Course', shortname: 'COURSE',
+    sections: [{ id: 11, section: 0, name: 'General', modules: [{
+      id: 40, modname: 'page', name: 'Old Page', visible: true,
+      authoring_completeness: 'complete',
+      authoring: {
+        kind: 'page',
+        settings: { content: '<p>Old</p>', content_format: 1, print_intro: false, print_last_modified: true },
+        files: []
+      }
+    }] }]
+  });
+  const plan = createCourseSyncPlan({
+    source,
+    target,
+    mapping: { modules: { 'module:20': 40 } },
+    capabilities: {
+      module_asset_stage: true,
+      page_content_update: {
+        available: true,
+        supported_fields: ['name', 'content', 'content_format', 'print_intro', 'print_last_modified']
+      }
+    }
+  });
+
+  assert.deepEqual(plan.actions.map((action) => action.kind), ['module_asset.stage', 'page_content.update']);
+  assert.equal(plan.actions[0].assets.length, 2);
+  assert.equal(plan.actions[1].asset_stage_source_key, plan.actions[0].source_key);
+  assert.equal(plan.action_summary.estimated_transfer_bytes, 12);
 });
 
 test('resource and folder creation stages verified assets before publishing the module', () => {

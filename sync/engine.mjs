@@ -25,7 +25,7 @@ function currentEntityDigest(action, model) {
   if (action.kind === 'grouping.update') {
     return contentDigest(model.groupings.find((entry) => entry.source_id === action.target_id));
   }
-  if (['module.update', 'assignment_content.update', 'resource_asset.replace'].includes(action.kind)) {
+  if (['module.update', 'assignment_content.update', 'page_content.update', 'resource_asset.replace'].includes(action.kind)) {
     return contentDigest(model.sections.flatMap((section) => section.modules)
       .find((entry) => entry.source_id === action.target_id));
   }
@@ -128,6 +128,22 @@ function verifyResults(plan, model, results) {
       if (!fieldsMatch(comparable, action.fields)) failures.push({ action_id: action.action_id, reason: 'readback_mismatch' });
       continue;
     }
+    if (action.kind === 'page_content.update') {
+      entity = model.sections.flatMap((section) => section.modules)
+        .find((entry) => entry.source_id === action.target_id);
+      const comparable = { name: entity?.name, ...(entity?.authoring?.settings ?? {}) };
+      if (!fieldsMatch(comparable, action.fields)) {
+        failures.push({ action_id: action.action_id, reason: 'readback_mismatch' });
+      }
+      if (action.expected_assets) {
+        const targetAssets = entity?.authoring?.files ?? [];
+        const assetsMatch = action.expected_assets.every((asset) => targetAssets.some((targetAsset) =>
+          asset.filepath === targetAsset.filepath && asset.filename === targetAsset.filename
+          && asset.sha256 && asset.sha256 === targetAsset.sha256));
+        if (!assetsMatch) failures.push({ action_id: action.action_id, reason: 'page_asset_readback_mismatch' });
+      }
+      continue;
+    }
     if (action.kind === 'assignment_rubric.set') {
       const createdModule = plan.actions.find((candidate) =>
         candidate.kind === 'module.create' && candidate.source_key === action.parent_source_key);
@@ -157,12 +173,12 @@ function verifyResults(plan, model, results) {
     if (action.kind === 'book_asset.transfer') {
       const chapterResult = resultByAction.get(action.action_id)?.result;
       const files = chapterResult?.files ?? chapterResult?.uploaded_files ?? [];
-      const matched = files.some((file) =>
-        String(file.filename) === action.asset.filename
-        && String(file.filepath ?? '/') === action.asset.filepath
-        && Number(file.filesize ?? -1) === action.asset.filesize
-        && (!action.asset.content_hash || !file.content_hash || file.content_hash === action.asset.content_hash));
-      if (!matched) failures.push({ action_id: action.action_id, reason: 'asset_readback_mismatch' });
+      const matched = action.assets.every((asset) => files.some((file) =>
+          String(file.filename) === asset.filename
+          && String(file.filepath ?? '/') === asset.filepath
+          && Number(file.filesize ?? -1) === asset.filesize
+          && (!asset.content_hash || !file.content_hash || file.content_hash === asset.content_hash)));
+      if (!matched) failures.push({ action_id: action.action_id, reason: 'asset_set_readback_mismatch' });
       continue;
     }
     if (!fieldsMatch(entity, action.fields)) {
@@ -349,12 +365,16 @@ export class CourseSyncEngine {
           }
           result = await targetAdapter.replaceResourceAsset(action, data, context);
         } else if (action.kind === 'book_asset.transfer') {
-          const data = await sourceAdapter.downloadAsset(action.asset);
-          const sha256 = createHash('sha256').update(data).digest('hex');
-          if (action.asset.sha256 && sha256 !== action.asset.sha256) {
-            throw new TypeError(`Source asset changed after planning: ${action.asset.filename}.`);
+          const assetsWithData = [];
+          for (const asset of action.assets) {
+            const data = await sourceAdapter.downloadAsset(asset);
+            const sha256 = createHash('sha256').update(data).digest('hex');
+            if (asset.sha256 && sha256 !== asset.sha256) {
+              throw new TypeError(`Source asset changed after planning: ${asset.filename}.`);
+            }
+            assetsWithData.push({ asset, data });
           }
-          result = await targetAdapter.publishBookChapterAsset(action, data, context);
+          result = await targetAdapter.publishBookChapterAssets(action, assetsWithData, context);
         } else {
           result = await targetAdapter.applySyncAction(action, context);
         }
