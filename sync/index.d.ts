@@ -38,6 +38,12 @@ export interface CourseSyncPlan {
 
 export function canonicalize<T>(value: T): T;
 export function canonicalJson(value: unknown): string;
+export function rewriteMoodleHtmlReferences(html: string, context: Record<string, unknown>): {
+  html: string;
+  reference_source_keys: string[];
+  blocked: Array<{ url: string; reason: string }>;
+};
+export function resolveDeferredMoodleReferences(html: string, context: Record<string, unknown>): string;
 export function contentDigest(value: unknown): string;
 export function createCourseSyncModel(input: Record<string, unknown>): CourseSyncModel;
 export function selectedCourseFields(model: CourseSyncModel): Record<string, unknown>;

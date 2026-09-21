@@ -87,5 +87,8 @@
   "directories": {
     "doc": "docs",
     "test": "tests"
+  },
+  "dependencies": {
+    "parse5": "^8.0.1"
   }
 }

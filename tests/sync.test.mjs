@@ -16,7 +16,9 @@ import {
   contentDigest,
   MemorySyncStateStore,
   SqliteSyncStateStore,
-  validateSyncPlan
+  validateSyncPlan,
+  rewriteMoodleHtmlReferences,
+  resolveDeferredMoodleReferences
 } from '../sync/index.mjs';
 
 function model({
@@ -83,6 +85,83 @@ test('sync model v2 distinguishes unknown, null, and empty fields with owned ass
   assert.match(snapshot.assets[0].asset_key, /^asset:/);
   assert.equal(snapshot.losses[0].reason, 'not_readable');
   assert.equal(snapshot.unknowns[0].reason, 'permission_limited');
+});
+
+test('HTML reference resolver rewrites mapped links and defers newly created entities', () => {
+  const source = model({
+    siteUrl: 'https://source.example/moodle', courseId: 7, fullname: 'Course', shortname: 'COURSE',
+    sections: [{ id: 10, section: 0, modules: [
+      { id: 20, modname: 'page', name: 'Mapped' },
+      { id: 21, modname: 'book', name: 'New book', authoring: {
+        chapters: [{ chapter_id: 30, title: 'Chapter' }]
+      } }
+    ] }]
+  });
+  const target = model({
+    siteUrl: 'https://target.example/learn', courseId: 8, fullname: 'Course', shortname: 'COURSE'
+  });
+  const result = rewriteMoodleHtmlReferences(
+    '<a href="https://source.example/moodle/mod/page/view.php?id=20">Page</a>'
+      + '<img srcset="https://cdn.example/a.png 1x, https://source.example/moodle/mod/book/view.php?id=21&amp;chapterid=30 2x">',
+    {
+      sourceSiteUrl: source.site.site_url,
+      targetSiteUrl: target.site.site_url,
+      sourceModel: source,
+      targetModel: target,
+      mapping: { modules: { 'module:20': 40 } }
+    }
+  );
+  assert.match(result.html, /https:\/\/target\.example\/learn\/mod\/page\/view\.php\?id=40/);
+  assert.match(result.html, /moodlia-sync:\/\/chapters\/chapter%3A30/);
+  assert.deepEqual(result.reference_source_keys, ['chapter:30', 'module:21']);
+  const resolved = resolveDeferredMoodleReferences(result.html, {
+    targetSiteUrl: target.site.site_url,
+    mapping: {},
+    createdEntities: new Map([
+      ['modules:module:21', { module_id: 41 }],
+      ['chapters:chapter:30', { chapter_id: 50 }]
+    ])
+  });
+  assert.match(resolved, /https:\/\/target\.example\/learn\/mod\/book\/view\.php\?id=41&chapterid=50/);
+});
+
+test('HTML reference resolver preserves external links and reports token-bearing source URLs', () => {
+  const source = model({ siteUrl: 'https://source.example', courseId: 7, fullname: 'Course', shortname: 'COURSE' });
+  const target = model({ siteUrl: 'https://target.example', courseId: 8, fullname: 'Course', shortname: 'COURSE' });
+  const result = rewriteMoodleHtmlReferences(
+    '<a href="https://external.example/mod/page/view.php?id=9">External</a>'
+      + '<img style="background:url(https://source.example/mod/page/view.php?id=9&amp;wstoken=secret)">',
+    { sourceSiteUrl: source.site.site_url, targetSiteUrl: target.site.site_url, sourceModel: source, targetModel: target }
+  );
+  assert.match(result.html, /external\.example/);
+  assert.equal(result.blocked[0].reason, 'token_bearing_url');
+});
+
+test('planner makes portable content depend on newly created linked activities', () => {
+  const source = model({
+    provider: 'moodlia', siteUrl: 'https://source.example', courseId: 7, fullname: 'Course', shortname: 'COURSE',
+    sections: [{ id: 10, section: 0, modules: [
+      { id: 20, modname: 'page', name: 'Destination', authoring_completeness: 'complete',
+        authoring: { kind: 'page', settings: { content: '<p>Destination</p>', content_format: 1 }, files: [] } },
+      { id: 21, modname: 'label', name: 'Link', authoring_completeness: 'complete',
+        authoring: { kind: 'label', settings: {
+          content: '<a href="https://source.example/mod/page/view.php?id=20">Open</a>', content_format: 1
+        }, files: [] } }
+    ] }]
+  });
+  const target = model({
+    provider: 'moodlia', siteUrl: 'https://target.example', courseId: 8, fullname: 'Course', shortname: 'COURSE',
+    sections: [{ id: 11, section: 0, modules: [] }]
+  });
+  const plan = createCourseSyncPlan({
+    source,
+    target,
+    capabilities: { module_create: { available: true, supported_fields: ['module_type', 'name', 'visible', 'settings'] } }
+  });
+  const destination = plan.actions.find((action) => action.source_key === 'module:20');
+  const link = plan.actions.find((action) => action.source_key === 'module:21');
+  assert.match(link.fields.settings.content, /moodlia-sync:\/\/modules\/module%3A20/);
+  assert.deepEqual(link.depends_on, [destination.action_id]);
 });
 
 test('profiles keep token values outside configuration and descriptions', () => {

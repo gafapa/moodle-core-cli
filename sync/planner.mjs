@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { canonicalize, contentDigest } from './canonical.mjs';
 import { selectedCourseFields } from './model.mjs';
+import { rewriteMoodleHtmlReferences } from './references.mjs';
 
 function changedFields(source, target, fields) {
   return Object.fromEntries(fields
@@ -593,7 +594,19 @@ export function createCourseSyncPlan({
           continue;
         }
         const authoring = sourceModule.authoring ?? {};
-        const settings = authoring.settings ?? {};
+        const references = rewriteMoodleHtmlReferences(authoring.settings?.content ?? '', {
+          sourceSiteUrl: source.site.site_url,
+          targetSiteUrl: target.site.site_url,
+          sourceModel: source,
+          targetModel: target,
+          mapping
+        });
+        if (references.blocked.length > 0) {
+          unsupported.push({ kind: 'module.internal_links', source_key: sourceModule.sync_key,
+            reason: references.blocked[0].reason });
+          continue;
+        }
+        const settings = { ...(authoring.settings ?? {}), content: references.html };
         const assets = authoring.files ?? [];
         if (![1, 2, 'html', 'plain'].includes(settings.content_format ?? 1)) {
           unsupported.push({ kind: 'page.content_format', source_key: sourceModule.sync_key, reason: 'destination_format_not_representable' });
@@ -601,10 +614,6 @@ export function createCourseSyncPlan({
         }
         if (authoredContentHasFiles(settings.content) && assets.length === 0) {
           unsupported.push({ kind: 'module.assets', source_key: sourceModule.sync_key, module_type: 'page', reason: 'native_editor_asset_manifest_incomplete' });
-          continue;
-        }
-        if (containsSourceSiteReference(settings.content, source.site.site_url)) {
-          unsupported.push({ kind: 'module.internal_links', source_key: sourceModule.sync_key, reason: 'internal_link_mapping_unavailable' });
           continue;
         }
         const targetModule = targetEntityByMapping(targetModules, mapping, 'modules', sourceModule);
@@ -636,6 +645,8 @@ export function createCourseSyncPlan({
             target_section_number: targetSection?.section_number ?? null,
             target_id: null,
             ...(stageSourceKey ? { asset_stage_source_key: stageSourceKey, expected_assets: assets } : {}),
+            ...(references.reference_source_keys.length > 0
+              ? { reference_source_keys: references.reference_source_keys } : {}),
             fields: {
               module_type: 'page', name: sourceModule.name,
               ...(sourceModule.visible === null ? {} : { visible: sourceModule.visible }),
@@ -691,6 +702,8 @@ export function createCourseSyncPlan({
             kind: 'page_content.update', source_key: sourceModule.sync_key,
             target_id: targetModule.source_id,
             ...(stageSourceKey ? { asset_stage_source_key: stageSourceKey, expected_assets: assets } : {}),
+            ...(references.reference_source_keys.length > 0
+              ? { reference_source_keys: references.reference_source_keys } : {}),
             fields,
             expected_target_digest: contentDigest({ ...targetModule, ...visibilityUpdates }),
             effects: stageSourceKey ? ['content.write', 'file.write'] : ['content.write']
@@ -703,10 +716,23 @@ export function createCourseSyncPlan({
           unsupported.push({ kind: 'module.authoring', source_key: sourceModule.sync_key, module_type: sourceModule.module_type, reason: 'source_authoring_unavailable' });
           continue;
         }
-        const settings = sourceModule.authoring?.settings ?? {};
+        const originalSettings = sourceModule.authoring?.settings ?? {};
         const assets = sourceModule.authoring?.files ?? [];
         const contentField = sourceModule.module_type === 'label' ? 'content' : 'intro';
         const formatField = sourceModule.module_type === 'label' ? 'content_format' : 'intro_format';
+        const references = rewriteMoodleHtmlReferences(originalSettings[contentField] ?? '', {
+          sourceSiteUrl: source.site.site_url,
+          targetSiteUrl: target.site.site_url,
+          sourceModel: source,
+          targetModel: target,
+          mapping
+        });
+        if (references.blocked.length > 0) {
+          unsupported.push({ kind: 'module.internal_links', source_key: sourceModule.sync_key,
+            reason: references.blocked[0].reason });
+          continue;
+        }
+        const settings = { ...originalSettings, [contentField]: references.html };
         if (![1, 2, 'html', 'plain'].includes(settings[formatField] ?? 1)) {
           unsupported.push({ kind: `${sourceModule.module_type}.content_format`, source_key: sourceModule.sync_key,
             reason: 'destination_format_not_representable' });
@@ -715,10 +741,6 @@ export function createCourseSyncPlan({
         if (authoredContentHasFiles(settings[contentField]) && assets.length === 0) {
           unsupported.push({ kind: 'module.assets', source_key: sourceModule.sync_key,
             module_type: sourceModule.module_type, reason: 'native_editor_asset_manifest_incomplete' });
-          continue;
-        }
-        if (containsSourceSiteReference(settings[contentField], source.site.site_url)) {
-          unsupported.push({ kind: 'module.internal_links', source_key: sourceModule.sync_key, reason: 'internal_link_mapping_unavailable' });
           continue;
         }
         const targetModule = targetEntityByMapping(targetModules, mapping, 'modules', sourceModule);
@@ -755,6 +777,8 @@ export function createCourseSyncPlan({
               target_section_number: targetSection?.section_number ?? null,
               target_id: null,
               ...(stageSourceKey ? { asset_stage_source_key: stageSourceKey, expected_assets: assets } : {}),
+              ...(references.reference_source_keys.length > 0
+                ? { reference_source_keys: references.reference_source_keys } : {}),
               fields: moduleFields,
               effects: stageSourceKey ? ['content.write', 'file.write'] : ['content.write']
             });
@@ -810,6 +834,8 @@ export function createCourseSyncPlan({
             kind: `${sourceModule.module_type}_content.update`, source_key: sourceModule.sync_key,
             target_id: targetModule.source_id,
             ...(stageSourceKey ? { asset_stage_source_key: stageSourceKey, expected_assets: assets } : {}),
+            ...(references.reference_source_keys.length > 0
+              ? { reference_source_keys: references.reference_source_keys } : {}),
             fields,
             expected_target_digest: contentDigest({ ...targetModule, ...moduleUpdates }),
             effects: stageSourceKey ? ['content.write', 'file.write'] : ['content.write']
@@ -1057,7 +1083,8 @@ export function createCourseSyncPlan({
       action.after_source_key,
       action.asset_stage_source_key,
       action.group_source_key,
-      action.grouping_source_key
+      action.grouping_source_key,
+      ...(action.reference_source_keys ?? [])
     ].filter(Boolean);
     action.depends_on = [...new Set(actions
       .filter((candidate) => candidate.action_id !== action.action_id

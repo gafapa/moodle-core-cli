@@ -5,6 +5,7 @@ import path from 'node:path';
 import { contentDigest } from './canonical.mjs';
 import { selectedCourseFields } from './model.mjs';
 import { courseBindingId, createCourseSyncPlan, validateSyncPlan } from './planner.mjs';
+import { resolveDeferredMoodleReferences } from './references.mjs';
 
 function resultEntityId(result) {
   const value = result?.id ?? result?.course_id ?? result?.section_id ?? result?.group_id ?? result?.grouping_id
@@ -53,6 +54,20 @@ async function withAssetMaterials(sourceAdapter, assets, callback) {
 
 function fieldsMatch(entity, fields) {
   return entity && Object.entries(fields).every(([name, value]) => entity[name] === value);
+}
+
+function resolveActionReferences(action, context) {
+  const resolveValue = (value) => {
+    if (typeof value === 'string' && value.includes('moodlia-sync://')) {
+      return resolveDeferredMoodleReferences(value, context);
+    }
+    if (Array.isArray(value)) return value.map(resolveValue);
+    if (value && typeof value === 'object') {
+      return Object.fromEntries(Object.entries(value).map(([name, item]) => [name, resolveValue(item)]));
+    }
+    return value;
+  };
+  return { ...action, fields: resolveValue(action.fields) };
 }
 
 function currentEntityDigest(action, model) {
@@ -114,12 +129,13 @@ function verifyResults(plan, model, results) {
       const moduleId = action.target_id ?? createdId;
       entity = model.sections.flatMap((section) => section.modules)
         .find((entry) => entry.source_id === moduleId);
-      const settingsMatch = Object.entries(action.fields.settings ?? {})
+      const fields = resultByAction.get(action.action_id)?.resolved_fields ?? action.fields;
+      const settingsMatch = Object.entries(fields.settings ?? {})
         .every(([name, value]) => entity?.authoring?.settings?.[name] === value);
       if (!entity
-        || (action.fields.module_type !== undefined && entity.module_type !== action.fields.module_type)
-        || (action.fields.name !== undefined && entity.name !== action.fields.name)
-        || (action.fields.visible !== undefined && entity.visible !== action.fields.visible)
+        || (fields.module_type !== undefined && entity.module_type !== fields.module_type)
+        || (fields.name !== undefined && entity.name !== fields.name)
+        || (fields.visible !== undefined && entity.visible !== fields.visible)
         || !settingsMatch) {
         failures.push({ action_id: action.action_id, reason: 'readback_mismatch' });
       }
@@ -158,7 +174,8 @@ function verifyResults(plan, model, results) {
         hidden: Boolean(entity.hidden),
         order: Number(entity.page_number ?? 1) - 1
       } : null;
-      if (!fieldsMatch(comparable, action.fields)) {
+      const fields = resultByAction.get(action.action_id)?.resolved_fields ?? action.fields;
+      if (!fieldsMatch(comparable, fields)) {
         failures.push({ action_id: action.action_id, reason: 'readback_mismatch' });
       }
       continue;
@@ -174,7 +191,8 @@ function verifyResults(plan, model, results) {
       entity = model.sections.flatMap((section) => section.modules)
         .find((entry) => entry.source_id === action.target_id);
       const comparable = { name: entity?.name, ...(entity?.authoring?.settings ?? {}) };
-      if (!fieldsMatch(comparable, action.fields)) {
+      const fields = resultByAction.get(action.action_id)?.resolved_fields ?? action.fields;
+      if (!fieldsMatch(comparable, fields)) {
         failures.push({ action_id: action.action_id, reason: 'readback_mismatch' });
       }
       if (action.expected_assets) {
@@ -192,7 +210,8 @@ function verifyResults(plan, model, results) {
       const comparable = action.kind === 'url_content.update'
         ? { name: entity?.name, ...(entity?.authoring?.settings ?? {}) }
         : (entity?.authoring?.settings ?? {});
-      if (!fieldsMatch(comparable, action.fields)) {
+      const fields = resultByAction.get(action.action_id)?.resolved_fields ?? action.fields;
+      if (!fieldsMatch(comparable, fields)) {
         failures.push({ action_id: action.action_id, reason: 'readback_mismatch' });
       }
       if (action.expected_assets) {
@@ -394,7 +413,12 @@ export class CourseSyncEngine {
           this.stateStore.saveJob(job);
           return job;
         }
-        const context = { courseId: currentCourseId, createdEntities };
+        const context = {
+          courseId: currentCourseId,
+          createdEntities,
+          targetSiteUrl: plan.target.site_url,
+          mapping: plan.entity_mapping_snapshot
+        };
         if (action.expected_target_digest) {
           const immediateTarget = await targetAdapter.exportCourse(currentCourseId);
           if (currentEntityDigest(action, immediateTarget) !== action.expected_target_digest) {
@@ -413,6 +437,8 @@ export class CourseSyncEngine {
         job.results.push(activeResult);
         job.updated_at = new Date().toISOString();
         this.stateStore.saveJob(job);
+        const executableAction = resolveActionReferences(action, context);
+        activeResult.resolved_fields = executableAction.fields;
         let result;
         if (action.kind === 'module_asset.stage') {
           result = await withAssetMaterials(sourceAdapter, action.assets, (materials) =>
@@ -424,7 +450,7 @@ export class CourseSyncEngine {
           result = await withAssetMaterials(sourceAdapter, action.assets, (materials) =>
             targetAdapter.publishBookChapterAssets(action, materials, context));
         } else {
-          result = await targetAdapter.applySyncAction(action, context);
+          result = await targetAdapter.applySyncAction(executableAction, context);
         }
         activeResult.status = 'succeeded';
         activeResult.result = result;

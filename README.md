@@ -20,6 +20,8 @@ The package now provides the Core-only foundation for profile-based, no-backup c
 
 The shared planner models native editor content and assets for Pages, Text and media activities, and URL resources. A destination adapter must advertise the corresponding typed capability before the planner emits an identity-preserving content update.
 
+Internal links in Page, Text and media, and URL editor HTML are parsed rather than replaced as raw text. Known destination mappings are rewritten during planning; links to activities created by the same plan become dependency-bound deferred references. External links are preserved and Moodle-origin URLs containing authentication tokens are rejected.
+
 The same command exposes durable recovery and verification with `--job-id`, `--history`, `--cancel-job`, `--resume-job`, and `--verify-plan`. A timed-out write is recorded as an unknown outcome and reconciled before resume; it is never replayed blindly.
 
 ```powershell
