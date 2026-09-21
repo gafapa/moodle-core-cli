@@ -1,5 +1,5 @@
 export interface CourseSyncModel {
-  schema_version: 1;
+  schema_version: 2;
   extracted_at: string;
   digest: string;
   site: Record<string, unknown>;
@@ -9,10 +9,14 @@ export interface CourseSyncModel {
   groupings: Array<Record<string, unknown>>;
   assets: Array<Record<string, unknown>>;
   exclusions: Array<Record<string, unknown>>;
+  losses: Array<Record<string, unknown>>;
+  unknowns: Array<Record<string, unknown>>;
+  completeness: Record<string, unknown>;
+  capability_evidence: Record<string, unknown>;
 }
 
 export interface CourseSyncPlan {
-  schema_version: 1;
+  schema_version: 2;
   plan_id: string;
   binding_id: string;
   digest: string;
@@ -26,6 +30,8 @@ export interface CourseSyncPlan {
   divergences: Array<Record<string, unknown>>;
   unsupported: Array<Record<string, unknown>>;
   skipped: Array<Record<string, unknown>>;
+  unchanged: Array<Record<string, unknown>>;
+  unknown: Array<Record<string, unknown>>;
   applicable: boolean;
 }
 

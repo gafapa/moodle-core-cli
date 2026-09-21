@@ -49,6 +49,41 @@ test('capability resolution checks fields and live operation evidence', () => {
   assert.deepEqual(missing.candidates[0].rejectionReasons, ['requirements_unavailable']);
 });
 
+test('sync model v2 distinguishes unknown, null, and empty fields with owned assets', () => {
+  const snapshot = createCourseSyncModel({
+    site: { provider: 'moodlia', site_url: 'https://source.example' },
+    course: { id: 7, fullname: 'Course', shortname: 'COURSE', summary: '', idnumber: null },
+    sections: [{
+      id: 10,
+      section: 0,
+      name: '',
+      modules: [{
+        id: 20,
+        modname: 'page',
+        name: 'Page',
+        authoring_completeness: 'complete',
+        authoring: {
+          kind: 'page',
+          settings: { content: '<img src="@@PLUGINFILE@@/hero.png">', content_format: 1 },
+          files: [{ filename: 'hero.png', filepath: '/', filesize: 3, sha256: 'abc' }]
+        }
+      }]
+    }],
+    losses: [{ scope: 'custom_field', reason: 'not_readable' }],
+    unknowns: [{ scope: 'hidden_modules', reason: 'permission_limited' }]
+  });
+
+  assert.equal(snapshot.schema_version, 2);
+  assert.equal(snapshot.course.field_states.summary, 'explicit_empty');
+  assert.equal(snapshot.course.field_states.idnumber, 'explicit_null');
+  assert.equal(snapshot.course.field_states.visible, 'unknown');
+  assert.equal(snapshot.assets[0].owner.field, 'files');
+  assert.equal(snapshot.assets[0].logical_path, '/hero.png');
+  assert.match(snapshot.assets[0].asset_key, /^asset:/);
+  assert.equal(snapshot.losses[0].reason, 'not_readable');
+  assert.equal(snapshot.unknowns[0].reason, 'permission_limited');
+});
+
 test('profiles keep token values outside configuration and descriptions', () => {
   const profiles = parseProfiles({
     schema_version: 1,

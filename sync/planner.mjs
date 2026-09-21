@@ -990,6 +990,26 @@ export function createCourseSyncPlan({
     const { action_id: ignoredActionId, ...actionIdentity } = action;
     action.action_id = actionId(actionIdentity);
   }
+  const selectedEntityKeys = [
+    `course:${source.course.source_id}`,
+    ...source.sections.map((section) => section.sync_key),
+    ...source.sections.flatMap((section) => section.modules.map((module) => module.sync_key)),
+    ...source.groups.map((group) => group.sync_key),
+    ...source.groupings.map((grouping) => grouping.sync_key),
+    ...source.sections.flatMap((section) => section.modules.flatMap((module) =>
+      (module.authoring?.chapters ?? []).map((chapter, index) =>
+        `chapter:${Number(chapter.chapter_id ?? 0) || `${module.sync_key}:${index}`}`)))
+  ];
+  const changedEntityKeys = new Set(actions.flatMap((action) => [
+    action.source_key,
+    action.parent_source_key,
+    action.parent_module_source_key,
+    action.group_source_key,
+    action.grouping_source_key
+  ].filter(Boolean)));
+  const unchanged = selectedEntityKeys
+    .filter((sourceKey) => !changedEntityKeys.has(sourceKey))
+    .map((sourceKey) => ({ source_key: sourceKey }));
   const actionSummary = {
     creates: actions.filter((action) => action.kind.endsWith('.create')).length,
     updates: actions.filter((action) => action.kind.endsWith('.update') || action.kind.endsWith('.set')).length,
@@ -997,6 +1017,7 @@ export function createCourseSyncPlan({
     asset_transfers: actions.filter((action) =>
       action.kind.includes('asset') || action.kind === 'module_asset.stage').length,
     deletes: actions.filter((action) => action.kind.endsWith('.delete')).length,
+    unchanged: unchanged.length,
     estimated_transfer_bytes: actions.reduce((total, action) => total
       + (action.assets ?? []).reduce((sum, asset) => sum + Number(asset.filesize ?? 0), 0)
       + Number(action.asset?.filesize ?? 0), 0),
@@ -1004,7 +1025,8 @@ export function createCourseSyncPlan({
   };
   const now = new Date();
   const semantic = canonicalize({
-    schema_version: 1,
+    schema_version: 2,
+    contract_versions: { sync_model: 2, sync_plan: 2 },
     binding_id: courseBindingId(source, target),
     source: { site: source.site, course_id: source.course.source_id, digest: source.digest },
     target: {
@@ -1021,13 +1043,18 @@ export function createCourseSyncPlan({
     divergences,
     unsupported,
     skipped,
+    unchanged,
+    unknown: [
+      ...(source.unknowns ?? []).map((entry) => ({ side: 'source', ...entry })),
+      ...(target.unknowns ?? []).map((entry) => ({ side: 'target', ...entry }))
+    ],
     applicable: (!['abort', 'report'].includes(conflictPolicy) || conflicts.length === 0)
       && (unsupportedPolicy === 'skip'
         || unsupported.length === 0
         || (unsupportedPolicy === 'degrade' && unsupported.every((entry) => entry.degradable === true)))
   });
   const planWithoutDigest = canonicalize({
-    schema_version: 1,
+    schema_version: 2,
     plan_id: randomUUID(),
     created_at: now.toISOString(),
     expires_at: new Date(now.getTime() + expiresInMs).toISOString(),
@@ -1038,7 +1065,7 @@ export function createCourseSyncPlan({
 }
 
 export function validateSyncPlan(plan) {
-  if (!plan || plan.schema_version !== 1 || typeof plan.plan_id !== 'string') {
+  if (!plan || plan.schema_version !== 2 || typeof plan.plan_id !== 'string') {
     throw new TypeError('Sync plan is invalid.');
   }
   const { digest, ...unsigned } = plan;
