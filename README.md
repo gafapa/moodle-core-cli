@@ -18,9 +18,9 @@ Moodle version compatibility does not grant access by itself. The external servi
 
 The package now provides the Core-only foundation for profile-based, no-backup course synchronization. Planning is read-only and writes an immutable JSON plan. Applying requires the saved plan digest and `--allow-write`.
 
-The shared planner models native editor content and assets for Pages, Text and media activities, and URL resources. A destination adapter must advertise the corresponding typed capability before the planner emits an identity-preserving content update.
+The shared planner models native editor content and assets for sections, Pages, Text and media activities, URL resources, Book chapters, and assignment description and instruction areas. A destination adapter must advertise the corresponding typed capability before the planner emits an identity-preserving content update.
 
-Internal links in Page, Text and media, and URL editor HTML are parsed rather than replaced as raw text. Known destination mappings are rewritten during planning; links to activities created by the same plan become dependency-bound deferred references. External links are preserved and Moodle-origin URLs containing authentication tokens are rejected.
+Internal links in section, Page, Text and media, URL, Book, and assignment editor HTML are parsed rather than replaced as raw text. Known destination mappings are rewritten during planning; links to activities created by the same plan become dependency-bound deferred references. External links are preserved and Moodle-origin URLs containing authentication tokens are rejected.
 
 The same command exposes durable recovery and verification with `--job-id`, `--history`, `--cancel-job`, `--resume-job`, and `--verify-plan`. A timed-out write is recorded as an unknown outcome and reconciled before resume; it is never replayed blindly.
 

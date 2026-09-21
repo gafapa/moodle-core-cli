@@ -35,6 +35,7 @@ function normalizeSection(section, index) {
     name: optionalString(section.name) ?? '',
     summary: optionalString(section.summary) ?? '',
     summary_format: normalizeTextFormat(section.summaryformat ?? section.summary_format ?? 1),
+    files: structuredClone(section.files ?? section.summary_files ?? []),
     visible: section.visible === undefined ? null : Boolean(section.visible),
     order: index,
     modules: (section.modules ?? []).map((module, moduleIndex) => {
@@ -64,6 +65,7 @@ function normalizeSection(section, index) {
     name: { names: ['name'], value: normalized.name },
     summary: { names: ['summary'], value: normalized.summary },
     summary_format: { names: ['summaryformat', 'summary_format'], value: normalized.summary_format },
+    files: { names: ['files', 'summary_files'], value: normalized.files },
     visible: { names: ['visible'], value: normalized.visible }
   });
   return normalized;
@@ -141,7 +143,23 @@ export function createCourseSyncModel({
     },
     capability_evidence: structuredClone(capabilityEvidence)
   };
-  model.assets = model.sections.flatMap((section) => section.modules.flatMap((module) => [
+  model.assets = model.sections.flatMap((section) => [
+    ...(section.files ?? []).map((file) => ({
+      owner: {
+        entity: section.sync_key,
+        component: 'course',
+        file_area: 'section',
+        field: 'summary'
+      },
+      filename: String(file.filename ?? ''),
+      filepath: String(file.filepath ?? '/'),
+      filesize: Number(file.filesize ?? 0),
+      mimetype: optionalString(file.mimetype),
+      content_hash: optionalString(file.content_hash),
+      sha256: optionalString(file.sha256),
+      url: optionalString(file.url)
+    })),
+    ...section.modules.flatMap((module) => [
     ...(module.authoring?.files ?? []).map((file) => ({
       owner: {
         entity: module.sync_key,
@@ -173,8 +191,26 @@ export function createCourseSyncModel({
       content_hash: optionalString(file.content_hash),
       sha256: optionalString(file.sha256),
       url: optionalString(file.url)
-    })))
-  ])).map((asset) => ({
+    }))),
+    ...['intro', 'activity'].flatMap((field) => (module.authoring?.content?.[`${field}_files`] ?? [])
+      .map((file) => ({
+        owner: {
+          entity: module.sync_key,
+          module: module.sync_key,
+          component: 'mod_assign',
+          file_area: field === 'intro' ? 'intro' : 'activityattachment',
+          field
+        },
+        filename: String(file.filename ?? ''),
+        filepath: String(file.filepath ?? '/'),
+        filesize: Number(file.filesize ?? 0),
+        mimetype: optionalString(file.mimetype),
+        content_hash: optionalString(file.content_hash),
+        sha256: optionalString(file.sha256),
+        url: optionalString(file.url)
+      })))
+    ])
+  ]).map((asset) => ({
     asset_key: `asset:${contentDigest({
       owner: asset.owner,
       filepath: asset.filepath,

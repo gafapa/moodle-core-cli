@@ -10,7 +10,8 @@ This inventory records implementation status rather than inferred Moodle capabil
 | Core section/activity authoring | Unavailable | No promoted exact authoring adapter; course-format actions remain experimental |
 | MoodlIA contextual discovery | Verified contract | Category/course capability evidence from `get_sync_capabilities` |
 | MoodlIA sections and group structure | Verified unit/static contract | Runtime qualification required on every supported branch |
-| Page/Label/URL creation | Verified planner/adapter fixtures | Existing authored-content updates remain unavailable |
+| Page/Label/URL authoring | Verified planner/adapter fixtures | Typed creation and identity-preserving updates use multi-file drafts |
+| Section and assignment editor files | Verified planner/adapter/static plugin tests | Runtime Moodle matrix qualification is required before release |
 | Resource/folder creation | Verified planner/adapter fixtures | Resource replacement is supported; existing folder replacement is unavailable |
 | Book chapters and files | Verified planner/adapter/static plugin tests | Source bytes use SHA-256; final file manifests are read back |
 | Assignment content and new rubrics | Verified planner/adapter/static plugin tests | Existing grading definitions are protected; incomplete plugin configuration requires a named degradation |

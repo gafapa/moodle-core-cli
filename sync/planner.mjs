@@ -87,6 +87,12 @@ function authoredContentHasFiles(content) {
   return /@@PLUGINFILE@@|\/(?:webservice\/)?pluginfile\.php(?:\/|\?)/i.test(String(content ?? ''));
 }
 
+function assetMatches(sourceAsset, targetAsset) {
+  if (sourceAsset.filepath !== targetAsset.filepath || sourceAsset.filename !== targetAsset.filename) return false;
+  if (sourceAsset.sha256) return sourceAsset.sha256 === targetAsset.sha256;
+  return Boolean(sourceAsset.content_hash) && sourceAsset.content_hash === targetAsset.content_hash;
+}
+
 function allModules(model) {
   return model.sections.flatMap((section) => section.modules);
 }
@@ -150,11 +156,29 @@ export function createCourseSyncPlan({
   }
   for (const sourceSection of source.sections) {
     const targetSection = targetSectionByMapping(target, mapping, sourceSection);
+    const references = rewriteMoodleHtmlReferences(sourceSection.summary, {
+      sourceSiteUrl: source.site.site_url,
+      targetSiteUrl: target.site.site_url,
+      sourceModel: source,
+      targetModel: target,
+      mapping
+    });
+    if (references.blocked.length > 0) {
+      unsupported.push({ kind: 'section.internal_links', source_key: sourceSection.sync_key,
+        reason: references.blocked[0].reason });
+      continue;
+    }
+    const sourceFiles = sourceSection.files ?? [];
+    if (authoredContentHasFiles(references.html) && sourceFiles.length === 0) {
+      unsupported.push({ kind: 'section.assets', source_key: sourceSection.sync_key,
+        reason: 'native_editor_asset_manifest_incomplete' });
+      continue;
+    }
     if (!targetSection) {
       const detail = { kind: 'section.create', source_key: sourceSection.sync_key, reason: 'target_capability_unavailable' };
       const fields = {
         name: sourceSection.name,
-        summary: sourceSection.summary,
+        summary: references.html,
         summary_format: sourceSection.summary_format,
         visible: sourceSection.visible,
         order: sourceSection.order
@@ -165,9 +189,37 @@ export function createCourseSyncPlan({
           entity_namespace: 'sections',
           source_key: sourceSection.sync_key,
           target_id: null,
+          ...(references.reference_source_keys.length > 0
+            ? { reference_source_keys: references.reference_source_keys } : {}),
           fields,
           effects: ['content.write']
         });
+        if (sourceFiles.length > 0) {
+          if (!capabilitySupports(capabilities, 'module_asset_stage',
+            ['filename', 'filepath', 'filesize', 'content_hash'])
+            || !capabilitySupports(capabilities, 'section_update', ['summary', 'summary_format'])) {
+            unsupported.push({ kind: 'section.assets', source_key: sourceSection.sync_key,
+              reason: 'target_capability_unavailable' });
+            continue;
+          }
+          const stageSourceKey = `draft:${sourceSection.sync_key}`;
+          addAction(actions, {
+            kind: 'module_asset.stage', entity_namespace: 'drafts', source_key: stageSourceKey,
+            assets: sourceFiles, effects: ['file.read', 'file.write']
+          });
+          addAction(actions, {
+            kind: 'section.update', source_key: `content:${sourceSection.sync_key}`,
+            parent_source_key: sourceSection.sync_key,
+            target_id: null,
+            target_section_number: sourceSection.section_number,
+            asset_stage_source_key: stageSourceKey,
+            expected_assets: sourceFiles,
+            ...(references.reference_source_keys.length > 0
+              ? { reference_source_keys: references.reference_source_keys } : {}),
+            fields: { summary: references.html, summary_format: sourceSection.summary_format },
+            effects: ['content.write', 'file.write']
+          });
+        }
       } else unsupported.push(detail);
       continue;
     }
@@ -175,8 +227,9 @@ export function createCourseSyncPlan({
     const baselineTargetSection = baseline?.target_model
       ? targetSectionByMapping(baseline.target_model, mapping, sourceSection)
       : null;
+    const portableSourceSection = { ...sourceSection, summary: references.html };
     const fields = threeWayChangedFields(
-      sourceSection,
+      portableSourceSection,
       targetSection,
       baselineSourceSection,
       baselineTargetSection,
@@ -186,17 +239,42 @@ export function createCourseSyncPlan({
         identity: { kind: 'section.update', source_key: sourceSection.sync_key }
       }
     );
-    if (Object.keys(fields).length === 0) continue;
-    if (capabilitySupports(capabilities, 'section_update', Object.keys(fields))) {
+    const targetFiles = targetSection.files ?? [];
+    const filesMatch = sourceFiles.every((asset) => targetFiles.some((targetAsset) =>
+      assetMatches(asset, targetAsset)));
+    const targetOnlyFiles = targetFiles.filter((targetAsset) => !sourceFiles.some((asset) =>
+      asset.filepath === targetAsset.filepath && asset.filename === targetAsset.filename));
+    if (targetOnlyFiles.length > 0) {
+      divergences.push({
+        kind: 'section.assets', source_key: sourceSection.sync_key, field: 'files',
+        reason: 'target_only_files_preserved',
+        target_files: targetOnlyFiles.map((file) => ({ filepath: file.filepath, filename: file.filename }))
+      });
+    }
+    if (Object.keys(fields).length === 0 && filesMatch) continue;
+    if (capabilitySupports(capabilities, 'section_update', Object.keys(fields))
+      && (filesMatch || capabilitySupports(capabilities, 'module_asset_stage',
+        ['filename', 'filepath', 'filesize', 'content_hash']))) {
+      let stageSourceKey = null;
+      if (!filesMatch && sourceFiles.length > 0) {
+        stageSourceKey = `draft:${sourceSection.sync_key}`;
+        addAction(actions, {
+          kind: 'module_asset.stage', entity_namespace: 'drafts', source_key: stageSourceKey,
+          assets: sourceFiles, effects: ['file.read', 'file.write']
+        });
+      }
       addAction(actions, {
         kind: 'section.update',
         entity_namespace: 'sections',
         source_key: sourceSection.sync_key,
         target_id: targetSection.source_id,
         target_section_number: targetSection.section_number,
+        ...(stageSourceKey ? { asset_stage_source_key: stageSourceKey, expected_assets: sourceFiles } : {}),
+        ...(references.reference_source_keys.length > 0
+          ? { reference_source_keys: references.reference_source_keys } : {}),
         fields,
         ...(targetSection.source_id ? { expected_target_digest: contentDigest(targetSection) } : {}),
-        effects: ['content.write']
+        effects: stageSourceKey ? ['content.write', 'file.write'] : ['content.write']
       });
     } else unsupported.push({ kind: 'section.update', source_key: sourceSection.sync_key, fields: Object.keys(fields), reason: 'target_capability_unavailable' });
   }
@@ -339,8 +417,15 @@ export function createCourseSyncPlan({
           });
           continue;
         }
-        if (authoredContentHasFiles(authoring.content?.intro) || authoredContentHasFiles(authoring.content?.activity)) {
-          unsupported.push({ kind: 'assignment.assets', source_key: sourceModule.sync_key, reason: 'native_editor_asset_manifest_incomplete' });
+        const assignmentFiles = {
+          intro: authoring.content?.intro_files ?? [],
+          activity: authoring.content?.activity_files ?? []
+        };
+        const incompleteFileArea = ['intro', 'activity'].find((filearea) =>
+          authoredContentHasFiles(authoring.content?.[filearea]) && assignmentFiles[filearea].length === 0);
+        if (incompleteFileArea) {
+          unsupported.push({ kind: 'assignment.assets', source_key: sourceModule.sync_key,
+            file_area: incompleteFileArea, reason: 'native_editor_asset_manifest_incomplete' });
           continue;
         }
         const introReferences = rewriteMoodleHtmlReferences(authoring.content?.intro ?? '', {
@@ -404,6 +489,16 @@ export function createCourseSyncPlan({
             unsupported.push({ kind: 'module.create', source_key: sourceModule.sync_key, reason: 'target_capability_unavailable' });
             continue;
           }
+          const assetFileAreas = Object.entries(assignmentFiles).filter(([, files]) => files.length > 0);
+          if (assetFileAreas.length > 0
+            && (!capabilitySupports(capabilities, 'module_asset_stage',
+              ['filename', 'filepath', 'filesize', 'content_hash'])
+              || !capabilitySupports(capabilities, 'assignment_content_update',
+                ['intro', 'intro_format', 'activity', 'activity_format']))) {
+            unsupported.push({ kind: 'assignment.assets', source_key: sourceModule.sync_key,
+              reason: 'target_capability_unavailable' });
+            continue;
+          }
           addAction(actions, {
             kind: 'module.create', entity_namespace: 'modules', source_key: sourceModule.sync_key,
             parent_source_key: sourceSection.sync_key,
@@ -412,6 +507,27 @@ export function createCourseSyncPlan({
             ...(referenceSourceKeys.length > 0 ? { reference_source_keys: referenceSourceKeys } : {}),
             fields, effects: ['content.write']
           });
+          for (const [filearea, files] of assetFileAreas) {
+            const stageSourceKey = `draft:${filearea}:${sourceModule.sync_key}`;
+            addAction(actions, {
+              kind: 'module_asset.stage', entity_namespace: 'drafts', source_key: stageSourceKey,
+              assets: files, effects: ['file.read', 'file.write']
+            });
+            addAction(actions, {
+              kind: 'assignment_content.update', source_key: `${filearea}:${sourceModule.sync_key}`,
+              parent_source_key: sourceModule.sync_key,
+              target_id: null,
+              file_area: filearea,
+              asset_stage_source_key: stageSourceKey,
+              expected_assets: files,
+              ...(referenceSourceKeys.length > 0 ? { reference_source_keys: referenceSourceKeys } : {}),
+              fields: {
+                [filearea]: portableContent[filearea],
+                [`${filearea}_format`]: portableContent[`${filearea}_format`]
+              },
+              effects: ['content.write', 'file.write']
+            });
+          }
           if (authoring.rubric) {
             if (capabilitySupports(capabilities, 'assignment_rubric_set', ['name', 'description', 'criteria', 'options'])) {
               addAction(actions, {
@@ -431,7 +547,23 @@ export function createCourseSyncPlan({
           'intro', 'intro_format', 'activity', 'activity_format'
         ]);
         if (sourceModule.name !== targetModule.name) contentUpdates.name = sourceModule.name;
-        if (Object.keys(contentUpdates).length > 0) {
+        const assetChanges = {};
+        for (const filearea of ['intro', 'activity']) {
+          const sourceAssets = assignmentFiles[filearea];
+          const targetAssets = targetModule.authoring?.content?.[`${filearea}_files`] ?? [];
+          assetChanges[filearea] = sourceAssets.length > 0 && !sourceAssets.every((asset) =>
+            targetAssets.some((targetAsset) => assetMatches(asset, targetAsset)));
+          const targetOnlyAssets = targetAssets.filter((targetAsset) => !sourceAssets.some((asset) =>
+            asset.filepath === targetAsset.filepath && asset.filename === targetAsset.filename));
+          if (targetOnlyAssets.length > 0) {
+            divergences.push({
+              kind: 'assignment.assets', source_key: sourceModule.sync_key, file_area: filearea,
+              field: `${filearea}_files`, reason: 'target_only_files_preserved',
+              target_files: targetOnlyAssets.map((file) => ({ filepath: file.filepath, filename: file.filename }))
+            });
+          }
+        }
+        if (!Object.values(assetChanges).some(Boolean) && Object.keys(contentUpdates).length > 0) {
           if (capabilitySupports(capabilities, 'assignment_content_update', Object.keys(contentUpdates))) {
             addAction(actions, {
               kind: 'assignment_content.update', source_key: sourceModule.sync_key,
@@ -440,6 +572,67 @@ export function createCourseSyncPlan({
               expected_target_digest: contentDigest(targetModule), effects: ['content.write']
             });
           } else unsupported.push({ kind: 'assignment_content.update', source_key: sourceModule.sync_key, reason: 'target_capability_unavailable' });
+        } else if (Object.values(assetChanges).some(Boolean)) {
+          const remainingUpdates = { ...contentUpdates };
+          let actionIndex = 0;
+          for (const filearea of ['intro', 'activity']) {
+            const fields = {};
+            for (const field of [filearea, `${filearea}_format`]) {
+              if (remainingUpdates[field] !== undefined) {
+                fields[field] = remainingUpdates[field];
+                delete remainingUpdates[field];
+              }
+            }
+            if (assetChanges[filearea]) {
+              fields[filearea] ??= portableContent[filearea];
+              fields[`${filearea}_format`] ??= portableContent[`${filearea}_format`];
+            }
+            if (Object.keys(fields).length === 0) continue;
+            if (actionIndex === 0 && remainingUpdates.name !== undefined) {
+              fields.name = remainingUpdates.name;
+              delete remainingUpdates.name;
+            }
+            if (!capabilitySupports(capabilities, 'assignment_content_update', Object.keys(fields))
+              || (assetChanges[filearea] && !capabilitySupports(capabilities, 'module_asset_stage',
+                ['filename', 'filepath', 'filesize', 'content_hash']))) {
+              unsupported.push({ kind: 'assignment_content.update', source_key: sourceModule.sync_key,
+                file_area: filearea, reason: 'target_capability_unavailable' });
+              continue;
+            }
+            let stageSourceKey = null;
+            if (assetChanges[filearea]) {
+              stageSourceKey = `draft:${filearea}:${sourceModule.sync_key}`;
+              addAction(actions, {
+                kind: 'module_asset.stage', entity_namespace: 'drafts', source_key: stageSourceKey,
+                assets: assignmentFiles[filearea], effects: ['file.read', 'file.write']
+              });
+            }
+            addAction(actions, {
+              kind: 'assignment_content.update', source_key: `${filearea}:${sourceModule.sync_key}`,
+              target_id: targetModule.source_id,
+              file_area: filearea,
+              ...(stageSourceKey ? {
+                asset_stage_source_key: stageSourceKey,
+                expected_assets: assignmentFiles[filearea]
+              } : {}),
+              ...(referenceSourceKeys.length > 0 ? { reference_source_keys: referenceSourceKeys } : {}),
+              fields,
+              ...(actionIndex === 0 ? { expected_target_digest: contentDigest(targetModule) } : {}),
+              effects: stageSourceKey ? ['content.write', 'file.write'] : ['content.write']
+            });
+            actionIndex += 1;
+          }
+          if (Object.keys(remainingUpdates).length > 0) {
+            if (capabilitySupports(capabilities, 'assignment_content_update', Object.keys(remainingUpdates))) {
+              addAction(actions, {
+                kind: 'assignment_content.update', source_key: `metadata:${sourceModule.sync_key}`,
+                target_id: targetModule.source_id, fields: remainingUpdates,
+                ...(actionIndex === 0 ? { expected_target_digest: contentDigest(targetModule) } : {}),
+                effects: ['content.write']
+              });
+            } else unsupported.push({ kind: 'assignment_content.update', source_key: sourceModule.sync_key,
+              reason: 'target_capability_unavailable' });
+          }
         }
         if (contentDigest(authoring.settings ?? {}) !== contentDigest(targetModule.authoring?.settings ?? {})) {
           unsupported.push({ kind: 'assignment.settings_update', source_key: sourceModule.sync_key, reason: 'target_capability_unavailable' });

@@ -115,6 +115,18 @@ function verifyResults(plan, model, results) {
     if (action.kind.startsWith('section.')) {
       const createdId = resultEntityId(resultByAction.get(action.action_id)?.result);
       entity = model.sections.find((entry) => entry.source_id === (action.target_id ?? createdId));
+      const fields = resultByAction.get(action.action_id)?.resolved_fields ?? action.fields;
+      if (!fieldsMatch(entity, fields)) {
+        failures.push({ action_id: action.action_id, reason: 'readback_mismatch' });
+      }
+      if (action.expected_assets) {
+        const assetsMatch = action.expected_assets.every((asset) => (entity?.files ?? [])
+          .some((targetAsset) => asset.filepath === targetAsset.filepath
+            && asset.filename === targetAsset.filename
+            && asset.sha256 && asset.sha256 === targetAsset.sha256));
+        if (!assetsMatch) failures.push({ action_id: action.action_id, reason: 'section_asset_readback_mismatch' });
+      }
+      continue;
     }
     if (action.kind.startsWith('group.')) {
       const createdId = resultEntityId(resultByAction.get(action.action_id)?.result);
@@ -181,10 +193,23 @@ function verifyResults(plan, model, results) {
       continue;
     }
     if (action.kind === 'assignment_content.update') {
+      const createdModule = action.parent_source_key
+        ? plan.actions.find((candidate) => candidate.kind === 'module.create'
+          && candidate.source_key === action.parent_source_key)
+        : null;
+      const moduleId = action.target_id ?? resultEntityId(resultByAction.get(createdModule?.action_id)?.result);
       entity = model.sections.flatMap((section) => section.modules)
-        .find((entry) => entry.source_id === action.target_id);
+        .find((entry) => entry.source_id === moduleId);
       const comparable = { name: entity?.name, ...(entity?.authoring?.content ?? {}) };
-      if (!fieldsMatch(comparable, action.fields)) failures.push({ action_id: action.action_id, reason: 'readback_mismatch' });
+      const fields = resultByAction.get(action.action_id)?.resolved_fields ?? action.fields;
+      if (!fieldsMatch(comparable, fields)) failures.push({ action_id: action.action_id, reason: 'readback_mismatch' });
+      if (action.expected_assets) {
+        const targetAssets = entity?.authoring?.content?.[`${action.file_area}_files`] ?? [];
+        const assetsMatch = action.expected_assets.every((asset) => targetAssets.some((targetAsset) =>
+          asset.filepath === targetAsset.filepath && asset.filename === targetAsset.filename
+          && asset.sha256 && asset.sha256 === targetAsset.sha256));
+        if (!assetsMatch) failures.push({ action_id: action.action_id, reason: 'assignment_asset_readback_mismatch' });
+      }
       continue;
     }
     if (action.kind === 'page_content.update') {

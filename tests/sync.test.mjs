@@ -893,6 +893,84 @@ test('resource and folder creation stages verified assets before publishing the 
   assert.equal(plan.actions[1].expected_assets[0].sha256, 'sha256-file');
 });
 
+test('section editor assets are staged and published after section identity exists', () => {
+  const file = {
+    filename: 'hero.jpg', filepath: '/media/', filesize: 4, mimetype: 'image/jpeg',
+    content_hash: 'moodle-section-hash', sha256: 'sha256-section',
+    url: 'https://source.example/webservice/pluginfile.php/1/course/section/10/media/hero.jpg'
+  };
+  const source = model({
+    provider: 'moodlia', siteUrl: 'https://source.example', courseId: 7, fullname: 'Course', shortname: 'COURSE',
+    sections: [{
+      id: 10, section: 1, name: 'Unit', summary: '<img src="@@PLUGINFILE@@/media/hero.jpg">',
+      summary_format: 'html', files: [file], modules: []
+    }]
+  });
+  const target = model({
+    provider: 'moodlia', siteUrl: 'https://target.example', courseId: 8, fullname: 'Course', shortname: 'COURSE',
+    sections: [{ id: 90, section: 0, name: 'General', modules: [] }]
+  });
+  const plan = createCourseSyncPlan({
+    source,
+    target,
+    capabilities: { section_create: true, section_update: true, module_asset_stage: true }
+  });
+  assert.deepEqual(plan.actions.map((action) => action.kind), [
+    'section.create', 'module_asset.stage', 'section.update'
+  ]);
+  assert.equal(plan.actions[2].asset_stage_source_key, plan.actions[1].source_key);
+  assert.deepEqual(plan.actions[2].expected_assets, [file]);
+  assert.ok(plan.actions[2].depends_on.includes(plan.actions[0].action_id));
+  assert.ok(plan.actions[2].depends_on.includes(plan.actions[1].action_id));
+  assert.equal(source.assets[0].owner.file_area, 'section');
+});
+
+test('assignment editor assets are staged by file area without recreating the activity', () => {
+  const file = {
+    filename: 'diagram.png', filepath: '/media/', filesize: 5, mimetype: 'image/png',
+    content_hash: 'moodle-assignment-hash', sha256: 'sha256-assignment',
+    url: 'https://source.example/webservice/pluginfile.php/1/mod_assign/intro/0/media/diagram.png'
+  };
+  const assignment = {
+    id: 20, modname: 'assign', name: 'Essay', visible: true, authoring_completeness: 'selected',
+    authoring: {
+      kind: 'assignment', settings: {}, losses: [], rubric: null,
+      content: {
+        intro: '<img src="@@PLUGINFILE@@/media/diagram.png">', intro_format: 1, intro_files: [file],
+        activity: '<p>Instructions</p>', activity_format: 1, activity_files: []
+      }
+    }
+  };
+  const source = model({
+    provider: 'moodlia', siteUrl: 'https://source.example', courseId: 7, fullname: 'Course', shortname: 'COURSE',
+    sections: [{ id: 10, section: 0, name: 'General', modules: [assignment] }]
+  });
+  const target = model({
+    provider: 'moodlia', siteUrl: 'https://target.example', courseId: 8, fullname: 'Course', shortname: 'COURSE',
+    sections: [{ id: 11, section: 0, name: 'General', modules: [{
+      ...assignment,
+      id: 90,
+      authoring: {
+        ...assignment.authoring,
+        content: { ...assignment.authoring.content, intro: '<p>Old</p>', intro_files: [] }
+      }
+    }] }]
+  });
+  const plan = createCourseSyncPlan({
+    source,
+    target,
+    mapping: { modules: { 'module:20': 90 } },
+    capabilities: { assignment_content_update: true, module_asset_stage: true }
+  });
+  assert.deepEqual(plan.actions.map((action) => action.kind), [
+    'module_asset.stage', 'assignment_content.update'
+  ]);
+  assert.equal(plan.actions[1].file_area, 'intro');
+  assert.equal(plan.actions[1].target_id, 90);
+  assert.deepEqual(plan.actions[1].expected_assets, [file]);
+  assert.equal(source.assets[0].owner.file_area, 'intro');
+});
+
 test('new assignments can carry a rubric while existing grading definitions are protected', () => {
   const assignment = {
     id: 20, modname: 'assign', name: 'Essay', visible: true, authoring_completeness: 'selected',
