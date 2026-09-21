@@ -406,6 +406,8 @@ export function createCourseSyncPlan({
           continue;
         }
         const authoring = sourceModule.authoring ?? {};
+        const gradingDefinition = authoring.grading_definition
+          ?? (authoring.rubric ? { method: 'rubric', ...authoring.rubric } : null);
         const assignmentFormats = [
           Number(authoring.content?.intro_format ?? 1),
           Number(authoring.content?.activity_format ?? 1)
@@ -528,18 +530,31 @@ export function createCourseSyncPlan({
               effects: ['content.write', 'file.write']
             });
           }
-          if (authoring.rubric) {
-            if (capabilitySupports(capabilities, 'assignment_rubric_set', ['name', 'description', 'criteria', 'options'])) {
+          if (gradingDefinition) {
+            const gradingCapability = {
+              rubric: 'assignment_rubric_set',
+              checklist: 'assignment_checklist_set',
+              guide: 'assignment_guide_set'
+            }[gradingDefinition.method];
+            const gradingKind = {
+              rubric: 'assignment_rubric.set',
+              checklist: 'assignment_checklist.set',
+              guide: 'assignment_guide.set'
+            }[gradingDefinition.method];
+            const { method: ignoredMethod, ...gradingFields } = gradingDefinition;
+            if (gradingCapability && gradingKind
+              && capabilitySupports(capabilities, gradingCapability, Object.keys(gradingFields))) {
               addAction(actions, {
-                kind: 'assignment_rubric.set',
-                source_key: `rubric:${sourceModule.sync_key}`,
+                kind: gradingKind,
+                source_key: `grading:${sourceModule.sync_key}`,
                 parent_source_key: sourceModule.sync_key,
                 target_module_id: null,
                 target_id: null,
-                fields: authoring.rubric,
+                fields: gradingFields,
                 effects: ['content.write', 'grading_configuration.write']
               });
-            } else unsupported.push({ kind: 'assignment_rubric.set', source_key: sourceModule.sync_key, reason: 'target_capability_unavailable' });
+            } else unsupported.push({ kind: gradingKind ?? 'assignment_grading.set',
+              source_key: sourceModule.sync_key, reason: 'target_capability_unavailable' });
           }
           continue;
         }
@@ -637,7 +652,11 @@ export function createCourseSyncPlan({
         if (contentDigest(authoring.settings ?? {}) !== contentDigest(targetModule.authoring?.settings ?? {})) {
           unsupported.push({ kind: 'assignment.settings_update', source_key: sourceModule.sync_key, reason: 'target_capability_unavailable' });
         }
-        if (contentDigest(authoring.rubric ?? null) !== contentDigest(targetModule.authoring?.rubric ?? null)) {
+        const targetGradingDefinition = targetModule.authoring?.grading_definition
+          ?? (targetModule.authoring?.rubric
+            ? { method: 'rubric', ...targetModule.authoring.rubric }
+            : null);
+        if (contentDigest(gradingDefinition) !== contentDigest(targetGradingDefinition)) {
           unsupported.push({ kind: 'assignment.grading_definition_update', source_key: sourceModule.sync_key, reason: 'existing_grading_definition_protected' });
         }
         continue;

@@ -1017,6 +1017,52 @@ test('new assignments can carry a rubric while existing grading definitions are 
   assert.equal(protectedPlan.unsupported.some((entry) => entry.reason === 'existing_grading_definition_protected'), true);
 });
 
+test('new assignments preserve checklist and marking-guide definitions', () => {
+  const definitions = [
+    {
+      method: 'checklist', name: 'Checklist', description: '',
+      items: [{ sort_order: 1, description: 'Includes evidence', score: 5 }]
+    },
+    {
+      method: 'guide', name: 'Guide', description: '', options: {},
+      criteria: [{
+        sort_order: 1, shortname: 'Accuracy', description: 'Accuracy',
+        description_markers: 'Marker guidance', max_score: 10
+      }],
+      comments: [{ sort_order: 1, description: 'Well supported' }]
+    }
+  ];
+  for (const definition of definitions) {
+    const source = model({
+      provider: 'moodlia', siteUrl: 'https://source.example', courseId: 7,
+      fullname: 'Course', shortname: 'COURSE',
+      sections: [{ id: 10, section: 0, name: 'General', modules: [{
+        id: 20, modname: 'assign', name: 'Essay', visible: true, authoring_completeness: 'selected',
+        authoring: {
+          kind: 'assignment', settings: {}, losses: [], rubric: null,
+          grading_definition: definition,
+          content: { intro: '', intro_format: 1, activity: '', activity_format: 1 }
+        }
+      }] }]
+    });
+    const target = model({
+      provider: 'moodlia', siteUrl: 'https://target.example', courseId: 8,
+      fullname: 'Course', shortname: 'COURSE',
+      sections: [{ id: 90, section: 0, name: 'General', modules: [] }]
+    });
+    const capability = definition.method === 'guide' ? 'assignment_guide_set' : 'assignment_checklist_set';
+    const expectedKind = definition.method === 'guide' ? 'assignment_guide.set' : 'assignment_checklist.set';
+    const plan = createCourseSyncPlan({
+      source,
+      target,
+      mapping: { sections: { 'section:10': 90 } },
+      capabilities: { module_create: true, [capability]: true }
+    });
+    assert.deepEqual(plan.actions.map((action) => action.kind), ['module.create', expectedKind]);
+    assert.equal(plan.actions[1].fields.name, definition.name);
+  }
+});
+
 test('new Workshops preserve rubric definitions with more than four levels', () => {
   const levels = Array.from({ length: 6 }, (_, index) => ({
     definition: `Level ${index + 1}`,

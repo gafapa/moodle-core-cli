@@ -14,7 +14,7 @@ This matrix describes the current implementation, not the complete long-term roa
 | Pages | Structural reads only | Authoring destination unsupported | Typed content and native editor-file manifests | Exact creation/update with identity preservation and multi-file drafts | Preview |
 | Labels and URLs | Structural reads only | Authoring destination unsupported | Complete typed reads and native editor-file manifests | Exact creation and identity-preserving mapped updates | Preview |
 | File resources and folders | Structural reads are incomplete | Publication unsupported | File manifests and SHA-256 verification | Exact creation; resource replacement; folder update blocked | Partial preview |
-| Assignments and rubrics | Authoring round trip not proven | Unsupported | Selected authoring fields, two native editor-file manifests, and rubric definitions | New assignment/rubric and identity-preserving content/file updates; existing grading definitions protected | Partial preview |
+| Assignments and grading forms | Authoring round trip not proven | Unsupported | Selected authoring fields, two native editor-file manifests, rubrics, binary checklists, and marking guides | New assignment/grading form and identity-preserving content/file updates; existing grading definitions protected | Partial preview |
 | Workshop forms | Definition reads/writes not proven | Unsupported | Portable definitions for four standard strategies | New Workshop/form; existing definitions protected | Partial preview |
 | Questions and quizzes | Partial APIs | Ownership-safe round trip not proven | Typed operations exist | Version/context transformation pending | Pending |
 | Learner submissions, grades, attempts, logs | Excluded | Excluded | Excluded | Excluded | Out of scope |

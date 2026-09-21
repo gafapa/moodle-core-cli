@@ -248,7 +248,7 @@ function verifyResults(plan, model, results) {
       }
       continue;
     }
-    if (action.kind === 'assignment_rubric.set') {
+    if (['assignment_rubric.set', 'assignment_checklist.set', 'assignment_guide.set'].includes(action.kind)) {
       const createdModule = plan.actions.find((candidate) =>
         candidate.kind === 'module.create' && candidate.source_key === action.parent_source_key);
       const createdId = createdModule
@@ -256,8 +256,15 @@ function verifyResults(plan, model, results) {
         : action.target_module_id;
       entity = model.sections.flatMap((section) => section.modules)
         .find((entry) => entry.source_id === createdId);
-      if (contentDigest(entity?.authoring?.rubric ?? null) !== contentDigest(action.fields)) {
-        failures.push({ action_id: action.action_id, reason: 'rubric_readback_mismatch' });
+      const expectedMethod = {
+        'assignment_rubric.set': 'rubric',
+        'assignment_checklist.set': 'checklist',
+        'assignment_guide.set': 'guide'
+      }[action.kind];
+      const actualDefinition = entity?.authoring?.grading_definition
+        ?? (entity?.authoring?.rubric ? { method: 'rubric', ...entity.authoring.rubric } : null);
+      if (contentDigest(actualDefinition) !== contentDigest({ method: expectedMethod, ...action.fields })) {
+        failures.push({ action_id: action.action_id, reason: 'grading_definition_readback_mismatch' });
       }
       continue;
     }
