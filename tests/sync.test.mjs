@@ -23,7 +23,8 @@ import {
 
 function model({
   provider = 'core', siteUrl, courseId, fullname, shortname, visible = true,
-  sections = [], groups = [], groupings = [], courseCompletion = null, gradebook = null
+  sections = [], groups = [], groupings = [], courseCompletion = null, gradebook = null,
+  targetCreation = null
 }) {
   return createCourseSyncModel({
     site: { provider, site_url: siteUrl, moodle_version: '5.3' },
@@ -32,7 +33,8 @@ function model({
     groups,
     groupings,
     courseCompletion,
-    gradebook
+    gradebook,
+    targetCreation
   });
 }
 
@@ -1164,7 +1166,9 @@ test('new quizzes import private questions and journal slots separately', () => 
   ]);
   assert.deepEqual(plan.actions[1].depends_on, [plan.actions[0].action_id]);
   assert.deepEqual(plan.actions[2].depends_on.sort(), [plan.actions[0].action_id, plan.actions[1].action_id].sort());
-  assert.deepEqual(plan.actions[3].depends_on, [plan.actions[2].action_id]);
+  assert.deepEqual(plan.actions[3].depends_on.sort(), [
+    plan.actions[0].action_id, plan.actions[2].action_id
+  ].sort());
 });
 
 test('new Lessons create ordered portable pages and block cross-page jumps', () => {
@@ -1342,6 +1346,44 @@ test('course completion criteria resolve activity identities and protect locked 
     capabilities: { module_create: true, course_completion_set: true }
   });
   assert.equal(locked.unsupported.some((entry) => entry.reason === 'target_completion_criteria_locked'), true);
+});
+
+test('new courses preserve root manual and module grade items', () => {
+  const source = model({
+    provider: 'moodlia', siteUrl: 'https://source.example', courseId: 7,
+    fullname: 'Course', shortname: 'COURSE', sections: [{
+      id: 10, section: 0, name: 'General', modules: [{
+        id: 20, modname: 'page', name: 'Page', visible: true,
+        authoring_completeness: 'complete',
+        authoring: { kind: 'page', settings: { content: '<p>Read.</p>', content_format: 1 }, files: [] }
+      }]
+    }],
+    gradebook: { losses: [], items: [{
+      kind: 'manual', source_item_id: 1, remote_item_id: 500, name: 'Participation',
+      grade_min: 0, grade_max: 10, grade_pass: 5, hidden: false
+    }, {
+      kind: 'module', module_source_key: 'module:20', remote_item_id: 501, item_number: 0,
+      name: 'Page', grade_min: 0, grade_max: 100, grade_pass: 80,
+      hidden: false, locked: false, weight: 0, weight_overridden: false
+    }] }
+  });
+  const target = model({
+    provider: 'moodlia', siteUrl: 'https://target.example', courseId: null,
+    fullname: '', shortname: '', sections: [{ id: null, section: 0, name: '', modules: [] }],
+    targetCreation: { category_id: 2, shortname: 'COURSE-COPY' }
+  });
+  const plan = createCourseSyncPlan({
+    source, target, targetCreation: target.target_creation,
+    capabilities: {
+      course_create: true, section_update: true, module_create: true,
+      grade_item_create: true, grade_item_update: true
+    }
+  });
+  assert.deepEqual(plan.actions.map((action) => action.kind), [
+    'course.create', 'section.update', 'module.create', 'grade_item.create', 'grade_item.update'
+  ]);
+  assert.ok(plan.actions[4].depends_on.includes(plan.actions[2].action_id));
+  assert.equal(plan.actions[4].module_source_key, 'module:20');
 });
 
 test('new Workshops preserve rubric definitions with more than four levels', () => {

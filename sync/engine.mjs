@@ -403,6 +403,25 @@ function verifyResults(plan, model, results) {
       }
       continue;
     }
+    if (action.kind === 'grade_item.create' || action.kind === 'grade_item.update') {
+      const result = resultByAction.get(action.action_id)?.result;
+      let item = (model.gradebook?.items ?? []).find((entry) =>
+        Number(entry.remote_item_id) === Number(action.target_id ?? resultEntityId(result)));
+      if (!item && action.module_source_key) {
+        const createdModule = plan.actions.find((candidate) =>
+          candidate.kind === 'module.create' && candidate.source_key === action.module_source_key);
+        const moduleId = action.target_module_id
+          ?? resultEntityId(resultByAction.get(createdModule?.action_id)?.result);
+        item = (model.gradebook?.items ?? []).find((entry) =>
+          entry.kind === 'module'
+          && entry.module_source_key === `module:${moduleId}`
+          && Number(entry.item_number) === Number(action.item_number ?? 0));
+      }
+      if (!item || !fieldsMatch(item, action.fields)) {
+        failures.push({ action_id: action.action_id, reason: 'grade_item_readback_mismatch' });
+      }
+      continue;
+    }
     if (action.kind === 'book_asset.transfer') {
       const chapterResult = resultByAction.get(action.action_id)?.result;
       const files = chapterResult?.files ?? chapterResult?.uploaded_files ?? [];

@@ -1781,6 +1781,96 @@ export function createCourseSyncPlan({
       });
     }
   }
+  if (source.gradebook) {
+    const gradebook = source.gradebook;
+    if ((gradebook.losses ?? []).length > 0) {
+      unsupported.push({
+        kind: 'gradebook.sync', source_key: `course:${source.course.source_id}`,
+        reason: 'selected_configuration_incomplete', losses: gradebook.losses,
+        degradable: true, transformation: 'root_gradebook_items_only'
+      });
+    }
+    if ((gradebook.losses ?? []).length === 0 || unsupportedPolicy === 'degrade') {
+      for (const sourceItem of gradebook.items ?? []) {
+        if (sourceItem.kind === 'manual') {
+          const sourceKey = `grade-item:manual:${sourceItem.source_item_id}`;
+          const mappedId = mapping?.grade_items?.[sourceKey];
+          const targetItem = mappedId === undefined ? null : (target.gradebook?.items ?? [])
+            .find((item) => Number(item.remote_item_id) === Number(mappedId));
+          const fields = {
+            name: sourceItem.name, grade_min: sourceItem.grade_min,
+            grade_max: sourceItem.grade_max, grade_pass: sourceItem.grade_pass,
+            hidden: sourceItem.hidden
+          };
+          if (!targetItem) {
+            if (target.course.source_id !== null) {
+              unsupported.push({ kind: 'grade_item.create', source_key: sourceKey,
+                reason: 'manual_grade_item_mapping_required' });
+            } else if (capabilitySupports(capabilities, 'grade_item_create', Object.keys(fields))) {
+              addAction(actions, {
+                kind: 'grade_item.create', entity_namespace: 'grade_items', source_key: sourceKey,
+                target_id: null, fields, effects: ['grading_configuration.write']
+              });
+            } else unsupported.push({ kind: 'grade_item.create', source_key: sourceKey,
+              reason: 'target_capability_unavailable' });
+            continue;
+          }
+          const updates = changedFields(fields, targetItem, Object.keys(fields));
+          if (Object.keys(updates).length > 0) {
+            if (targetItem.locked) {
+              unsupported.push({ kind: 'grade_item.update', source_key: sourceKey,
+                reason: 'target_grade_item_locked' });
+            } else if (capabilitySupports(capabilities, 'grade_item_update', Object.keys(updates))) {
+              addAction(actions, {
+                kind: 'grade_item.update', source_key: sourceKey, target_id: targetItem.remote_item_id,
+                fields: updates, effects: ['grading_configuration.write']
+              });
+            } else unsupported.push({ kind: 'grade_item.update', source_key: sourceKey,
+              reason: 'target_capability_unavailable' });
+          }
+          continue;
+        }
+        if (sourceItem.kind === 'module') {
+          const sourceModule = allModules(source).find((module) => module.sync_key === sourceItem.module_source_key);
+          const mappedModuleId = sourceModule ? mapping?.modules?.[sourceModule.sync_key] : null;
+          const createAction = actions.find((action) => action.kind === 'module.create'
+            && action.source_key === sourceItem.module_source_key);
+          if (!sourceModule || (mappedModuleId === undefined && !createAction)) {
+            unsupported.push({ kind: 'module_grade_item.update', source_key: sourceItem.module_source_key,
+              reason: 'target_activity_mapping_unavailable' });
+            continue;
+          }
+          const targetItem = mappedModuleId === undefined ? null : (target.gradebook?.items ?? []).find((item) =>
+            item.kind === 'module'
+            && item.module_source_key === `module:${mappedModuleId}`
+            && Number(item.item_number) === Number(sourceItem.item_number));
+          const fields = {
+            grade_min: sourceItem.grade_min, grade_max: sourceItem.grade_max,
+            grade_pass: sourceItem.grade_pass, hidden: sourceItem.hidden,
+            locked: sourceItem.locked,
+            ...(sourceItem.weight_overridden ? { weight: sourceItem.weight } : {})
+          };
+          const updates = targetItem ? changedFields(fields, targetItem, Object.keys(fields)) : fields;
+          if (Object.keys(updates).length === 0) continue;
+          if (targetItem?.locked) {
+            unsupported.push({ kind: 'module_grade_item.update', source_key: sourceItem.module_source_key,
+              reason: 'target_grade_item_locked' });
+          } else if (capabilitySupports(capabilities, 'grade_item_update', Object.keys(updates))) {
+            addAction(actions, {
+              kind: 'grade_item.update', source_key: `grade-item:${sourceItem.module_source_key}:${sourceItem.item_number}`,
+              module_source_key: sourceItem.module_source_key,
+              target_module_id: mappedModuleId ?? null,
+              target_id: targetItem?.remote_item_id ?? null,
+              item_number: sourceItem.item_number,
+              fields: updates,
+              effects: ['grading_configuration.write']
+            });
+          } else unsupported.push({ kind: 'module_grade_item.update', source_key: sourceItem.module_source_key,
+            reason: 'target_capability_unavailable' });
+        }
+      }
+    }
+  }
   const skipped = [];
   if (unsupportedPolicy === 'skip') {
     const skippedKeys = new Set(unsupported.map((entry) => entry.source_key).filter(Boolean));
@@ -1828,6 +1918,7 @@ export function createCourseSyncPlan({
       action.asset_stage_source_key,
       action.dependency_source_key,
       action.question_import_source_key,
+      action.module_source_key,
       action.group_source_key,
       action.grouping_source_key,
       ...(action.reference_source_keys ?? [])
@@ -1856,6 +1947,7 @@ export function createCourseSyncPlan({
     action.parent_module_source_key,
     action.dependency_source_key,
     action.question_import_source_key,
+    action.module_source_key,
     action.group_source_key,
     action.grouping_source_key
   ].filter(Boolean)));
