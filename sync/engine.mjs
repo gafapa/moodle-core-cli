@@ -9,7 +9,8 @@ import { resolveDeferredMoodleReferences } from './references.mjs';
 
 function resultEntityId(result) {
   const value = result?.id ?? result?.course_id ?? result?.section_id ?? result?.group_id ?? result?.grouping_id
-    ?? result?.module_id ?? result?.chapter_id ?? result?.field_id ?? result?.item_id ?? result?.slot_id;
+    ?? result?.module_id ?? result?.chapter_id ?? result?.page_id ?? result?.field_id ?? result?.item_id
+    ?? result?.slot_id;
   const id = Number(value);
   return Number.isInteger(id) && id > 0 ? id : null;
 }
@@ -331,6 +332,30 @@ function verifyResults(plan, model, results) {
         .find((entry) => entry.source_id === moduleId);
       if (contentDigest(entity?.authoring?.blueprint ?? null) !== contentDigest(action.fields.blueprint)) {
         failures.push({ action_id: action.action_id, reason: 'question_bank_readback_mismatch' });
+      }
+      continue;
+    }
+    if (action.kind === 'lesson_page.create') {
+      const createdModule = plan.actions.find((candidate) =>
+        candidate.kind === 'module.create' && candidate.source_key === action.parent_source_key);
+      const moduleId = action.target_module_id
+        ?? resultEntityId(resultByAction.get(createdModule?.action_id)?.result);
+      entity = model.sections.flatMap((section) => section.modules)
+        .find((entry) => entry.source_id === moduleId);
+      const sourcePageId = Number(action.source_key.split(':').at(-1));
+      const page = (entity?.authoring?.pages ?? [])
+        .find((entry) => Number(entry.source_page_id) === sourcePageId);
+      const comparable = page ? {
+        page_type: page.page_type,
+        title: page.title,
+        content: page.content,
+        content_format: page.content_format,
+        definition: page.definition,
+        display_in_menu: page.display_in_menu,
+        horizontal: page.horizontal
+      } : null;
+      if (contentDigest(comparable) !== contentDigest(action.fields)) {
+        failures.push({ action_id: action.action_id, reason: 'lesson_page_readback_mismatch' });
       }
       continue;
     }

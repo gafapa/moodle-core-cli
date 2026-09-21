@@ -1167,6 +1167,49 @@ test('new quizzes import private questions and journal slots separately', () => 
   assert.deepEqual(plan.actions[3].depends_on, [plan.actions[2].action_id]);
 });
 
+test('new Lessons create ordered portable pages and block cross-page jumps', () => {
+  const pages = [{
+    source_page_id: 1, page_type: 'content', title: 'Start', content: '<p>Choose.</p>',
+    content_format: 1, display_in_menu: true, horizontal: false, files_count: 0,
+    definition: { branches: [{ title: 'Continue', response: '', jump_to: -1, score: 0 }] }
+  }, {
+    source_page_id: 2, page_type: 'truefalse', title: 'Check', content: '<p>True?</p>',
+    content_format: 1, display_in_menu: false, horizontal: false, files_count: 0,
+    definition: { answers: { answers: [
+      { answer: 'True', response: 'Correct', jump_to: -1, score: 1 },
+      { answer: 'False', response: 'Try again', jump_to: 0, score: 0 }
+    ] } }
+  }];
+  const source = model({
+    provider: 'moodlia', siteUrl: 'https://source.example', courseId: 7,
+    fullname: 'Course', shortname: 'COURSE', sections: [{
+      id: 10, section: 0, name: 'General', modules: [{
+        id: 20, modname: 'lesson', name: 'Lesson', visible: true,
+        authoring_completeness: 'complete',
+        authoring: { kind: 'lesson', settings: { max_answers: 4 }, pages, losses: [] }
+      }]
+    }]
+  });
+  const target = model({
+    provider: 'moodlia', siteUrl: 'https://target.example', courseId: 8,
+    fullname: 'Course', shortname: 'COURSE',
+    sections: [{ id: 90, section: 0, name: 'General', modules: [] }]
+  });
+  const plan = createCourseSyncPlan({
+    source, target, mapping: { sections: { 'section:10': 90 } },
+    capabilities: { module_create: true, lesson_page_create: true }
+  });
+  assert.deepEqual(plan.actions.map((action) => action.kind), [
+    'module.create', 'lesson_page.create', 'lesson_page.create'
+  ]);
+  assert.deepEqual(plan.actions[1].depends_on, [plan.actions[0].action_id]);
+  assert.deepEqual(plan.actions[2].depends_on.sort(), [plan.actions[0].action_id, plan.actions[1].action_id].sort());
+
+  source.sections[0].modules[0].authoring.pages[0].definition.branches[0].jump_to = { source_page_id: 2 };
+  const blocked = createCourseSyncPlan({ source, target, capabilities: { module_create: true, lesson_page_create: true } });
+  assert.equal(blocked.unsupported[0].reason, 'cross_page_jump_remapping_not_supported');
+});
+
 test('new Database and Feedback activities preserve portable definitions', () => {
   const modules = [{
     id: 20, modname: 'data', name: 'Research log', visible: true,

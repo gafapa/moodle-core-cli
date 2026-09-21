@@ -400,6 +400,104 @@ export function createCourseSyncPlan({
   const targetModules = allModules(target);
   for (const sourceSection of source.sections) {
     for (const sourceModule of sourceSection.modules) {
+      if (sourceModule.module_type === 'lesson') {
+        if (sourceModule.authoring_completeness !== 'complete') {
+          unsupported.push({ kind: 'lesson.authoring', source_key: sourceModule.sync_key,
+            reason: 'source_authoring_incomplete' });
+          continue;
+        }
+        const authoring = sourceModule.authoring ?? {};
+        const pages = authoring.pages ?? [];
+        if (/@@PLUGINFILE@@|\/(?:webservice\/)?pluginfile\.php/i.test(JSON.stringify(authoring))
+          || pages.some((page) => Number(page.files_count ?? 0) > 0)) {
+          unsupported.push({ kind: 'lesson.assets', source_key: sourceModule.sync_key,
+            reason: 'native_lesson_asset_manifest_unavailable' });
+          continue;
+        }
+        if (pages.some((page) => JSON.stringify(page.definition ?? {}).includes('"source_page_id"'))) {
+          unsupported.push({ kind: 'lesson.jumps', source_key: sourceModule.sync_key,
+            reason: 'cross_page_jump_remapping_not_supported' });
+          continue;
+        }
+        if ((authoring.losses ?? []).length > 0) {
+          unsupported.push({
+            kind: 'lesson.settings', source_key: sourceModule.sync_key,
+            reason: 'selected_configuration_incomplete', losses: authoring.losses,
+            degradable: true, transformation: 'lesson_selected_settings'
+          });
+          if (unsupportedPolicy !== 'degrade') continue;
+        }
+        const targetModule = targetEntityByMapping(targetModules, mapping, 'modules', sourceModule);
+        const targetSection = targetSectionByMapping(target, mapping, sourceSection);
+        if (!targetModule) {
+          const parentWillBeCreated = actions.some((action) =>
+            action.kind === 'section.create' && action.source_key === sourceSection.sync_key);
+          if (!targetSection && !parentWillBeCreated) {
+            unsupported.push({ kind: 'module.create', source_key: sourceModule.sync_key,
+              reason: 'target_section_unresolved' });
+            continue;
+          }
+          if (!capabilitySupports(capabilities, 'module_create', ['module_type', 'name', 'visible', 'settings'])
+            || !capabilitySupports(capabilities, 'lesson_page_create', [
+              'page_type', 'title', 'content', 'content_format', 'definition',
+              'display_in_menu', 'horizontal'
+            ])) {
+            unsupported.push({ kind: 'lesson.create', source_key: sourceModule.sync_key,
+              reason: 'target_capability_unavailable' });
+            continue;
+          }
+          addAction(actions, {
+            kind: 'module.create', entity_namespace: 'modules', source_key: sourceModule.sync_key,
+            parent_source_key: sourceSection.sync_key,
+            target_section_number: targetSection?.section_number ?? null, target_id: null,
+            fields: {
+              module_type: 'lesson', name: sourceModule.name,
+              ...(sourceModule.visible === null ? {} : { visible: sourceModule.visible }),
+              settings: authoring.settings ?? {},
+              ...((authoring.losses ?? []).length > 0
+                ? { transformation: 'lesson_selected_settings' } : {})
+            },
+            effects: ['content.write']
+          });
+          let previousPageSourceKey = null;
+          for (const page of pages) {
+            const pageSourceKey = `lesson-page:${sourceModule.sync_key}:${page.source_page_id}`;
+            addAction(actions, {
+              kind: 'lesson_page.create', entity_namespace: 'lesson_pages', source_key: pageSourceKey,
+              parent_source_key: sourceModule.sync_key, after_source_key: previousPageSourceKey,
+              target_module_id: null, target_id: null,
+              fields: {
+                page_type: page.page_type, title: page.title, content: page.content,
+                content_format: page.content_format, definition: page.definition ?? {},
+                display_in_menu: page.display_in_menu, horizontal: page.horizontal
+              },
+              effects: ['content.write']
+            });
+            previousPageSourceKey = pageSourceKey;
+          }
+          continue;
+        }
+        const moduleUpdates = changedFields(sourceModule, targetModule, ['name', 'visible']);
+        if (Object.keys(moduleUpdates).length > 0) {
+          if (capabilitySupports(capabilities, 'module_update', Object.keys(moduleUpdates))) {
+            addAction(actions, {
+              kind: 'module.update', entity_namespace: 'modules', source_key: sourceModule.sync_key,
+              target_id: targetModule.source_id, fields: moduleUpdates,
+              expected_target_digest: contentDigest(targetModule), effects: ['content.write']
+            });
+          } else unsupported.push({ kind: 'module.update', source_key: sourceModule.sync_key,
+            reason: 'target_capability_unavailable' });
+        }
+        if (contentDigest(authoring.settings ?? {}) !== contentDigest(targetModule.authoring?.settings ?? {})) {
+          unsupported.push({ kind: 'lesson.settings_update', source_key: sourceModule.sync_key,
+            reason: 'target_capability_unavailable' });
+        }
+        if (contentDigest(pages) !== contentDigest(targetModule.authoring?.pages ?? [])) {
+          unsupported.push({ kind: 'lesson.definition_update', source_key: sourceModule.sync_key,
+            reason: 'existing_lesson_definition_update_protected' });
+        }
+        continue;
+      }
       if (sourceModule.module_type === 'quiz') {
         if (sourceModule.authoring_completeness !== 'complete') {
           unsupported.push({ kind: 'quiz.authoring', source_key: sourceModule.sync_key,
