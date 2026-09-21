@@ -70,6 +70,9 @@
         "fullname": "string",
         "shortname": "string",
         "category_id": "integer",
+        "idnumber": "string|null",
+        "summary": "string|null",
+        "summary_format": "integer|null",
         "visible": "boolean",
         "start_date": "integer|null",
         "end_date": "integer|null"

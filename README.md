@@ -14,6 +14,25 @@ The package provides stable, friendly operations such as `create_course` while i
 
 Moodle version compatibility does not grant access by itself. The external service must expose each required function and the token user must have the corresponding capabilities.
 
+## Cross-site synchronization preview
+
+The package now provides the Core-only foundation for profile-based, no-backup course synchronization. Planning is read-only and writes an immutable JSON plan. Applying requires the saved plan digest and `--allow-write`.
+
+The same command exposes durable recovery and verification with `--job-id`, `--history`, `--cancel-job`, `--resume-job`, and `--verify-plan`. A timed-out write is recorded as an unknown outcome and reconciled before resume; it is never replayed blindly.
+
+```powershell
+moodle-core course sync `
+  --source-profile school_a --source-course-id 42 `
+  --target-profile school_b --target-course-id 81 `
+  --plan ".moodle-sync\plans\course-42.json"
+
+moodle-core course sync `
+  --apply-plan ".moodle-sync\plans\course-42.json" `
+  --plan-digest "sha256:..." --allow-write
+```
+
+Profiles use environment-variable references rather than embedded tokens. See [the synchronization architecture](docs/SYNC-ARCHITECTURE.md) and [the current capability matrix](docs/SYNC-CAPABILITY-MATRIX.md). The Core package intentionally contains no MCP server; cross-site MCP coordination is provided by the separate `moodlia-sync-mcp` package.
+
 ## Installation
 
 ```bash

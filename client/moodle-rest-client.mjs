@@ -798,6 +798,9 @@ function courseFromMoodle(course) {
     fullname: course.fullname,
     shortname: course.shortname,
     category_id: course.categoryid,
+    idnumber: course.idnumber || null,
+    summary: course.summary ?? null,
+    summary_format: course.summaryformat ?? null,
     visible: Boolean(course.visible),
     start_date: course.startdate || null,
     end_date: course.enddate || null

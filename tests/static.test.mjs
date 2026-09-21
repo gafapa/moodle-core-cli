@@ -30,6 +30,15 @@ test('CLI prints contract-generated help', async () => {
   assert.doesNotMatch(stdout, /core_course_create_courses/);
 });
 
+test('CLI documents durable sync recovery commands', async () => {
+  const { stdout } = await execFileAsync(process.execPath, [
+    'cli/moodle-core.mjs', 'course', 'sync', '--help'
+  ], { cwd: path.resolve('.') });
+  for (const option of ['--resume-job', '--verify-plan', '--job-id', '--history', '--cancel-job']) {
+    assert.match(stdout, new RegExp(option));
+  }
+});
+
 test('CLI requires explicit write and destructive-operation authorization', async () => {
   await assert.rejects(
     () => execFileAsync(process.execPath, ['cli/moodle-core.mjs', 'create-course'], {

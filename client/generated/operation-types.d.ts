@@ -4344,6 +4344,9 @@ export interface GetCourseResponse {
   fullname: string;
   shortname: string;
   category_id: number;
+  idnumber: string | null;
+  summary: string | null;
+  summary_format: number | null;
   visible: boolean;
   start_date: number | null;
   end_date: number | null;

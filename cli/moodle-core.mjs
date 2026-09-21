@@ -8,6 +8,12 @@ import {
   normalizeClientError,
   redactOperationResult
 } from '../client/moodle-rest-client.mjs';
+import {
+  printCapabilitiesHelp,
+  printCourseSyncHelp,
+  runCapabilitiesCommand,
+  runCourseSyncCommand
+} from './sync-commands.mjs';
 
 let debugEnabled = false;
 
@@ -71,6 +77,9 @@ function printHelp(contract, operation = null) {
     console.log('Usage: moodle-core <command> [options]');
     console.log('');
     console.log('Friendly Moodle operations:');
+    console.log('  capabilities             Inspect live Core synchronization capabilities');
+    console.log('  course sync              Plan or apply cross-site course synchronization');
+    console.log('  sync-course              Alias for course sync');
     for (const entry of contract.operations) {
       console.log(`  ${toKebabCase(entry.name).padEnd(24)} ${entry.summary}`);
     }
@@ -121,8 +130,32 @@ async function main() {
   const contract = loadContractFromFile();
   const { positional, options } = parseArguments(process.argv.slice(2));
   const command = positional[0];
+  const syncCommand = (command === 'course' && positional[1] === 'sync') || command === 'sync-course';
   const operation = contract.operations.find((entry) => toKebabCase(entry.name) === command);
 
+  if (command === 'capabilities') {
+    if (options.help) {
+      printCapabilitiesHelp();
+      return;
+    }
+    debugEnabled = booleanOption(options, 'debug');
+    const result = await runCapabilitiesCommand(options);
+    console.log(JSON.stringify(result, null, booleanOption(options, 'compact') ? 0 : 2));
+    return;
+  }
+  if (syncCommand) {
+    if (options.help) {
+      printCourseSyncHelp();
+      return;
+    }
+    debugEnabled = booleanOption(options, 'debug');
+    const result = await runCourseSyncCommand({
+      ...options,
+      allow_write: booleanOption(options, 'allow_write')
+    });
+    console.log(JSON.stringify(result, null, booleanOption(options, 'compact') ? 0 : 2));
+    return;
+  }
   if (!command || options.help) {
     printHelp(contract, operation ?? null);
     return;

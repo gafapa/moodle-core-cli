@@ -63,10 +63,13 @@ test('detects Moodle 5 and normalizes courses', async () => {
   assert.equal(client.moodleVersion, '5.0');
   assert.deepEqual(courses, [{
     id: 12,
-    fullname: 'Example course',
-    shortname: 'EXAMPLE',
-    category_id: 3,
-    visible: true,
+      fullname: 'Example course',
+      shortname: 'EXAMPLE',
+      category_id: 3,
+      idnumber: null,
+      summary: null,
+      summary_format: null,
+      visible: true,
     start_date: 100,
     end_date: null
   }]);
