@@ -355,6 +355,14 @@ export class CourseSyncEngine {
     try {
       for (const action of plan.actions) {
         if (completedActionIds.has(action.action_id)) continue;
+        const unmetDependencies = (action.depends_on ?? [])
+          .filter((dependencyId) => !completedActionIds.has(dependencyId));
+        if (unmetDependencies.length > 0) {
+          const error = new TypeError(`Action ${action.action_id} has unmet dependencies.`);
+          error.code = 'action_dependency_unmet';
+          error.dependencies = unmetDependencies;
+          throw error;
+        }
         this.stateStore.acquireLease(
           plan.binding_id,
           executionOwner,
@@ -403,6 +411,7 @@ export class CourseSyncEngine {
         activeResult.result = result;
         activeResult.completed_at = new Date().toISOString();
         activeResult = null;
+        completedActionIds.add(action.action_id);
         if (action.kind === 'course.create') currentCourseId = resultEntityId(result);
         if (action.entity_namespace && action.source_key) {
           createdEntities.set(`${action.entity_namespace}:${action.source_key}`, result);

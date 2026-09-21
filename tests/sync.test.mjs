@@ -342,6 +342,7 @@ test('planner creates groups only when no persistent mapping exists', () => {
     capabilities: { group_create: true, group_update: true }
   });
   assert.equal(mappedPlan.actions.length, 0);
+  assert.equal(mappedPlan.entity_mapping_snapshot.groups['group:11'], 91);
 });
 
 test('planner creates grouping membership after mapped or newly created entities', () => {
@@ -676,6 +677,7 @@ test('Page editor assets are staged as one draft for identity-preserving updates
   assert.deepEqual(plan.actions.map((action) => action.kind), ['module_asset.stage', 'page_content.update']);
   assert.equal(plan.actions[0].assets.length, 2);
   assert.equal(plan.actions[1].asset_stage_source_key, plan.actions[0].source_key);
+  assert.deepEqual(plan.actions[1].depends_on, [plan.actions[0].action_id]);
   assert.equal(plan.action_summary.estimated_transfer_bytes, 12);
 });
 

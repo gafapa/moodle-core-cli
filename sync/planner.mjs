@@ -990,6 +990,20 @@ export function createCourseSyncPlan({
     const { action_id: ignoredActionId, ...actionIdentity } = action;
     action.action_id = actionId(actionIdentity);
   }
+  for (const action of actions) {
+    const dependencySourceKeys = [
+      action.parent_source_key,
+      action.after_source_key,
+      action.asset_stage_source_key,
+      action.group_source_key,
+      action.grouping_source_key
+    ].filter(Boolean);
+    action.depends_on = [...new Set(actions
+      .filter((candidate) => candidate.action_id !== action.action_id
+        && dependencySourceKeys.includes(candidate.source_key)
+        && (candidate.kind.endsWith('.create') || candidate.kind === 'module_asset.stage'))
+      .map((candidate) => candidate.action_id))].sort();
+  }
   const selectedEntityKeys = [
     `course:${source.course.source_id}`,
     ...source.sections.map((section) => section.sync_key),
@@ -1018,6 +1032,7 @@ export function createCourseSyncPlan({
       action.kind.includes('asset') || action.kind === 'module_asset.stage').length,
     deletes: actions.filter((action) => action.kind.endsWith('.delete')).length,
     unchanged: unchanged.length,
+    dependency_edges: actions.reduce((total, action) => total + action.depends_on.length, 0),
     estimated_transfer_bytes: actions.reduce((total, action) => total
       + (action.assets ?? []).reduce((sum, asset) => sum + Number(asset.filesize ?? 0), 0)
       + Number(action.asset?.filesize ?? 0), 0),
@@ -1036,6 +1051,7 @@ export function createCourseSyncPlan({
       ...(targetCreation ? { creation: targetCreation } : {})
     },
     capability_snapshot: canonicalize(capabilities),
+    entity_mapping_snapshot: canonicalize(mapping),
     policies: { unsupported: unsupportedPolicy, conflict: conflictPolicy },
     actions,
     action_summary: actionSummary,

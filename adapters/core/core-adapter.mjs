@@ -66,10 +66,29 @@ export class CoreMoodleAdapter {
         include_groups: true
       }, grouping);
     }));
-    return createCourseSyncModel({ site, course, sections, groups, groupings, exclusions: [
-      { scope: 'student_outcomes', reason: 'content_sync_scope' },
-      { scope: 'activity_authoring_fields', reason: 'core_course_contents_is_not_a_complete_authoring_export' }
-    ] });
+    const authoringUnknowns = sections.flatMap((section) => (section.modules ?? []).map((module) => ({
+      scope: `module:${Number(module.id ?? module.module_id ?? 0)}`,
+      field: 'authoring',
+      reason: 'core_course_contents_is_not_a_complete_authoring_export'
+    })));
+    return createCourseSyncModel({
+      site,
+      course,
+      sections,
+      groups,
+      groupings,
+      exclusions: [
+        { scope: 'student_outcomes', reason: 'content_sync_scope' },
+        { scope: 'activity_authoring_fields', reason: 'core_course_contents_is_not_a_complete_authoring_export' }
+      ],
+      unknowns: authoringUnknowns,
+      completeness: { inventory: 'complete', pagination: 'complete', authoring: 'shell' },
+      capabilityEvidence: {
+        provider: 'core',
+        declared_function_count: site.functions.length,
+        contract_operation_count: site.operations.length
+      }
+    });
   }
 
   async prepareTargetCourse({ category_id: categoryId, shortname }) {
