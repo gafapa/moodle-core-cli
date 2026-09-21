@@ -1,6 +1,6 @@
 {
   "name": "moodle-core-cli",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Friendly Node.js client and CLI for Moodle 4.5+ core web services.",
   "type": "module",
   "license": "MIT",
@@ -41,6 +41,14 @@
       "types": "./workflows/index.d.ts",
       "import": "./workflows/index.mjs"
     },
+    "./exit-codes": {
+      "types": "./cli/exit-codes.d.ts",
+      "import": "./cli/exit-codes.mjs"
+    },
+    "./cli-runner": {
+      "types": "./cli/runner.d.ts",
+      "import": "./cli/moodle-core.mjs"
+    },
     "./adapters/core": {
       "types": "./adapters/core/index.d.ts",
       "import": "./adapters/core/index.mjs"
@@ -56,6 +64,7 @@
     "adapters/",
     "contract/operations.json",
     "docs/",
+    "CHANGELOG.md",
     "LICENSE",
     "README.md"
   ],

@@ -4,8 +4,10 @@ import { spawnSync } from 'node:child_process';
 import path from 'node:path';
 import {
   applyManualEnrolmentSync,
+  auditCourseCompletion,
   auditCourse,
   getCourseProgressReport,
+  planCourseCompletionRepair,
   planManualEnrolmentSync
 } from '../workflows/index.mjs';
 
@@ -50,6 +52,29 @@ test('progress report preserves unavailable fields as unknown evidence', async (
   assert.equal(report.users[0].course_grade.value.grade, '85.00');
 });
 
+test('Core completion audit reports evidence and repair remains an explicit capability gap', async () => {
+  const client = fakeClient({
+    get_course_contents: () => [{
+      id: 10,
+      modules: [
+        { id: 20, name: 'Book', modname: 'book', visible: true, completion: 2 },
+        { id: 21, name: 'Page', modname: 'page', visible: true }
+      ]
+    }]
+  });
+  const audit = await auditCourseCompletion(client, { courseId: 7 });
+  assert.equal(audit.inventory.modules, 2);
+  assert.equal(audit.modules[0].completion_observation.available, true);
+  assert.equal(audit.modules[1].completion_observation.available, false);
+  assert.equal(audit.evidence.completion_configuration.available, false);
+
+  const plan = planCourseCompletionRepair(audit, { mode: 'book_view_only' });
+  assert.equal(plan.applicable, false);
+  assert.equal(plan.actions.length, 0);
+  assert.equal(plan.unsupported[0].capability, 'completion.configuration.update');
+  assert.match(plan.digest, /^sha256:/);
+});
+
 test('manual enrolment synchronization is add-only and digest-bound', async () => {
   const client = fakeClient({
     get_enrolled_users: () => [{ id: 3, roles: [{ roleid: 5 }] }],
@@ -91,6 +116,8 @@ test('CLI exposes evidence workflows and add-only enrolment planning', () => {
   for (const command of [
     ['course', 'audit', '--help'],
     ['course', 'progress', '--help'],
+    ['course', 'completion', 'audit', '--help'],
+    ['course', 'completion', 'repair', '--help'],
     ['enrolments', 'sync', '--help']
   ]) {
     const result = spawnSync(process.execPath, [path.resolve('cli/moodle-core.mjs'), ...command], {
@@ -99,4 +126,13 @@ test('CLI exposes evidence workflows and add-only enrolment planning', () => {
     assert.equal(result.status, 0, result.stderr);
     assert.match(result.stdout, /Usage: moodle-core/);
   }
+});
+
+test('CLI exposes grouped synchronization lifecycle aliases', () => {
+  const help = spawnSync(process.execPath, [path.resolve('cli/moodle-core.mjs'), 'sync', 'status', '--help'], {
+    cwd: path.resolve('.'), encoding: 'utf8'
+  });
+  assert.equal(help.status, 0, help.stderr);
+  assert.match(help.stdout, /sync resume --job-id/);
+  assert.match(help.stdout, /sync verify --plan-id/);
 });

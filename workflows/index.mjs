@@ -107,6 +107,63 @@ export async function getCourseProgressReport(client, { courseId, userIds = [], 
   };
 }
 
+export async function auditCourseCompletion(client, { courseId }) {
+  const course_id = positiveInteger(courseId, 'courseId');
+  const sections = await client.callOperation('get_course_contents', { course_id });
+  const modules = sections.flatMap((section) => (section.modules ?? []).map((module) => ({
+    module_id: Number(module.id ?? module.module_id),
+    name: String(module.name ?? ''),
+    module_type: String(module.modname ?? module.module_type ?? ''),
+    visible: module.visible !== false && Number(module.visible ?? 1) !== 0,
+    completion_observation: Object.hasOwn(module, 'completion')
+      ? { available: true, value: module.completion }
+      : { available: false, reason: 'not_exposed_by_core_course_contents' }
+  })));
+  return {
+    schema_version: 1,
+    course_id,
+    provider: 'core',
+    inventory: { sections: sections.length, modules: modules.length },
+    modules,
+    evidence: {
+      structure: { available: true, operation: 'get_course_contents' },
+      completion_configuration: {
+        available: false,
+        reason: 'core_has_no_verified_activity_completion_configuration_authoring_api'
+      }
+    },
+    findings: [{
+      severity: 'warning',
+      code: 'completion_configuration_unavailable',
+      entity: `course:${course_id}`,
+      message: 'Core course contents do not provide a verified round-trip completion configuration surface.'
+    }]
+  };
+}
+
+export function planCourseCompletionRepair(audit, { mode = 'book_view_only' } = {}) {
+  if (!audit || audit.schema_version !== 1 || !Number.isInteger(Number(audit.course_id))) {
+    throw new TypeError('A valid completion audit is required.');
+  }
+  const allowedModes = new Set(['book_view_only', 'all_grade_to_view', 'disable_all']);
+  if (!allowedModes.has(mode)) throw new TypeError('Unsupported completion repair mode.');
+  const unsigned = {
+    schema_version: 1,
+    workflow: 'course_completion_repair',
+    provider: 'core',
+    course_id: Number(audit.course_id),
+    mode,
+    applicable: false,
+    actions: [],
+    unsupported: [{
+      capability: 'completion.configuration.update',
+      reason: 'core_has_no_verified_activity_completion_configuration_authoring_api',
+      remedy: 'Install MoodlIA and use its typed repair_course_completion operation.'
+    }]
+  };
+  return { ...unsigned, digest: contentDigest(unsigned) };
+}
+
 export async function planManualEnrolmentSync(client, { courseId, desired }) {
   const course_id = positiveInteger(courseId, 'courseId');
   if (!Array.isArray(desired)) throw new TypeError('desired must be an array.');

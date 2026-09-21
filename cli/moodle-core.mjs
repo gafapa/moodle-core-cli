@@ -16,12 +16,18 @@ import {
 } from './sync-commands.mjs';
 import {
   printCourseAuditHelp,
+  printCourseCompletionAuditHelp,
+  printCourseCompletionRepairHelp,
   printCourseProgressHelp,
   printEnrolmentSyncHelp,
   runCourseAudit,
+  runCourseCompletionAudit,
+  runCourseCompletionRepair,
   runCourseProgress,
   runEnrolmentSync
 } from './workflow-commands.mjs';
+import { exitCodeForError, exitCodeForResult } from './exit-codes.mjs';
+import { pathToFileURL } from 'node:url';
 
 let debugEnabled = false;
 
@@ -90,6 +96,8 @@ function printHelp(contract, operation = null) {
     console.log('  sync-course              Alias for course sync');
     console.log('  course audit             Evidence-based read-only course audit');
     console.log('  course progress          Aggregate visible progress and grade evidence');
+    console.log('  course completion audit  Inspect completion evidence without inferring hidden settings');
+    console.log('  course completion repair Report the exact Core authoring capability gap');
     console.log('  enrolments sync          Plan or apply add-only manual enrolments');
     for (const entry of contract.operations) {
       console.log(`  ${toKebabCase(entry.name).padEnd(24)} ${entry.summary}`);
@@ -113,6 +121,9 @@ function printHelp(contract, operation = null) {
     console.log('  --debug                     Include Moodle debug information in errors');
     console.log('  --compact                   Print compact JSON');
     console.log('  --help');
+    console.log('');
+    console.log('Exit codes: 0 success, 1 internal, 2 validation, 3 capability gap, 4 conflict,');
+    console.log('            5 remote failure, 6 partial execution, 7 verification failure.');
     return;
   }
 
@@ -137,13 +148,19 @@ function operationParameters(operation, options) {
   return buildContractParameters(operation, raw);
 }
 
-async function main() {
+export async function runMoodleCoreCli(argv = process.argv.slice(2)) {
   const contract = loadContractFromFile();
-  const { positional, options } = parseArguments(process.argv.slice(2));
+  const { positional, options } = parseArguments(argv);
   const command = positional[0];
-  const syncCommand = (command === 'course' && positional[1] === 'sync') || command === 'sync-course';
+  const syncSubcommand = command === 'sync' ? positional[1] : null;
+  const groupedSyncCommand = ['status', 'resume', 'verify', 'history', 'cancel'].includes(syncSubcommand);
+  const syncCommand = (command === 'course' && positional[1] === 'sync')
+    || command === 'sync-course'
+    || groupedSyncCommand;
   const auditCommand = (command === 'course' && positional[1] === 'audit') || command === 'audit-course';
   const progressCommand = (command === 'course' && positional[1] === 'progress') || command === 'course-progress';
+  const completionAuditCommand = command === 'course' && positional[1] === 'completion' && positional[2] === 'audit';
+  const completionRepairCommand = command === 'course' && positional[1] === 'completion' && positional[2] === 'repair';
   const enrolmentSyncCommand = (command === 'enrolments' && positional[1] === 'sync') || command === 'sync-enrolments';
   const operation = contract.operations.find((entry) => toKebabCase(entry.name) === command);
 
@@ -155,6 +172,7 @@ async function main() {
     debugEnabled = booleanOption(options, 'debug');
     const result = await runCapabilitiesCommand(options);
     console.log(JSON.stringify(result, null, booleanOption(options, 'compact') ? 0 : 2));
+    process.exitCode = exitCodeForResult(result);
     return;
   }
   if (syncCommand) {
@@ -163,17 +181,31 @@ async function main() {
       return;
     }
     debugEnabled = booleanOption(options, 'debug');
+    const groupedOptions = syncSubcommand === 'status'
+      ? { ...options, job_id: options.job_id }
+      : syncSubcommand === 'resume'
+        ? { ...options, resume_job: options.job_id }
+        : syncSubcommand === 'verify'
+          ? { ...options, verify_plan: options.plan_id ?? options.binding_id, verify_job_id: options.job_id }
+          : syncSubcommand === 'history'
+            ? { ...options, history: true }
+            : syncSubcommand === 'cancel'
+              ? { ...options, cancel_job: options.job_id }
+              : options;
     const result = await runCourseSyncCommand({
-      ...options,
+      ...groupedOptions,
       allow_write: booleanOption(options, 'allow_write')
     });
     console.log(JSON.stringify(result, null, booleanOption(options, 'compact') ? 0 : 2));
+    process.exitCode = exitCodeForResult(result);
     return;
   }
-  if (auditCommand || progressCommand || enrolmentSyncCommand) {
+  if (auditCommand || progressCommand || completionAuditCommand || completionRepairCommand || enrolmentSyncCommand) {
     if (options.help) {
       if (auditCommand) printCourseAuditHelp();
       else if (progressCommand) printCourseProgressHelp();
+      else if (completionAuditCommand) printCourseCompletionAuditHelp();
+      else if (completionRepairCommand) printCourseCompletionRepairHelp();
       else printEnrolmentSyncHelp();
       return;
     }
@@ -182,8 +214,13 @@ async function main() {
       ? await runCourseAudit(options)
       : progressCommand
         ? await runCourseProgress(options)
-        : await runEnrolmentSync(options);
+        : completionAuditCommand
+          ? await runCourseCompletionAudit(options)
+          : completionRepairCommand
+            ? await runCourseCompletionRepair(options)
+            : await runEnrolmentSync(options);
     console.log(JSON.stringify(result, null, booleanOption(options, 'compact') ? 0 : 2));
+    process.exitCode = exitCodeForResult(result);
     return;
   }
   if (!command || options.help) {
@@ -238,9 +275,15 @@ async function main() {
   const result = await client.callOperation(operation.name, operationParameters(operation, options));
   const output = showSecrets ? result : redactOperationResult(operation.name, result);
   console.log(JSON.stringify(output, null, compact ? 0 : 2));
+  process.exitCode = exitCodeForResult(output);
 }
 
-main().catch((error) => {
-  console.error(JSON.stringify(normalizeClientError(error).toJSON({ includeDebug: debugEnabled })));
-  process.exitCode = 1;
-});
+const invokedAsExecutable = process.argv[1]
+  && pathToFileURL(process.argv[1]).href === import.meta.url;
+
+if (invokedAsExecutable) {
+  runMoodleCoreCli().catch((error) => {
+    console.error(JSON.stringify(normalizeClientError(error).toJSON({ includeDebug: debugEnabled })));
+    process.exitCode = exitCodeForError(error);
+  });
+}

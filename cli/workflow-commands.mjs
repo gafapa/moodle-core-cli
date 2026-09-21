@@ -3,8 +3,10 @@ import path from 'node:path';
 import { createMoodleClient, MoodleValidationError } from '../client/moodle-rest-client.mjs';
 import {
   applyManualEnrolmentSync,
+  auditCourseCompletion,
   auditCourse,
   getCourseProgressReport,
+  planCourseCompletionRepair,
   planManualEnrolmentSync
 } from '../workflows/index.mjs';
 
@@ -67,6 +69,19 @@ export function printCourseProgressHelp() {
   console.log('  --maximum-users <n>         Safety limit (default: 100)');
 }
 
+export function printCourseCompletionAuditHelp() {
+  console.log('Usage: moodle-core course completion audit --course-id <id> [options]');
+  console.log('');
+  console.log('Reports the completion evidence exposed by Core and marks unavailable configuration explicitly.');
+}
+
+export function printCourseCompletionRepairHelp() {
+  console.log('Usage: moodle-core course completion repair --course-id <id> [options]');
+  console.log('');
+  console.log('  --mode <mode>               book_view_only, all_grade_to_view, or disable_all');
+  console.log('Core has no verified configuration authoring API, so this command returns a capability-gap plan.');
+}
+
 export function printEnrolmentSyncHelp() {
   console.log('Usage: moodle-core enrolments sync --course-id <id> --desired-file <path> [options]');
   console.log('');
@@ -90,6 +105,17 @@ export async function runCourseProgress(options) {
     userIds,
     maximumUsers: positiveInteger(options, 'maximum_users', 100)
   });
+}
+
+export async function runCourseCompletionAudit(options) {
+  return auditCourseCompletion(client(options), { courseId: positiveInteger(options, 'course_id') });
+}
+
+export async function runCourseCompletionRepair(options) {
+  const audit = await auditCourseCompletion(client(options), {
+    courseId: positiveInteger(options, 'course_id')
+  });
+  return planCourseCompletionRepair(audit, { mode: options.mode ?? 'book_view_only' });
 }
 
 export async function runEnrolmentSync(options) {

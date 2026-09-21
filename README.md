@@ -115,7 +115,20 @@ moodle-core get-courses \
   --moodle-version 4.5
 ```
 
-CLI output is JSON. Errors are written as a structured JSON object to stderr and produce a non-zero exit code.
+CLI output is JSON. Errors are written as a structured JSON object to stderr. Automation can distinguish outcomes with these stable exit codes:
+
+| Code | Meaning |
+| ---: | --- |
+| `0` | Success |
+| `1` | Unexpected internal error |
+| `2` | Invalid configuration, arguments, plan, or local state |
+| `3` | Unsupported capability or provider gap |
+| `4` | Synchronization conflict or failed precondition |
+| `5` | Remote Moodle, authentication, permission, or transport failure |
+| `6` | Partial execution or unknown write outcome |
+| `7` | Response or synchronization verification failure |
+
+Structured output is still emitted for a completed plan, conflict report, partial job, or verification failure before the corresponding non-zero exit code is returned. The same classification is exported from `moodle-core-cli/exit-codes` for wrappers and the adaptive CLI.
 
 The CLI runs in read-only mode by default. Write operations require `--allow-write`, and destructive operations additionally require `--yes`. High-risk generic or development operations require `--allow-dangerous`.
 
@@ -154,11 +167,13 @@ Evidence-based local workflows compose the audited Core operations without requi
 ```powershell
 moodle-core course audit --course-id 42
 moodle-core course progress --course-id 42 --maximum-users 100
+moodle-core course completion audit --course-id 42
+moodle-core course completion repair --course-id 42 --mode book_view_only
 moodle-core enrolments sync --course-id 42 --desired-file desired-enrolments.json --plan-file enrolments.plan.json
 moodle-core enrolments sync --apply-plan enrolments.plan.json --plan-digest "sha256:..." --allow-write --yes
 ```
 
-The progress workflow preserves denied or unavailable completion and grade reads as explicit unknown evidence. Enrolment synchronization is intentionally add-only: it never removes existing users or roles, and applying requires the exact immutable plan digest.
+The progress workflow preserves denied or unavailable completion and grade reads as explicit unknown evidence. The Core completion repair command intentionally returns an exit-code-3 capability-gap plan because Moodle Core has no verified activity-completion configuration authoring API; it never fabricates a repair. Enrolment synchronization is intentionally add-only: it never removes existing users or roles, and applying requires the exact immutable plan digest.
 
 ## Type generation
 
