@@ -4,7 +4,7 @@ import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
-import { DatabaseSync } from 'node:sqlite';
+import Database from 'better-sqlite3';
 
 import { CapabilityRegistry, coreCapabilityDescriptors } from '../capabilities/registry.mjs';
 import { parseProfiles, resolveProfile, describeProfile } from '../profiles/profiles.mjs';
@@ -345,7 +345,7 @@ test('SQLite state store migrates a version 1 database to the current schema', a
   const directory = await fs.mkdtemp(path.join(os.tmpdir(), 'moodle-sync-migration-'));
   const databasePath = path.join(directory, 'state.sqlite');
   try {
-    const legacy = new DatabaseSync(databasePath);
+    const legacy = new Database(databasePath);
     legacy.exec(`
       CREATE TABLE sync_meta (key TEXT PRIMARY KEY, value TEXT NOT NULL);
       INSERT INTO sync_meta(key, value) VALUES ('schema_version', '1');

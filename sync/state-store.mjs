@@ -1,6 +1,6 @@
 import path from 'node:path';
 import fs from 'node:fs';
-import { DatabaseSync } from 'node:sqlite';
+import Database from 'better-sqlite3';
 
 function serialize(value) {
   return JSON.stringify(value);
@@ -55,7 +55,7 @@ export class SqliteSyncStateStore {
       throw new TypeError('databasePath is required.');
     }
     this.databasePath = path.resolve(databasePath);
-    this.database = new DatabaseSync(this.databasePath);
+    this.database = new Database(this.databasePath);
     if (process.platform !== 'win32') fs.chmodSync(this.databasePath, 0o600);
     this.database.exec('PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON;');
     this.database.exec(`

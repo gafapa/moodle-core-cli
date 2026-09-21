@@ -6,11 +6,12 @@ Status: accepted for preview
 
 `moodle-core-cli` owns the provider-neutral course model, capability registry, planner, executor, profiles, and state stores. It has no dependency on MoodlIA or an MCP SDK. `moodlia` depends on Core and adds a field-aware MoodlIA adapter. `moodlia-sync-mcp` is a separate coordinator package that depends on both and exposes the same engine.
 
-The state store uses `node:sqlite`, requiring Node 22.13 or newer because that
-is the first Node 22 release where SQLite no longer requires a process flag.
-This avoids a native third-party driver while providing transactions, WAL
-journaling, leases, and schema-versioned durable state. The in-memory
-implementation remains the test double.
+The state store uses the maintained `better-sqlite3` driver, pinned to a release
+whose declared runtime floor is Node 22. This provides synchronous transactions,
+WAL journaling, leases, and schema-versioned durable state without relying on
+Node's experimental `node:sqlite` API. The in-memory implementation remains the
+test double. Node 22.13 remains the package runtime floor and is qualified with
+Node 24 on Windows and Linux.
 
 Plans are canonical JSON documents with a digest, expiry, capability snapshot, selected provider per action, source and target preconditions, conflicts, unsupported changes, skipped dependencies, effects, and transfer estimates. Plan files and SQLite state are created with restrictive POSIX permissions where supported. Credentials remain environment-variable references and are never serialized.
 
@@ -28,4 +29,5 @@ Plans are canonical JSON documents with a digest, expiry, capability snapshot, s
 - Merging both repositories would force GPL/MoodlIA and MCP dependencies into the MIT Core client.
 - Selecting one backend for an entire command would discard safe Core fallbacks and hide field-level gaps.
 - JSON-only state would not provide transactional approval consumption or target-course leases.
+- Node's built-in experimental SQLite API emits warnings on the supported Node 22 line and does not meet the stable-driver requirement.
 - Automatic title matching would risk overwriting unrelated Moodle entities.

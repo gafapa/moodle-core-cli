@@ -103,6 +103,7 @@
     "test": "tests"
   },
   "dependencies": {
+    "better-sqlite3": "12.4.1",
     "parse5": "^8.0.1"
   }
 }

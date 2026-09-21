@@ -13,7 +13,7 @@ The provider-neutral model and immutable plan use schema version 2. The model re
 ## Decision: local state
 
 The default store uses Node's synchronous SQLite API and therefore requires
-Node 22.13 or newer, where `node:sqlite` is available without a process flag.
+Node 22.13 or newer with the pinned `better-sqlite3` state-store driver.
 SQLite keeps immutable plans, jobs, course bindings, entity mappings, and
 external approvals together without adding a native third-party database
 dependency. The in-memory store remains available for deterministic tests.
