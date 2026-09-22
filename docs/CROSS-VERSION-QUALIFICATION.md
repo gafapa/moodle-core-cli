@@ -36,7 +36,7 @@ No production synchronization or plugin deployment is part of this qualification
 
 ## Disposable live qualification
 
-On 2026-09-22 the four provider pairings were executed end to end between disposable Moodle sites on the isolated S1 host, using only public npm packages (`moodlia@0.3.7`, `moodle-core-cli@0.3.6`) and MoodlIA plugin build `2026092201` (release `0.1.213`, commit `117992c343c6397d8b14f1bee87bb7a43414333a`). Run identifier: `release037-core036-final`.
+On 2026-09-22 the four provider pairings were executed end to end between disposable Moodle sites on the isolated S1 host, using only public npm packages (`moodlia@0.3.7`, `moodle-core-cli@0.3.6`) and MoodlIA plugin build `2026092201` (release `0.1.213`, commit `117992c343c6397d8b14f1bee87bb7a43414333a`). Run identifier: `release037-core036-final`; the runner's report is archived as `docs/evidence/release037-core036-final-qualification-report.json`.
 
 | Scenario | Source | Destination | Initial actions | Documented gap | Apply | Live verify | Unchanged rerun |
 | --- | --- | --- | --- | --- | --- | --- | --- |

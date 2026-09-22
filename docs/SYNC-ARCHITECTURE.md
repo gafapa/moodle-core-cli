@@ -44,7 +44,7 @@ Section zero is matched only with section zero. Other existing sections require 
 
 Core capability availability is the intersection of the static versioned contract and the functions returned for the current token by `core_webservice_get_site_info`. Moodle Core does not expose a general permission probe, so write permission remains `unknown` until an authorized request is attempted.
 
-MoodlIA 0.1.211 provides `get_sync_capabilities`, multi-file editor publication, and identity-preserving typed content updates. It evaluates category-scoped course creation and course-scoped structure, activity, grading-form, Book, Workshop, question-bank, Database-field, and Feedback-item capabilities. Older plugins remain usable for legacy direct commands, but adaptive synchronization does not promote a declared write operation to an available capability without contextual evidence.
+MoodlIA 0.1.213 provides `get_sync_capabilities`, multi-file editor publication, identity-preserving typed content updates, and authenticated asset downloads through its built-in external service. It evaluates category-scoped course creation and course-scoped structure, activity, grading-form, Book, Workshop, question-bank, Database-field, and Feedback-item capabilities. Older plugins remain usable for legacy direct commands, but adaptive synchronization does not promote a declared write operation to an available capability without contextual evidence.
 
 ## Compatibility
 
