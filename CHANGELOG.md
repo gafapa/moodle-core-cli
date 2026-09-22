@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.5 - 2026-09-22
+
+- Retain the source module type in unresolved-section synchronization gaps so
+  operators can identify blocked Page and activity content precisely.
+
 ## 0.3.4 - 2026-09-22
 
 - Normalize Moodle 5.3's rendered course-summary overflow wrapper back to portable authoring HTML.

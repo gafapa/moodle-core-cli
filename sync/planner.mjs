@@ -434,6 +434,7 @@ export function createCourseSyncPlan({
             action.kind === 'section.create' && action.source_key === sourceSection.sync_key);
           if (!targetSection && !parentWillBeCreated) {
             unsupported.push({ kind: 'module.create', source_key: sourceModule.sync_key,
+              module_type: sourceModule.module_type,
               reason: 'target_section_unresolved' });
             continue;
           }
@@ -530,6 +531,7 @@ export function createCourseSyncPlan({
             action.kind === 'section.create' && action.source_key === sourceSection.sync_key);
           if (!targetSection && !parentWillBeCreated) {
             unsupported.push({ kind: 'module.create', source_key: sourceModule.sync_key,
+              module_type: sourceModule.module_type,
               reason: 'target_section_unresolved' });
             continue;
           }
@@ -638,6 +640,7 @@ export function createCourseSyncPlan({
             action.kind === 'section.create' && action.source_key === sourceSection.sync_key);
           if (!targetSection && !parentWillBeCreated) {
             unsupported.push({ kind: 'module.create', source_key: sourceModule.sync_key,
+              module_type: sourceModule.module_type,
               reason: 'target_section_unresolved' });
             continue;
           }
@@ -764,6 +767,7 @@ export function createCourseSyncPlan({
             action.kind === 'section.create' && action.source_key === sourceSection.sync_key);
           if (!targetSection && !parentWillBeCreated) {
             unsupported.push({ kind: 'module.create', source_key: sourceModule.sync_key,
+              module_type: sourceModule.module_type,
               reason: 'target_section_unresolved' });
             continue;
           }
@@ -885,7 +889,8 @@ export function createCourseSyncPlan({
           const parentWillBeCreated = actions.some((action) =>
             action.kind === 'section.create' && action.source_key === sourceSection.sync_key);
           if (!targetSection && !parentWillBeCreated) {
-            unsupported.push({ kind: 'module.create', source_key: sourceModule.sync_key, reason: 'target_section_unresolved' });
+            unsupported.push({ kind: 'module.create', source_key: sourceModule.sync_key,
+              module_type: sourceModule.module_type, reason: 'target_section_unresolved' });
             continue;
           }
           const fields = {
@@ -1085,7 +1090,8 @@ export function createCourseSyncPlan({
           const parentWillBeCreated = actions.some((action) =>
             action.kind === 'section.create' && action.source_key === sourceSection.sync_key);
           if (!targetSection && !parentWillBeCreated) {
-            unsupported.push({ kind: 'module.create', source_key: sourceModule.sync_key, reason: 'target_section_unresolved' });
+            unsupported.push({ kind: 'module.create', source_key: sourceModule.sync_key,
+              module_type: sourceModule.module_type, reason: 'target_section_unresolved' });
             continue;
           }
           if (!capabilitySupports(capabilities, 'module_create', ['module_type', 'name', 'visible', 'settings'])) {
@@ -1158,7 +1164,8 @@ export function createCourseSyncPlan({
           const parentWillBeCreated = actions.some((action) =>
             action.kind === 'section.create' && action.source_key === sourceSection.sync_key);
           if (!targetSection && !parentWillBeCreated) {
-            unsupported.push({ kind: 'module.create', source_key: sourceModule.sync_key, reason: 'target_section_unresolved' });
+            unsupported.push({ kind: 'module.create', source_key: sourceModule.sync_key,
+              module_type: sourceModule.module_type, reason: 'target_section_unresolved' });
             continue;
           }
           if (!capabilitySupports(capabilities, 'module_create', ['module_type', 'name', 'visible', 'settings'])
@@ -1266,7 +1273,8 @@ export function createCourseSyncPlan({
           const parentWillBeCreated = actions.some((action) =>
             action.kind === 'section.create' && action.source_key === sourceSection.sync_key);
           if (!targetSection && !parentWillBeCreated) {
-            unsupported.push({ kind: 'module.create', source_key: sourceModule.sync_key, reason: 'target_section_unresolved' });
+            unsupported.push({ kind: 'module.create', source_key: sourceModule.sync_key,
+              module_type: sourceModule.module_type, reason: 'target_section_unresolved' });
             continue;
           }
           if (!capabilitySupports(capabilities, 'module_create', ['module_type', 'name', 'visible', 'settings'])
@@ -1393,7 +1401,8 @@ export function createCourseSyncPlan({
           const parentWillBeCreated = actions.some((action) =>
             action.kind === 'section.create' && action.source_key === sourceSection.sync_key);
           if (!targetSection && !parentWillBeCreated) {
-            unsupported.push({ kind: 'module.create', source_key: sourceModule.sync_key, reason: 'target_section_unresolved' });
+            unsupported.push({ kind: 'module.create', source_key: sourceModule.sync_key,
+              module_type: sourceModule.module_type, reason: 'target_section_unresolved' });
             continue;
           }
           const moduleFields = {
@@ -1529,7 +1538,8 @@ export function createCourseSyncPlan({
         const parentWillBeCreated = actions.some((action) =>
           action.kind === 'section.create' && action.source_key === sourceSection.sync_key);
         if (!targetSection && !parentWillBeCreated) {
-          unsupported.push({ kind: 'module.create', source_key: sourceModule.sync_key, reason: 'target_section_unresolved' });
+          unsupported.push({ kind: 'module.create', source_key: sourceModule.sync_key,
+            module_type: sourceModule.module_type, reason: 'target_section_unresolved' });
           continue;
         }
         const moduleFields = {

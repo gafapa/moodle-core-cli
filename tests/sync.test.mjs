@@ -753,6 +753,30 @@ test('portable Page, Label, and URL definitions use exact MoodlIA module creatio
   assert.deepEqual(plan.actions.map((action) => action.fields.module_type), ['page', 'label', 'url']);
 });
 
+test('unresolved destination sections retain the blocked module type', () => {
+  const source = model({
+    provider: 'moodlia', siteUrl: 'https://source.example', courseId: 7, fullname: 'Course', shortname: 'COURSE',
+    sections: [{ id: 10, section: 1, name: 'Unit', modules: [{
+      id: 20, modname: 'page', name: 'Page', visible: true,
+      authoring_completeness: 'complete',
+      authoring: { kind: 'page', settings: { content: '<p>Page</p>' }, files: [] }
+    }] }]
+  });
+  const target = model({
+    provider: 'core', siteUrl: 'https://target.example', courseId: 8, fullname: 'Course', shortname: 'COURSE',
+    sections: [{ id: 11, section: 0, name: 'General', modules: [] }]
+  });
+  const plan = createCourseSyncPlan({
+    source,
+    target,
+    capabilities: { module_create: true }
+  });
+
+  const moduleGap = plan.unsupported.find((entry) => entry.kind === 'module.create');
+  assert.equal(moduleGap.reason, 'target_section_unresolved');
+  assert.equal(moduleGap.module_type, 'page');
+});
+
 test('Page editor assets are staged as one draft for identity-preserving updates', () => {
   const assets = [
     { filename: 'hero image.jpg', filepath: '/', filesize: 5, content_hash: 'sha1-a', sha256: 'sha256-a', url: 'https://source.example/a' },
