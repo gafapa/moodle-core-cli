@@ -7,12 +7,17 @@ import { selectedCourseFields } from './model.mjs';
 import { courseBindingId, createCourseSyncPlan, validateSyncPlan } from './planner.mjs';
 import { resolveDeferredMoodleReferences } from './references.mjs';
 
+const entityIdFields = ['id', 'section_id', 'group_id', 'grouping_id', 'module_id', 'chapter_id', 'page_id',
+  'field_id', 'item_id', 'slot_id', 'course_id'];
+
+// Adapter results echo related settings such as `grouping_id: 0` next to the
+// created identity, so only a positive integer counts as the entity identifier.
 function resultEntityId(result) {
-  const value = result?.id ?? result?.section_id ?? result?.group_id ?? result?.grouping_id
-    ?? result?.module_id ?? result?.chapter_id ?? result?.page_id ?? result?.field_id ?? result?.item_id
-    ?? result?.slot_id ?? result?.course_id;
-  const id = Number(value);
-  return Number.isInteger(id) && id > 0 ? id : null;
+  for (const field of entityIdFields) {
+    const id = Number(result?.[field]);
+    if (result?.[field] !== null && result?.[field] !== undefined && Number.isInteger(id) && id > 0) return id;
+  }
+  return null;
 }
 
 async function withAssetMaterials(sourceAdapter, assets, callback) {

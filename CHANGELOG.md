@@ -2,6 +2,9 @@
 
 ## 0.3.6 - 2026-09-22
 
+- Identify created entities by the first positive identifier in adapter
+  results, so module results that echo `grouping_id: 0` no longer fail
+  readback verification or lose their binding mapping.
 - Record readback verification failures in the failed job and in the CLI error
   details so operators can identify the diverging action without re-running
   verification.

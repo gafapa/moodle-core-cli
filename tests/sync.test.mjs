@@ -575,15 +575,18 @@ test('sync engine streams assets through a temporary cache and removes it after 
           authoring: { kind: 'resource', settings: { intro: '', intro_format: 1 }, files: [asset] }
         }] }]
       });
-      return { module_id: 40 };
+      // Live MoodlIA results echo zero-valued settings next to the created identity.
+      return { module_id: 40, course_module_id: 40, instance_id: 1, grouping_id: 0, group_mode: 0 };
     }
   };
-  const engine = createCourseSyncEngine({ stateStore: new MemorySyncStateStore() });
+  const store = new MemorySyncStateStore();
+  const engine = createCourseSyncEngine({ stateStore: store });
   const plan = await engine.plan({ sourceAdapter, targetAdapter, sourceCourseId: 7, targetCourseId: 8 });
   const job = await engine.apply({
     planId: plan.plan_id, planDigest: plan.digest, sourceAdapter, targetAdapter
   });
   assert.equal(job.status, 'succeeded');
+  assert.deepEqual(Object.values(store.getBinding(plan.binding_id).entity_mappings.modules), [40]);
   await assert.rejects(() => fs.access(cachedPath));
 });
 
