@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.3 - 2026-09-22
+
+- Prefer a created section's identity over its parent course identity during apply, mapping, and readback verification.
+- Add a cross-provider regression test for section responses that include both `section_id` and `course_id`.
+
 ## 0.3.2 - 2026-09-22
 
 - Keep the durable SQLite state store open until asynchronous apply, resume, and verification operations settle.

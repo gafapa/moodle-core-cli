@@ -1546,3 +1546,40 @@ test('resume reconciles a create that committed before Moodle returned an invali
   assert.equal(store.getBinding(plan.binding_id).entity_mappings.groupings['grouping:12'], 92);
   assert.equal(writes, 1);
 });
+
+test('section verification prefers the created section id over its parent course id', async () => {
+  const source = model({
+    siteUrl: 'https://source.example', courseId: 7, fullname: 'Course', shortname: 'COURSE',
+    sections: [
+      { id: 10, section: 0, name: 'General', summary: '', visible: true, modules: [] },
+      { id: 11, section: 1, name: 'Topic', summary: '', visible: true, modules: [] }
+    ]
+  });
+  let target = model({
+    siteUrl: 'https://target.example', courseId: 8, fullname: 'Course', shortname: 'COURSE',
+    sections: [{ id: 90, section: 0, name: 'General', summary: '', visible: true, modules: [] }]
+  });
+  const sourceAdapter = { async exportCourse() { return source; } };
+  const targetAdapter = {
+    async exportCourse() { return target; },
+    async syncCapabilities() { return { section_create: true }; },
+    async applySyncAction(action) {
+      target = model({
+        siteUrl: 'https://target.example', courseId: 8, fullname: 'Course', shortname: 'COURSE',
+        sections: [
+          { id: 90, section: 0, name: 'General', summary: '', visible: true, modules: [] },
+          { id: 91, section: 1, name: action.fields.name, summary: '', visible: true, modules: [] }
+        ]
+      });
+      return { section_id: 91, course_id: 8, section_number: 1 };
+    }
+  };
+  const store = new MemorySyncStateStore();
+  const engine = createCourseSyncEngine({ stateStore: store });
+  const plan = await engine.plan({ sourceAdapter, targetAdapter, sourceCourseId: 7, targetCourseId: 8 });
+  const job = await engine.apply({
+    planId: plan.plan_id, planDigest: plan.digest, sourceAdapter, targetAdapter
+  });
+  assert.equal(job.status, 'succeeded');
+  assert.equal(job.results[0].result.section_id, 91);
+});

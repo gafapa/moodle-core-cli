@@ -8,9 +8,9 @@ import { courseBindingId, createCourseSyncPlan, validateSyncPlan } from './plann
 import { resolveDeferredMoodleReferences } from './references.mjs';
 
 function resultEntityId(result) {
-  const value = result?.id ?? result?.course_id ?? result?.section_id ?? result?.group_id ?? result?.grouping_id
+  const value = result?.id ?? result?.section_id ?? result?.group_id ?? result?.grouping_id
     ?? result?.module_id ?? result?.chapter_id ?? result?.page_id ?? result?.field_id ?? result?.item_id
-    ?? result?.slot_id;
+    ?? result?.slot_id ?? result?.course_id;
   const id = Number(value);
   return Number.isInteger(id) && id > 0 ? id : null;
 }
