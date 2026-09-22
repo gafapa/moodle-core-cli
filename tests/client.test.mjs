@@ -51,6 +51,7 @@ test('detects Moodle 5 and normalizes courses', async () => {
       fullname: 'Example course',
       shortname: 'EXAMPLE',
       categoryid: 3,
+      summary: '<div class="no-overflow"><p>Portable summary</p></div>',
       visible: 1,
       startdate: 100,
       enddate: 0
@@ -67,11 +68,11 @@ test('detects Moodle 5 and normalizes courses', async () => {
       shortname: 'EXAMPLE',
       category_id: 3,
       idnumber: null,
-      summary: null,
+      summary: '<p>Portable summary</p>',
       summary_format: null,
       visible: true,
     start_date: 100,
-    end_date: null
+    end_date: 0
   }]);
   assert.deepEqual(transport.calls.map((call) => call.functionName), [
     'core_webservice_get_site_info',

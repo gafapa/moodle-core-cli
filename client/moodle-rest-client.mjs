@@ -800,6 +800,12 @@ export function buildContractParameters(operation, parameters = {}) {
   return result;
 }
 
+function normalizeRenderedSummary(value) {
+  if (value === undefined || value === null) return null;
+  const summary = String(value);
+  return summary.match(/^<div class="no-overflow">([\s\S]*)<\/div>$/)?.[1] ?? summary;
+}
+
 function courseFromMoodle(course) {
   return {
     id: course.id,
@@ -807,11 +813,11 @@ function courseFromMoodle(course) {
     shortname: course.shortname,
     category_id: course.categoryid,
     idnumber: course.idnumber || null,
-    summary: course.summary ?? null,
+    summary: normalizeRenderedSummary(course.summary),
     summary_format: course.summaryformat ?? null,
     visible: Boolean(course.visible),
-    start_date: course.startdate || null,
-    end_date: course.enddate || null
+    start_date: course.startdate ?? null,
+    end_date: course.enddate ?? null
   };
 }
 

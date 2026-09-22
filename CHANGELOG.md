@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.4 - 2026-09-22
+
+- Normalize Moodle 5.3's rendered course-summary overflow wrapper back to portable authoring HTML.
+- Preserve Moodle's explicit zero start and end dates so Core and MoodlIA snapshots compare canonically.
+
 ## 0.3.3 - 2026-09-22
 
 - Prefer a created section's identity over its parent course identity during apply, mapping, and readback verification.
