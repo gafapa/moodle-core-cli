@@ -34,9 +34,31 @@ The logical matrix complements rather than replaces the other release evidence:
 
 No production synchronization or plugin deployment is part of this qualification.
 
+## Disposable live qualification
+
+On 2026-09-22 the four provider pairings were executed end to end between disposable Moodle sites on the isolated S1 host, using only public npm packages (`moodlia@0.3.7`, `moodle-core-cli@0.3.6`) and MoodlIA plugin build `2026092201` (release `0.1.213`, commit `117992c343c6397d8b14f1bee87bb7a43414333a`). Run identifier: `release037-core036-final`.
+
+| Scenario | Source | Destination | Initial actions | Documented gap | Apply | Live verify | Unchanged rerun |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Core to Core | 4.5.12 (Build 20260608) | 5.3beta (Build 20260916) | course update, group, grouping, grouping membership | none | succeeded | verified | 0 writes |
+| Core to MoodlIA | 4.5.12 | 5.3beta | course update, two sections | Core-sourced group fields (`visibility`, `participation`) reported `target_capability_unavailable`; the dependent grouping and membership were skipped before any write | succeeded | verified | 0 writes |
+| MoodlIA to Core | 4.5.12 | 5.3beta | course update, group, grouping, grouping membership | sections `target_capability_unavailable` on the Core destination; the Page therefore stayed `target_section_unresolved` before any write | succeeded | verified | 0 writes |
+| MoodlIA to MoodlIA | 4.5.12 | 5.3beta | course update, two sections, group, grouping, membership, staged assets, Page creation | none | succeeded | verified | 0 writes |
+
+The MoodlIA-to-MoodlIA transfer moved a Page with two authenticated assets (`hero ünicode.png` at the root and `diagram ünicode.svg` under `/nested/`): both files were read back with identical SHA-256 digests, the content kept `@@PLUGINFILE@@` references, and no token appeared in the exported model. Every plan was rejected for backup, restore, course-copy, or `.mbz` markers before execution.
+
+The live matrix found defects that the unit and logical evidence had not exposed, and each one was fixed and regression-tested before the final pass:
+
+- Moodle rewrites stored `@@PLUGINFILE@@` references without re-encoding them, so decoded and encoded asset URLs both appear in rendered HTML; the MoodlIA adapter now canonicalizes references to rawurlencoded segments (`moodlia@0.3.7`).
+- Module creation results echo `grouping_id: 0` next to `module_id`; the Core engine now identifies created entities by the first positive identifier, which also restores the module binding mapping (`moodle-core-cli@0.3.6`).
+- Readback verification failures are now persisted in the job and returned in the CLI error details (`moodle-core-cli@0.3.6`).
+- The plugin published Page files with the physical `itemid` and its integrated service lacked `downloadfiles`; both are fixed in build `2026092201`.
+
+All four test containers, their volumes, the compose network, and the staging directory were removed after the final report was archived. No persistent Moodle service took part.
+
 ## Latest plugin branch evidence
 
-The release evidence inspected on 2026-09-22 is the successful [Moodle PHPUnit run 35627262680](https://github.com/gafapa/moodle-local_moodlia/actions/runs/35627262680) for plugin commit `adc0204cf755192e6f99643c4fb9114e01285c66`. Its ten successful jobs cover:
+The release evidence inspected on 2026-09-22 is the successful [Moodle PHPUnit run 35755291294](https://github.com/gafapa/moodle-local_moodlia/actions/runs/35755291294) for plugin commit `117992c343c6397d8b14f1bee87bb7a43414333a` (release `0.1.213`). Its ten successful jobs cover:
 
 - Moodle 4.5 on MariaDB/PHP 8.1 and PostgreSQL/PHP 8.3.
 - Moodle 5.0 on MariaDB/PHP 8.2 and PostgreSQL/PHP 8.4.
