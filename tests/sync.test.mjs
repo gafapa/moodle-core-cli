@@ -521,7 +521,12 @@ test('sync engine records a verification failure after a non-converging write', 
     () => engine.apply({ planId: plan.plan_id, planDigest: plan.digest, sourceAdapter, targetAdapter }),
     /readback verification/
   );
-  assert.equal([...store.jobs.values()][0].status, 'verification_failed');
+  const failedJob = [...store.jobs.values()][0];
+  assert.equal(failedJob.status, 'verification_failed');
+  assert.equal(failedJob.error.code, 'verification_failed');
+  assert.deepEqual(failedJob.error.details.failures, [
+    { action_id: plan.actions[0].action_id, reason: 'readback_mismatch' }
+  ]);
 });
 
 test('sync engine streams assets through a temporary cache and removes it after publication', async () => {

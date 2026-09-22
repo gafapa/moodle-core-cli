@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.6 - 2026-09-22
+
+- Record readback verification failures in the failed job and in the CLI error
+  details so operators can identify the diverging action without re-running
+  verification.
+- Preserve the original error code and details when the Core CLI wraps
+  non-client errors instead of reporting them as `internal_error`.
+
 ## 0.3.5 - 2026-09-22
 
 - Retain the source module type in unresolved-section synchronization gaps so

@@ -698,6 +698,7 @@ export class CourseSyncEngine {
         const error = new TypeError('One or more synchronization actions failed readback verification.');
         error.code = 'verification_failed';
         error.failures = verificationFailures;
+        error.details = { failures: verificationFailures };
         throw error;
       }
       job.status = 'succeeded';
@@ -731,7 +732,12 @@ export class CourseSyncEngine {
       job.status = error.code === 'verification_failed'
         ? 'verification_failed'
         : (ambiguous ? 'unknown_outcome' : (job.results.some((entry) => entry.status === 'succeeded') ? 'partially_applied' : 'failed'));
-      job.error = { name: error.name, code: error.code, message: error.message };
+      job.error = {
+        name: error.name,
+        code: error.code,
+        message: error.message,
+        ...(error.details && typeof error.details === 'object' ? { details: error.details } : {})
+      };
       job.updated_at = new Date().toISOString();
       this.stateStore.saveJob(job);
       throw error;

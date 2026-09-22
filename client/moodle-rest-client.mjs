@@ -317,6 +317,14 @@ export function normalizeClientError(error, fallbackCode = 'internal_error', det
   if (error instanceof MoodleClientError) {
     return error;
   }
+  if (error && typeof error.code === 'string' && error.code.trim() !== '') {
+    return new MoodleClientError(
+      error.code,
+      error.message || 'Unexpected Moodle client error.',
+      error.details && typeof error.details === 'object' ? error.details : details,
+      error
+    );
+  }
   return new MoodleClientError(fallbackCode, error?.message || 'Unexpected Moodle client error.', details, error);
 }
 
