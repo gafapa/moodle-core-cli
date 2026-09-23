@@ -1,6 +1,6 @@
 {
   "name": "moodle-core-cli",
-  "version": "0.3.6",
+  "version": "0.4.0",
   "description": "Friendly Node.js client and CLI for Moodle 4.5+ core web services.",
   "type": "module",
   "license": "MIT",

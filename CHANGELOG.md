@@ -1,5 +1,40 @@
 # Changelog
 
+## 0.4.0 - unreleased
+
+Breaking changes:
+
+- Course synchronization moved to the new `moodlia-sync` package. The
+  `./sync` export, `moodle-core course sync`, `sync-course`, and
+  `moodle-core sync ...` are removed; the commands now exit with
+  `unsupported_operation` (exit code 3) and point to `moodlia-sync`.
+  `moodle-core capabilities` reports site discovery only.
+  `CoreMoodleAdapter` keeps `discoverSite()`; `moodlia-sync` extends it.
+- No runtime dependencies: `better-sqlite3` and `parse5` are gone, so
+  installing Core no longer builds a native module.
+- Limits: uploads and downloads stream with a 2 GiB default instead of being
+  buffered with 50 MiB and 100 MiB limits. Exceeding any limit raises
+  `payload_too_large` (exit code 2) instead of `connection_error` or
+  `validation_error`, with the limit, observed size, option, and environment
+  variable in its details.
+- Uploads send the token in the multipart body instead of the URL query.
+
+Additions:
+
+- `moodle-core-cli/transport`: the shared transport kernel (limits,
+  streaming, file roots, URL checks, secret redaction, error class) that
+  `moodlia` now builds on.
+- `moodle-core-cli/canonical` and `moodle-core-cli/cli-options`.
+- `MOODLE_MAX_{RESPONSE,UPLOAD,DOWNLOAD}_BYTES`; bulk reads declare
+  `limits.class: "bulk"` and get a 64 MiB response limit unless the user set
+  one; uploads honour the site's `usermaxuploadfilesize`.
+- The CLI allows the working directory and explicitly named files by default
+  when `--file-root` is not given.
+- The executable runs when installed as a symlinked bin.
+
+Migration: replace `moodle-core course sync ...` with the `moodlia-sync`
+commands listed in its README.
+
 ## 0.3.6 - 2026-09-22
 
 - Identify created entities by the first positive identifier in adapter

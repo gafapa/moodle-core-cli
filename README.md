@@ -14,28 +14,13 @@ The package provides stable, friendly operations such as `create_course` while i
 
 Moodle version compatibility does not grant access by itself. The external service must expose each required function and the token user must have the corresponding capabilities.
 
-## Cross-site synchronization preview
+## Cross-site synchronization
 
-The package now provides the Core-only foundation for profile-based, no-backup course synchronization. Planning is read-only and writes an immutable JSON plan. Applying requires the saved plan digest and `--allow-write`.
-
-The shared planner models native editor content and assets for sections, Pages, Text and media activities, URL resources, Book chapters, and assignment description and instruction areas. A destination adapter must advertise the corresponding typed capability before the planner emits an identity-preserving content update.
-
-Internal links in section, Page, Text and media, URL, Book, and assignment editor HTML are parsed rather than replaced as raw text. Known destination mappings are rewritten during planning; links to activities created by the same plan become dependency-bound deferred references. External links are preserved and Moodle-origin URLs containing authentication tokens are rejected.
-
-The same command exposes durable recovery and verification with `--job-id`, `--history`, `--cancel-job`, `--resume-job`, and `--verify-plan`. A timed-out write is recorded as an unknown outcome and reconciled before resume; it is never replayed blindly.
-
-```powershell
-moodle-core course sync `
-  --source-profile school_a --source-course-id 42 `
-  --target-profile school_b --target-course-id 81 `
-  --plan ".moodle-sync\plans\course-42.json"
-
-moodle-core course sync `
-  --apply-plan ".moodle-sync\plans\course-42.json" `
-  --plan-digest "sha256:..." --allow-write
-```
-
-Profiles use environment-variable references rather than embedded tokens. See [the synchronization architecture](docs/SYNC-ARCHITECTURE.md) and [the current capability matrix](docs/SYNC-CAPABILITY-MATRIX.md). The Core package intentionally contains no MCP server; cross-site MCP coordination is provided by the separate `moodlia-sync-mcp` package.
+Course synchronization between Moodle sites is provided by the separate
+[`moodlia-sync`](https://www.npmjs.com/package/moodlia-sync) package, which
+builds on this client. Since 0.4.0 `moodle-core course sync` and
+`moodle-core sync ...` exit with code 3 and point there; `moodle-core-cli`
+itself has no runtime dependencies.
 
 ## Installation
 
@@ -134,7 +119,17 @@ The CLI runs in read-only mode by default. Write operations require `--allow-wri
 
 Secret-bearing operation results are redacted by default. Use `--show-secrets` only when the output is sent to a trusted destination. Moodle debug information is omitted from errors unless `--debug` is present.
 
-Local file access is disabled by default. Upload and download commands require `--file-root <path>` or a comma-separated list of explicitly allowed roots.
+The CLI allows local files in the working directory and in the directories of files named on the command line (`--file-path`, `--destination-path`). Use `--file-root <paths>` to set the allowed roots explicitly. The library keeps local file access disabled unless `allowedFileRoots` is configured.
+
+## Size limits
+
+| Limit | Default | Option | Environment variable |
+| --- | --- | --- | --- |
+| REST response | 10 MiB; 64 MiB for bulk reads | `--max-response-bytes` | `MOODLE_MAX_RESPONSE_BYTES` |
+| Upload (streamed) | 2 GiB, and the site's upload limit when known | `--max-upload-bytes` | `MOODLE_MAX_UPLOAD_BYTES` |
+| Download (streamed to disk) | 2 GiB | `--max-download-bytes` | `MOODLE_MAX_DOWNLOAD_BYTES` |
+
+A user-configured response limit always wins over the bulk default. Exceeding a limit fails with `payload_too_large` (exit code 2), whose details name the limit, the observed size, and the option that raises it.
 
 ## API coverage
 
@@ -213,7 +208,8 @@ Project documentation, variable names, function names, and source comments are w
 - Give the token user only the Moodle capabilities required for its intended work.
 - The CLI is read-only by default and requires explicit authorization for writes and destructive actions.
 - The library supports `readOnly`, `allowedOperations`, `deniedOperations`, and `allowDangerousOperations` policies.
-- File access is confined with `allowedFileRoots`; uploads and downloads have configurable byte limits.
+- File access is confined with `allowedFileRoots`; uploads and downloads stream with configurable byte limits.
 - REST responses have a configurable byte limit and file downloads are streamed through a protected temporary file.
+- Upload tokens travel in the request body, never in the URL.
 - Secret results and Moodle debug details are hidden by default in CLI output.
 - Write operations are never retried automatically.
