@@ -94,7 +94,7 @@ export class MoodleOperationUnavailableError extends MoodleClientError {
   }
 }
 
-const coreErrors = Object.freeze({
+export const coreErrors = Object.freeze({
   configuration: (message, details = {}, cause = null) => new MoodleConfigurationError(message, details, cause),
   validation: (message, details = {}, cause = null) => new MoodleValidationError(message, details, cause),
   permission: (message, details = {}, cause = null) => new MoodlePermissionError(message, details, cause),

@@ -118,6 +118,7 @@ export interface MoodleClient extends TypedMoodleClient {}
 
 export function createMoodleClient(options?: MoodleClientOptions): MoodleClient;
 export const createMoodleRestClient: typeof createMoodleClient;
+export const coreErrors: import('./transport-kernel.js').ErrorFactory;
 export function operationResponseLimit(operation: MoodleOperationDefinition): number | null;
 export function loadContractFromFile(contractPath?: string): MoodleOperationContract;
 export function resolveMoodleUrl(baseUrl: string, relativePath: string, options?: { allowInsecure?: boolean }): URL;

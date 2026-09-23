@@ -1,6 +1,11 @@
-import fs from 'node:fs';
-import path from 'node:path';
-import { createMoodleClient, MoodleValidationError } from '../client/moodle-rest-client.mjs';
+import { coreErrors, createMoodleClient, MoodleValidationError } from '../client/moodle-rest-client.mjs';
+import {
+  booleanOption,
+  positiveIntegerOption,
+  readJsonFile,
+  requiredOption,
+  writeNewJsonFile
+} from './options.mjs';
 import {
   applyManualEnrolmentSync,
   auditCourseCompletion,
@@ -11,36 +16,15 @@ import {
 } from '../workflows/index.mjs';
 
 function required(options, name) {
-  const value = options[name];
-  if (value === undefined || value === true || String(value).trim() === '') {
-    throw new MoodleValidationError(`--${name.replaceAll('_', '-')} is required.`, { parameter: name });
-  }
-  return String(value);
+  return requiredOption(options, name, coreErrors);
 }
 
 function positiveInteger(options, name, fallback) {
-  const value = options[name] === undefined ? fallback : Number(options[name]);
-  if (!Number.isInteger(value) || value <= 0) {
-    throw new MoodleValidationError(`--${name.replaceAll('_', '-')} must be a positive integer.`, { parameter: name });
-  }
-  return value;
+  return positiveIntegerOption(options, name, { fallback, errors: coreErrors });
 }
 
-function booleanOption(options, name) {
-  const value = options[name];
-  if (value === undefined) return false;
-  if (value === true || value === 'true' || value === '1') return true;
-  if (value === false || value === 'false' || value === '0') return false;
-  throw new MoodleValidationError(`--${name.replaceAll('_', '-')} must be true or false.`, { parameter: name });
-}
-
-function readJson(filePath, label) {
-  const resolved = path.resolve(required({ value: filePath }, 'value'));
-  try {
-    return JSON.parse(fs.readFileSync(resolved, 'utf8').replace(/^\uFEFF/, ''));
-  } catch (error) {
-    throw new MoodleValidationError(`Unable to read ${label}: ${resolved}`, { file_path: resolved }, error);
-  }
+function booleanFlag(options, name) {
+  return booleanOption(options, name, coreErrors);
 }
 
 function client(options, { allowWrite = false } = {}) {
@@ -48,7 +32,7 @@ function client(options, { allowWrite = false } = {}) {
     baseUrl: options.url ?? process.env.MOODLE_BASE_URL,
     token: options.token ?? process.env.MOODLE_TOKEN,
     moodleVersion: options.moodle_version ?? process.env.MOODLE_VERSION,
-    allowInsecure: booleanOption(options, 'allow_insecure'),
+    allowInsecure: booleanFlag(options, 'allow_insecure'),
     readOnly: !allowWrite,
     allowedOperations: allowWrite ? ['get_enrolled_users', 'enrol_user'] : null
   });
@@ -120,24 +104,21 @@ export async function runCourseCompletionRepair(options) {
 
 export async function runEnrolmentSync(options) {
   if (options.apply_plan !== undefined) {
-    if (!booleanOption(options, 'allow_write') || !booleanOption(options, 'yes')) {
+    if (!booleanFlag(options, 'allow_write') || !booleanFlag(options, 'yes')) {
       throw new MoodleValidationError('Applying an enrolment plan requires --allow-write and --yes.');
     }
-    const plan = readJson(options.apply_plan, 'enrolment plan');
+    const plan = readJsonFile(options.apply_plan, 'enrolment plan', coreErrors);
     return applyManualEnrolmentSync(client(options, { allowWrite: true }), plan, {
       planDigest: required(options, 'plan_digest')
     });
   }
-  const desired = readJson(required(options, 'desired_file'), 'desired enrolments');
+  const desired = readJsonFile(required(options, 'desired_file'), 'desired enrolments', coreErrors);
   const plan = await planManualEnrolmentSync(client(options), {
     courseId: positiveInteger(options, 'course_id'),
     desired
   });
   if (options.plan_file !== undefined) {
-    const outputPath = path.resolve(required(options, 'plan_file'));
-    fs.mkdirSync(path.dirname(outputPath), { recursive: true, mode: 0o700 });
-    fs.writeFileSync(outputPath, `${JSON.stringify(plan, null, 2)}\n`, { flag: 'wx', mode: 0o600 });
-    return { ...plan, plan_path: outputPath };
+    return { ...plan, plan_path: writeNewJsonFile(required(options, 'plan_file'), plan) };
   }
   return plan;
 }

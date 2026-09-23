@@ -160,3 +160,61 @@ test('CLI awaits asynchronous sync work before closing durable state', () => {
   assert.doesNotMatch(source, /return engine\.(?:apply|verify)\(/);
   assert.equal((source.match(/return await engine\.(?:apply|verify)\(/g) ?? []).length, 3);
 });
+
+test('enrolment sync CLI saves a new plan file, refuses to overwrite it, and applies it by digest', async () => {
+  const { createServer } = await import('node:http');
+  const { runEnrolmentSync } = await import('../cli/workflow-commands.mjs');
+  const calls = [];
+  const server = createServer(async (request, response) => {
+    const chunks = [];
+    for await (const chunk of request) chunks.push(chunk);
+    const body = new URLSearchParams(Buffer.concat(chunks).toString('utf8'));
+    const functionName = body.get('wsfunction');
+    calls.push(functionName);
+    response.setHeader('content-type', 'application/json');
+    if (functionName === 'core_enrol_get_enrolled_users') {
+      response.end(JSON.stringify([{ id: 5, fullname: 'Existing', roles: [{ roleid: 5 }] }]));
+      return;
+    }
+    response.end('null');
+  });
+  await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'moodle-core-enrol-'));
+  try {
+    const desiredPath = path.join(directory, 'desired.json');
+    const planPath = path.join(directory, 'plans', 'enrolments.json');
+    fs.writeFileSync(desiredPath, JSON.stringify([{ user_id: 5, role_id: 5 }, { user_id: 9, role_id: 5 }]));
+    const connection = {
+      url: `http://127.0.0.1:${server.address().port}`,
+      token: 'enrol-token',
+      moodle_version: '5.2',
+      course_id: '42'
+    };
+    const planned = await runEnrolmentSync({ ...connection, desired_file: desiredPath, plan_file: planPath });
+    assert.equal(planned.plan_path, planPath);
+    assert.equal(planned.actions.length, 1);
+    assert.deepEqual(planned.unchanged.map((entry) => entry.user_id), [5]);
+    const saved = JSON.parse(fs.readFileSync(planPath, 'utf8'));
+    assert.equal(saved.digest, planned.digest);
+    await assert.rejects(
+      () => runEnrolmentSync({ ...connection, desired_file: desiredPath, plan_file: planPath }),
+      { code: 'EEXIST' }
+    );
+    await assert.rejects(
+      () => runEnrolmentSync({ ...connection, apply_plan: planPath, plan_digest: saved.digest }),
+      { code: 'validation_error' }
+    );
+    const applied = await runEnrolmentSync({
+      ...connection,
+      apply_plan: planPath,
+      plan_digest: saved.digest,
+      allow_write: true,
+      yes: true
+    });
+    assert.equal(applied.applied, 1);
+    assert.ok(calls.includes('enrol_manual_enrol_users'));
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+    fs.rmSync(directory, { recursive: true, force: true });
+  }
+});

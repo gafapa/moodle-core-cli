@@ -53,6 +53,10 @@
       "types": "./cli/exit-codes.d.ts",
       "import": "./cli/exit-codes.mjs"
     },
+    "./cli-options": {
+      "types": "./cli/options.d.ts",
+      "import": "./cli/options.mjs"
+    },
     "./cli-runner": {
       "types": "./cli/runner.d.ts",
       "import": "./cli/moodle-core.mjs"
