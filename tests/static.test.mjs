@@ -30,13 +30,11 @@ test('CLI prints contract-generated help', async () => {
   assert.doesNotMatch(stdout, /core_course_create_courses/);
 });
 
-test('CLI documents durable sync recovery commands', async () => {
+test('CLI capabilities help points synchronization to moodlia-sync', async () => {
   const { stdout } = await execFileAsync(process.execPath, [
-    'cli/moodle-core.mjs', 'course', 'sync', '--help'
+    'cli/moodle-core.mjs', 'capabilities', '--help'
   ], { cwd: path.resolve('.') });
-  for (const option of ['--resume-job', '--verify-plan', '--job-id', '--history', '--cancel-job']) {
-    assert.match(stdout, new RegExp(option));
-  }
+  assert.match(stdout, /moodlia-sync capabilities/);
 });
 
 test('CLI requires explicit write and destructive-operation authorization', async () => {

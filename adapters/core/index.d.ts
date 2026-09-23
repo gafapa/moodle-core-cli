@@ -1,13 +1,13 @@
 import type { MoodleClient } from '../../client/moodle-rest-client.js';
-import type { CourseSyncModel } from '../../sync/index.js';
 
+/** Site discovery for Moodle Core. moodlia-sync extends it with synchronization. */
 export class CoreMoodleAdapter {
   constructor(options: { client: MoodleClient; profileName?: string | null });
+  readonly client: MoodleClient;
   readonly provider: 'core';
+  profileName: string | null;
+  discovery: Record<string, unknown> | null;
   discoverSite(): Promise<Record<string, unknown>>;
-  exportCourse(courseId: number): Promise<CourseSyncModel>;
-  syncCapabilities(input?: { courseId?: number }): Promise<Record<string, boolean>>;
-  applySyncAction(action: Record<string, unknown>, context: { courseId: number }): Promise<unknown>;
 }
 
 export function createCoreMoodleAdapter(options: ConstructorParameters<typeof CoreMoodleAdapter>[0]): CoreMoodleAdapter;

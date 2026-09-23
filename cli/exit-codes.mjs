@@ -11,6 +11,7 @@ export const CLI_EXIT_CODES = Object.freeze({
 
 const validationCodes = new Set([
   'configuration_error',
+  'dependency_unavailable',
   'invalid_parameters',
   'invalid_plan',
   'invalid_state',

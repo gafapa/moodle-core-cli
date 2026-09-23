@@ -130,37 +130,6 @@ test('CLI exposes evidence workflows and add-only enrolment planning', () => {
   }
 });
 
-test('CLI exposes grouped synchronization lifecycle aliases', () => {
-  const help = spawnSync(process.execPath, [path.resolve('cli/moodle-core.mjs'), 'sync', 'status', '--help'], {
-    cwd: path.resolve('.'), encoding: 'utf8'
-  });
-  assert.equal(help.status, 0, help.stderr);
-  assert.match(help.stdout, /sync resume --job-id/);
-  assert.match(help.stdout, /sync verify --plan-id/);
-});
-
-test('grouped resume maps job-id to one lifecycle mode', () => {
-  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'moodle-core-grouped-sync-'));
-  try {
-    const result = spawnSync(process.execPath, [
-      path.resolve('cli/moodle-core.mjs'), 'sync', 'resume',
-      '--job-id', 'missing-job', '--plan-digest', 'sha256:missing', '--allow-write',
-      '--state', path.join(directory, 'state.sqlite')
-    ], { encoding: 'utf8' });
-    assert.notEqual(result.status, 0);
-    assert.match(result.stderr, /Unknown sync job/);
-    assert.doesNotMatch(result.stderr, /cannot be combined/);
-  } finally {
-    fs.rmSync(directory, { recursive: true, force: true });
-  }
-});
-
-test('CLI awaits asynchronous sync work before closing durable state', () => {
-  const source = fs.readFileSync(path.resolve('cli/sync-commands.mjs'), 'utf8');
-  assert.doesNotMatch(source, /return engine\.(?:apply|verify)\(/);
-  assert.equal((source.match(/return await engine\.(?:apply|verify)\(/g) ?? []).length, 3);
-});
-
 test('enrolment sync CLI saves a new plan file, refuses to overwrite it, and applies it by digest', async () => {
   const { createServer } = await import('node:http');
   const { runEnrolmentSync } = await import('../cli/workflow-commands.mjs');
@@ -216,5 +185,15 @@ test('enrolment sync CLI saves a new plan file, refuses to overwrite it, and app
   } finally {
     await new Promise((resolve) => server.close(resolve));
     fs.rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+test('synchronization commands point to the moodlia-sync package', () => {
+  for (const command of [['course', 'sync'], ['sync-course'], ['sync', 'status', '--job-id', 'x']]) {
+    const result = spawnSync(process.execPath, [path.resolve('cli/moodle-core.mjs'), ...command], { encoding: 'utf8' });
+    assert.equal(result.status, 3, command.join(' '));
+    const error = JSON.parse(result.stderr);
+    assert.equal(error.code, 'unsupported_operation');
+    assert.match(error.message, /moodlia-sync/);
   }
 });

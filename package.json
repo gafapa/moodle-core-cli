@@ -41,10 +41,6 @@
       "types": "./profiles/profiles.d.ts",
       "import": "./profiles/profiles.mjs"
     },
-    "./sync": {
-      "types": "./sync/index.d.ts",
-      "import": "./sync/index.mjs"
-    },
     "./workflows": {
       "types": "./workflows/index.d.ts",
       "import": "./workflows/index.mjs"
@@ -72,7 +68,6 @@
     "canonical/",
     "capabilities/",
     "profiles/",
-    "sync/",
     "workflows/",
     "adapters/",
     "contract/operations.json",
@@ -114,9 +109,5 @@
   "directories": {
     "doc": "docs",
     "test": "tests"
-  },
-  "dependencies": {
-    "better-sqlite3": "12.4.1",
-    "parse5": "^8.0.1"
   }
 }

@@ -8,12 +8,7 @@ import {
   normalizeClientError,
   redactOperationResult
 } from '../client/moodle-rest-client.mjs';
-import {
-  printCapabilitiesHelp,
-  printCourseSyncHelp,
-  runCapabilitiesCommand,
-  runCourseSyncCommand
-} from './sync-commands.mjs';
+import { printCapabilitiesHelp, runCapabilitiesCommand, syncMovedError } from './capabilities-command.mjs';
 import {
   printCourseAuditHelp,
   printCourseCompletionAuditHelp,
@@ -93,9 +88,8 @@ function printHelp(contract, operation = null) {
     console.log('Usage: moodle-core <command> [options]');
     console.log('');
     console.log('Friendly Moodle operations:');
-    console.log('  capabilities             Inspect live Core synchronization capabilities');
-    console.log('  course sync              Plan or apply cross-site course synchronization');
-    console.log('  sync-course              Alias for course sync');
+    console.log('  capabilities             Discover the release and functions of a site profile');
+    console.log('                           (course synchronization is provided by moodlia-sync)');
     console.log('  course audit             Evidence-based read-only course audit');
     console.log('  course progress          Aggregate visible progress and grade evidence');
     console.log('  course completion audit  Inspect completion evidence without inferring hidden settings');
@@ -179,35 +173,7 @@ export async function runMoodleCoreCli(argv = process.argv.slice(2)) {
     return;
   }
   if (syncCommand) {
-    if (options.help) {
-      printCourseSyncHelp();
-      return;
-    }
-    debugEnabled = booleanOption(options, 'debug');
-    const { job_id: groupedJobId, plan_id: groupedPlanId, binding_id: groupedBindingId,
-      ...groupedBaseOptions } = options;
-    const groupedOptions = syncSubcommand === 'status'
-      ? { ...groupedBaseOptions, job_id: groupedJobId }
-      : syncSubcommand === 'resume'
-        ? { ...groupedBaseOptions, resume_job: groupedJobId }
-        : syncSubcommand === 'verify'
-          ? {
-              ...groupedBaseOptions,
-              verify_plan: groupedPlanId ?? groupedBindingId,
-              verify_job_id: groupedJobId
-            }
-          : syncSubcommand === 'history'
-            ? { ...groupedBaseOptions, history: true }
-            : syncSubcommand === 'cancel'
-              ? { ...groupedBaseOptions, cancel_job: groupedJobId }
-              : options;
-    const result = await runCourseSyncCommand({
-      ...groupedOptions,
-      allow_write: booleanOption(options, 'allow_write')
-    });
-    console.log(JSON.stringify(result, null, booleanOption(options, 'compact') ? 0 : 2));
-    process.exitCode = exitCodeForResult(result);
-    return;
+    throw syncMovedError();
   }
   if (auditCommand || progressCommand || completionAuditCommand || completionRepairCommand || enrolmentSyncCommand) {
     if (options.help) {
