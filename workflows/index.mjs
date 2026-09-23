@@ -1,4 +1,4 @@
-import { contentDigest } from '../sync/canonical.mjs';
+import { contentDigest } from '../canonical/index.mjs';
 
 function positiveInteger(value, name) {
   const number = Number(value);

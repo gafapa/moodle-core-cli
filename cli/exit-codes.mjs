@@ -15,6 +15,7 @@ const validationCodes = new Set([
   'invalid_plan',
   'invalid_state',
   'not_found',
+  'payload_too_large',
   'validation_error'
 ]);
 

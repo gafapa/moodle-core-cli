@@ -19,6 +19,7 @@ export interface MoodleOperationDefinition {
   compatibility: { from: string; until?: string | null };
   parameters?: Record<string, MoodleOperationParameterDefinition>;
   returns?: unknown;
+  limits?: { class?: 'bulk'; maximumResponseBytes?: number };
 }
 
 export interface MoodleOperationContract {
@@ -28,8 +29,12 @@ export interface MoodleOperationContract {
   operations: MoodleOperationDefinition[];
 }
 
+export interface MoodleCallOptions {
+  maximumResponseBytes?: number;
+}
+
 export interface MoodleTransport {
-  callFunction(functionName: string, parameters?: Record<string, unknown>): Promise<unknown>;
+  callFunction(functionName: string, parameters?: Record<string, unknown>, options?: MoodleCallOptions): Promise<unknown>;
 }
 
 export interface RestTransportOptions {
@@ -38,10 +43,13 @@ export interface RestTransportOptions {
   timeoutMs?: number;
   fetchImplementation?: typeof fetch;
   allowInsecure?: boolean;
-  allowedFileRoots?: string[];
+  /** null leaves local files unrestricted; an empty array (default) disables local file access. */
+  allowedFileRoots?: string[] | null;
   maximumResponseBytes?: number;
   maximumUploadBytes?: number;
   maximumDownloadBytes?: number;
+  /** Source for MOODLE_MAX_*_BYTES defaults; pass process.env to honour them. */
+  environment?: Record<string, string | undefined>;
 }
 
 export interface MoodleClientOptions extends RestTransportOptions {
@@ -55,17 +63,8 @@ export interface MoodleClientOptions extends RestTransportOptions {
   allowDangerousOperations?: boolean;
 }
 
-export class MoodleClientError extends Error {
-  constructor(code: string, message: string, details?: Record<string, unknown>, cause?: unknown);
-  readonly code: string;
-  readonly details: Record<string, unknown>;
-  toJSON(options?: { includeDebug?: boolean }): {
-    error: true;
-    code: string;
-    message: string;
-    details: Record<string, unknown>;
-  };
-}
+import { MoodleClientError } from './transport-kernel.js';
+export { MoodleClientError, MoodlePayloadTooLargeError } from './transport-kernel.js';
 
 export class MoodleConfigurationError extends MoodleClientError {}
 export class MoodleConnectionError extends MoodleClientError {}
@@ -77,7 +76,8 @@ export class MoodleOperationUnavailableError extends MoodleClientError {}
 
 export class RestTransport implements MoodleTransport {
   constructor(options?: RestTransportOptions);
-  callFunction(functionName: string, parameters?: Record<string, unknown>): Promise<unknown>;
+  siteMaximumUploadBytes: number | null;
+  callFunction(functionName: string, parameters?: Record<string, unknown>, options?: MoodleCallOptions): Promise<unknown>;
   uploadDraftFile(options: {
     filePath: string;
     itemId?: number;
@@ -118,6 +118,7 @@ export interface MoodleClient extends TypedMoodleClient {}
 
 export function createMoodleClient(options?: MoodleClientOptions): MoodleClient;
 export const createMoodleRestClient: typeof createMoodleClient;
+export function operationResponseLimit(operation: MoodleOperationDefinition): number | null;
 export function loadContractFromFile(contractPath?: string): MoodleOperationContract;
 export function resolveMoodleUrl(baseUrl: string, relativePath: string, options?: { allowInsecure?: boolean }): URL;
 export function encodeMoodleParameters(parameters?: Record<string, unknown>): URLSearchParams;

@@ -8,6 +8,7 @@ import {
   encodeMoodleParameters,
   RestTransport,
   MoodleConnectionError,
+  MoodlePayloadTooLargeError,
   MoodlePermissionError,
   MoodleUnsupportedVersionError,
   MoodleValidationError,
@@ -856,10 +857,11 @@ test('uploads a local file through the dedicated Moodle endpoint', async () => {
       allowedFileRoots: [temporaryDirectory],
       fetchImplementation: async (url, options) => {
         assert.equal(url.pathname, '/webservice/upload.php');
-        assert.equal(url.searchParams.get('token'), 'secret');
-        assert.equal(url.searchParams.get('itemid'), '17');
-        assert.equal(url.searchParams.get('filepath'), '/subfolder/');
+        assert.equal(url.search, '', 'the token must not travel in the URL');
         assert.ok(options.body instanceof FormData);
+        assert.equal(options.body.get('token'), 'secret');
+        assert.equal(options.body.get('itemid'), '17');
+        assert.equal(options.body.get('filepath'), '/subfolder/');
         assert.equal(options.body.get('file_1').name, 'renamed.txt');
         return new Response(JSON.stringify([{
           component: 'user',
@@ -1047,11 +1049,11 @@ test('enforces response, upload, download, and file-root limits', async () => {
     });
     await assert.rejects(
       () => responseTransport.callFunction('core_webservice_get_site_info'),
-      MoodleConnectionError
+      MoodlePayloadTooLargeError
     );
     await assert.rejects(
       () => responseTransport.uploadDraftFile({ filePath: oversizedUpload }),
-      MoodleValidationError
+      MoodlePayloadTooLargeError
     );
     await assert.rejects(
       () => responseTransport.uploadDraftFile({ filePath: outsideUpload }),
@@ -1063,7 +1065,7 @@ test('enforces response, upload, download, and file-root limits', async () => {
         fileUrl: 'https://moodle.example.com/webservice/pluginfile.php/1/file.txt',
         destinationPath
       }),
-      MoodleConnectionError
+      MoodlePayloadTooLargeError
     );
     await assert.rejects(() => fs.access(destinationPath));
     await assert.rejects(

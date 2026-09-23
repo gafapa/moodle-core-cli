@@ -24,6 +24,14 @@
       "types": "./client/moodle-rest-client.d.ts",
       "import": "./client/moodle-rest-client.mjs"
     },
+    "./transport": {
+      "types": "./client/transport-kernel.d.ts",
+      "import": "./client/transport-kernel.mjs"
+    },
+    "./canonical": {
+      "types": "./canonical/index.d.ts",
+      "import": "./canonical/index.mjs"
+    },
     "./contract": "./contract/operations.json",
     "./capabilities": {
       "types": "./capabilities/registry.d.ts",
@@ -57,6 +65,7 @@
   "files": [
     "cli/",
     "client/",
+    "canonical/",
     "capabilities/",
     "profiles/",
     "sync/",

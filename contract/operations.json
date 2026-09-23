@@ -223,7 +223,10 @@
       },
       "returns": [
         "object"
-      ]
+      ],
+      "limits": {
+        "class": "bulk"
+      }
     },
     {
       "name": "get_users_by_field",
@@ -671,7 +674,10 @@
       },
       "returns": [
         "object"
-      ]
+      ],
+      "limits": {
+        "class": "bulk"
+      }
     },
     {
       "name": "get_cohorts",
@@ -1772,7 +1778,10 @@
           "minimum": 1
         }
       },
-      "returns": "object"
+      "returns": "object",
+      "limits": {
+        "class": "bulk"
+      }
     },
     {
       "name": "get_user_course_grades",
@@ -1789,7 +1798,10 @@
           "minimum": 1
         }
       },
-      "returns": "object"
+      "returns": "object",
+      "limits": {
+        "class": "bulk"
+      }
     },
     {
       "name": "get_grade_access_information",
@@ -2182,7 +2194,10 @@
           "minimum": 0
         }
       },
-      "returns": "object"
+      "returns": "object",
+      "limits": {
+        "class": "bulk"
+      }
     },
     {
       "name": "get_assignment_grades",
@@ -2204,7 +2219,10 @@
           "minimum": 0
         }
       },
-      "returns": "object"
+      "returns": "object",
+      "limits": {
+        "class": "bulk"
+      }
     },
     {
       "name": "get_assignment_submission_status",
@@ -2273,7 +2291,10 @@
       },
       "returns": [
         "object"
-      ]
+      ],
+      "limits": {
+        "class": "bulk"
+      }
     },
     {
       "name": "get_assignment_participant",
@@ -2771,7 +2792,10 @@
           "minimum": 0
         }
       },
-      "returns": "object"
+      "returns": "object",
+      "limits": {
+        "class": "bulk"
+      }
     },
     {
       "name": "get_forum_discussion_posts",
@@ -2809,7 +2833,10 @@
           "required": false
         }
       },
-      "returns": "object"
+      "returns": "object",
+      "limits": {
+        "class": "bulk"
+      }
     },
     {
       "name": "get_forum_post",
@@ -4100,7 +4127,10 @@
           "required": false
         }
       },
-      "returns": "object"
+      "returns": "object",
+      "limits": {
+        "class": "bulk"
+      }
     },
     {
       "name": "get_scorm_user_data",
@@ -5120,7 +5150,10 @@
           "minimum": 0
         }
       },
-      "returns": "object"
+      "returns": "object",
+      "limits": {
+        "class": "bulk"
+      }
     },
     {
       "name": "get_database_entry",
@@ -5215,7 +5248,10 @@
           "minimum": 0
         }
       },
-      "returns": "object"
+      "returns": "object",
+      "limits": {
+        "class": "bulk"
+      }
     },
     {
       "name": "approve_database_entry",
@@ -5412,7 +5448,10 @@
           "required": false
         }
       },
-      "returns": "object"
+      "returns": "object",
+      "limits": {
+        "class": "bulk"
+      }
     },
     {
       "name": "get_glossary_entries_by_date",
@@ -5459,7 +5498,10 @@
           "required": false
         }
       },
-      "returns": "object"
+      "returns": "object",
+      "limits": {
+        "class": "bulk"
+      }
     },
     {
       "name": "get_glossary_categories",
@@ -5521,7 +5563,10 @@
           "required": false
         }
       },
-      "returns": "object"
+      "returns": "object",
+      "limits": {
+        "class": "bulk"
+      }
     },
     {
       "name": "get_glossary_authors",
@@ -5656,7 +5701,10 @@
           "required": false
         }
       },
-      "returns": "object"
+      "returns": "object",
+      "limits": {
+        "class": "bulk"
+      }
     },
     {
       "name": "search_glossary_entries",
@@ -5747,7 +5795,10 @@
           "required": false
         }
       },
-      "returns": "object"
+      "returns": "object",
+      "limits": {
+        "class": "bulk"
+      }
     },
     {
       "name": "get_glossary_entries_to_approve",
@@ -7141,7 +7192,10 @@
           "minimum": 0
         }
       },
-      "returns": "object"
+      "returns": "object",
+      "limits": {
+        "class": "bulk"
+      }
     },
     {
       "name": "get_workshop_submission",
@@ -7361,7 +7415,10 @@
           "minimum": 0
         }
       },
-      "returns": "object"
+      "returns": "object",
+      "limits": {
+        "class": "bulk"
+      }
     },
     {
       "name": "evaluate_workshop_submission",
@@ -8273,7 +8330,10 @@
           "minimum": 1
         }
       },
-      "returns": "object"
+      "returns": "object",
+      "limits": {
+        "class": "bulk"
+      }
     },
     {
       "name": "view_blog_entries",
@@ -11006,7 +11066,10 @@
           "moodleName": "courseid"
         }
       },
-      "returns": "object"
+      "returns": "object",
+      "limits": {
+        "class": "bulk"
+      }
     },
     {
       "name": "get_grade_items_for_selector",
@@ -11153,7 +11216,10 @@
           "moodleName": "perpage"
         }
       },
-      "returns": "object"
+      "returns": "object",
+      "limits": {
+        "class": "bulk"
+      }
     },
     {
       "name": "view_custom_report",
@@ -11265,7 +11331,10 @@
           "minimum": 1
         }
       },
-      "returns": "object"
+      "returns": "object",
+      "limits": {
+        "class": "bulk"
+      }
     },
     {
       "name": "get_dynamic_table",
@@ -12285,7 +12354,10 @@
           "moodleName": "timefrom"
         }
       },
-      "returns": "object"
+      "returns": "object",
+      "limits": {
+        "class": "bulk"
+      }
     },
     {
       "name": "get_message_contacts",
@@ -12510,7 +12582,10 @@
           "moodleName": "limitnum"
         }
       },
-      "returns": "object"
+      "returns": "object",
+      "limits": {
+        "class": "bulk"
+      }
     },
     {
       "name": "get_conversation_counts",
@@ -15955,6 +16030,9 @@
             "message": "string"
           }
         ]
+      },
+      "limits": {
+        "class": "bulk"
       }
     },
     {
@@ -18857,6 +18935,9 @@
           }
         ],
         "pushratingstouserplans": "boolean"
+      },
+      "limits": {
+        "class": "bulk"
       }
     },
     {

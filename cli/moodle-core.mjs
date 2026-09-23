@@ -26,8 +26,10 @@ import {
   runCourseProgress,
   runEnrolmentSync
 } from './workflow-commands.mjs';
+import { realpathSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { commandLineFileRoots } from '../client/transport-kernel.mjs';
 import { exitCodeForError, exitCodeForResult } from './exit-codes.mjs';
-import { pathToFileURL } from 'node:url';
 
 let debugEnabled = false;
 
@@ -112,10 +114,11 @@ function printHelp(contract, operation = null) {
     console.log('  --allow-dangerous           Allow high-risk generic or development operations');
     console.log('  --allow-operation <names>   Comma-separated operation allowlist');
     console.log('  --deny-operation <names>    Comma-separated operation denylist');
-    console.log('  --file-root <paths>         Comma-separated roots that enable local file access');
-    console.log('  --max-response-bytes <n>    Maximum REST or upload response size');
-    console.log('  --max-upload-bytes <n>      Maximum local upload size');
-    console.log('  --max-download-bytes <n>    Maximum downloaded file size');
+    console.log('  --file-root <paths>         Comma-separated roots for local files (default: the working');
+    console.log('                              directory and the directories of files named on the command line)');
+    console.log('  --max-response-bytes <n>    Maximum REST or upload response size (MOODLE_MAX_RESPONSE_BYTES)');
+    console.log('  --max-upload-bytes <n>      Maximum local upload size, streamed (MOODLE_MAX_UPLOAD_BYTES; default 2 GiB)');
+    console.log('  --max-download-bytes <n>    Maximum downloaded file size, streamed (MOODLE_MAX_DOWNLOAD_BYTES; default 2 GiB)');
     console.log('  --yes                       Confirm a destructive operation');
     console.log('  --show-secrets              Print secret-bearing operation results');
     console.log('  --debug                     Include Moodle debug information in errors');
@@ -267,7 +270,10 @@ export async function runMoodleCoreCli(argv = process.argv.slice(2)) {
     allowedOperations: allowedOperations.length > 0 ? allowedOperations : null,
     deniedOperations,
     allowDangerousOperations: allowDangerous,
-    allowedFileRoots: listOption(options.file_root),
+    allowedFileRoots: listOption(options.file_root).length > 0
+      ? listOption(options.file_root)
+      : commandLineFileRoots([options.file_path, options.destination_path]),
+    environment: process.env,
     maximumResponseBytes: options.max_response_bytes === undefined
       ? undefined
       : Number(options.max_response_bytes),
@@ -284,8 +290,17 @@ export async function runMoodleCoreCli(argv = process.argv.slice(2)) {
   process.exitCode = exitCodeForResult(output);
 }
 
-const invokedAsExecutable = process.argv[1]
-  && pathToFileURL(process.argv[1]).href === import.meta.url;
+function isMainModule() {
+  if (!process.argv[1]) return false;
+  try {
+    // npm installs bins as symlinks; compare real paths, not the invoked path.
+    return realpathSync(process.argv[1]) === realpathSync(fileURLToPath(import.meta.url));
+  } catch {
+    return false;
+  }
+}
+
+const invokedAsExecutable = isMainModule();
 
 if (invokedAsExecutable) {
   runMoodleCoreCli().catch((error) => {

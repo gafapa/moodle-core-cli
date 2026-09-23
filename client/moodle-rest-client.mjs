@@ -1,233 +1,35 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { randomUUID } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import {
+  DEFAULT_LIMITS,
+  MoodleClientError,
+  MoodlePayloadTooLargeError,
+  assertResponseOrigin,
+  collectSensitiveValues,
+  normalizeAllowedFileRoots,
+  normalizeClientError,
+  openUploadSource,
+  parseLimitedJsonResponse,
+  postDraftUpload,
+  redactSensitiveData,
+  redactTextValues,
+  resolveAllowedDestination,
+  resolveByteLimit,
+  resolveMoodleUrl as resolveKernelMoodleUrl,
+  streamResponseToFile,
+  temporarySiblingPath
+} from './transport-kernel.mjs';
+
+export { MoodleClientError, MoodlePayloadTooLargeError, normalizeClientError, redactSensitiveData };
 
 const packageDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const defaultContractPath = path.join(packageDirectory, 'contract', 'operations.json');
-const defaultMaximumResponseBytes = 10 * 1024 * 1024;
-const defaultMaximumUploadBytes = 50 * 1024 * 1024;
-const defaultMaximumDownloadBytes = 100 * 1024 * 1024;
 const dangerousOperations = new Set([
   'call_mobile_external_functions'
 ]);
-const sensitiveKeyPattern = /(?:access_?token|api_?key|password|private_?key|secret|token)$/i;
 const sensitiveOperationPattern = /(?:token|api_key|autologin_key)/i;
 const destructiveOperationPattern = /(?:^|_)(?:delete|disable|remove|purge|reset|revoke|terminate|unenrol|uninstall)(?:_|$)/i;
-
-function positiveByteLimit(value, parameter, fallback) {
-  const resolved = value ?? fallback;
-  if (!Number.isSafeInteger(resolved) || resolved <= 0) {
-    throw new MoodleConfigurationError(`${parameter} must be a positive integer.`, { parameter });
-  }
-  return resolved;
-}
-
-function pathBelongsToRoot(candidatePath, rootPath) {
-  const relative = path.relative(rootPath, candidatePath);
-  return relative === '' || (!relative.startsWith('..') && !path.isAbsolute(relative));
-}
-
-async function resolveAllowedRoots(roots) {
-  const resolvedRoots = [];
-  for (const root of roots) {
-    try {
-      resolvedRoots.push(await fs.promises.realpath(path.resolve(root)));
-    } catch (error) {
-      throw new MoodleConfigurationError('An allowed file root could not be resolved.', {
-        parameter: 'allowedFileRoots',
-        root: path.resolve(root)
-      }, error);
-    }
-  }
-  return resolvedRoots;
-}
-
-async function assertAllowedExistingFile(filePath, allowedRoots) {
-  if (allowedRoots.length === 0) {
-    throw new MoodlePermissionError('Local file access is disabled. Configure allowedFileRoots to enable uploads.');
-  }
-  let realFilePath;
-  try {
-    realFilePath = await fs.promises.realpath(path.resolve(filePath));
-  } catch (error) {
-    throw new MoodleValidationError('The upload source file could not be resolved.', { filePath }, error);
-  }
-  const roots = await resolveAllowedRoots(allowedRoots);
-  if (!roots.some((root) => pathBelongsToRoot(realFilePath, root))) {
-    throw new MoodlePermissionError('The upload source is outside the allowed file roots.', { filePath });
-  }
-  return realFilePath;
-}
-
-async function readLimitedLocalFile(filePath, maximumBytes) {
-  const fileHandle = await fs.promises.open(filePath, 'r');
-  try {
-    const [handleStats, pathStats] = await Promise.all([
-      fileHandle.stat(),
-      fs.promises.lstat(filePath)
-    ]);
-    // Node 22 on Windows reports dev=0 for path stats while the open handle has
-    // a volume identifier. Treat zero as unavailable and still compare inode.
-    const sameDevice = pathStats.dev === 0 || handleStats.dev === 0 || handleStats.dev === pathStats.dev;
-    const sameInode = pathStats.ino === 0 || handleStats.ino === 0 || handleStats.ino === pathStats.ino;
-    if (
-      pathStats.isSymbolicLink() ||
-      !handleStats.isFile() ||
-      !sameDevice ||
-      !sameInode
-    ) {
-      throw new MoodlePermissionError('The upload source must be a stable regular file, not a symbolic link.', {
-        filePath
-      });
-    }
-    if (handleStats.size > maximumBytes) {
-      throw new MoodleValidationError('The upload source exceeds the configured size limit.', {
-        filePath,
-        maximumBytes,
-        size: handleStats.size
-      });
-    }
-    const chunks = [];
-    let size = 0;
-    while (true) {
-      const buffer = Buffer.allocUnsafe(Math.min(64 * 1024, maximumBytes - size + 1));
-      const { bytesRead } = await fileHandle.read(buffer, 0, buffer.length, null);
-      if (bytesRead === 0) break;
-      size += bytesRead;
-      if (size > maximumBytes) {
-        throw new MoodleValidationError('The upload source exceeds the configured size limit.', {
-          filePath,
-          maximumBytes
-        });
-      }
-      chunks.push(buffer.subarray(0, bytesRead));
-    }
-    return Buffer.concat(chunks, size);
-  } finally {
-    await fileHandle.close();
-  }
-}
-
-async function resolveAllowedDestination(destinationPath, allowedRoots) {
-  if (allowedRoots.length === 0) {
-    throw new MoodlePermissionError('Local file access is disabled. Configure allowedFileRoots to enable downloads.');
-  }
-  const absoluteDestination = path.resolve(destinationPath);
-  const roots = await resolveAllowedRoots(allowedRoots);
-  const rootIndex = allowedRoots.findIndex((root) =>
-    pathBelongsToRoot(absoluteDestination, path.resolve(root))
-  );
-  if (rootIndex < 0) {
-    throw new MoodlePermissionError('The download destination is outside the allowed file roots.', {
-      destinationPath: absoluteDestination
-    });
-  }
-  const lexicalRoot = path.resolve(allowedRoots[rootIndex]);
-  const realRoot = roots[rootIndex];
-  const relativeParent = path.relative(lexicalRoot, path.dirname(absoluteDestination));
-  let currentParent = realRoot;
-  for (const segment of relativeParent.split(path.sep).filter(Boolean)) {
-    currentParent = path.join(currentParent, segment);
-    let stats;
-    try {
-      stats = await fs.promises.lstat(currentParent);
-    } catch (error) {
-      if (error.code !== 'ENOENT') throw error;
-      try {
-        await fs.promises.mkdir(currentParent);
-      } catch (mkdirError) {
-        if (mkdirError.code !== 'EEXIST') throw mkdirError;
-      }
-      stats = await fs.promises.lstat(currentParent);
-    }
-    if (stats.isSymbolicLink() || !stats.isDirectory()) {
-      throw new MoodlePermissionError('The download path must not traverse symbolic links or non-directories.', {
-        destinationPath: absoluteDestination
-      });
-    }
-    const realCurrentParent = await fs.promises.realpath(currentParent);
-    if (!pathBelongsToRoot(realCurrentParent, realRoot)) {
-      throw new MoodlePermissionError('The download destination resolves outside the allowed file roots.', {
-        destinationPath: absoluteDestination
-      });
-    }
-  }
-  return path.join(currentParent, path.basename(absoluteDestination));
-}
-
-function assertContentLength(response, maximumBytes, label) {
-  const contentLength = Number(response.headers.get('content-length'));
-  if (Number.isFinite(contentLength) && contentLength > maximumBytes) {
-    throw new MoodleConnectionError(`${label} exceeds the configured size limit.`, {
-      maximumBytes,
-      contentLength
-    });
-  }
-}
-
-async function readLimitedResponse(response, maximumBytes, label) {
-  assertContentLength(response, maximumBytes, label);
-  if (!response.body) return Buffer.alloc(0);
-  const reader = response.body.getReader();
-  const chunks = [];
-  let size = 0;
-  try {
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      size += value.byteLength;
-      if (size > maximumBytes) {
-        await reader.cancel();
-        throw new MoodleConnectionError(`${label} exceeds the configured size limit.`, {
-          maximumBytes
-        });
-      }
-      chunks.push(Buffer.from(value));
-    }
-  } finally {
-    reader.releaseLock();
-  }
-  return Buffer.concat(chunks, size);
-}
-
-async function parseLimitedJsonResponse(response, maximumBytes, label) {
-  const data = await readLimitedResponse(response, maximumBytes, label);
-  try {
-    return JSON.parse(data.toString('utf8'));
-  } catch (error) {
-    throw new MoodleConnectionError(`Moodle returned invalid JSON for ${label.toLowerCase()}.`, {}, error);
-  }
-}
-
-function assertResponseOrigin(response, expectedUrl) {
-  if (!response.url) return;
-  let responseUrl;
-  try {
-    responseUrl = new URL(response.url);
-  } catch {
-    throw new MoodleConnectionError('Moodle returned an invalid response URL.');
-  }
-  if (responseUrl.origin !== expectedUrl.origin) {
-    throw new MoodleConnectionError('Moodle redirected the request to another origin.');
-  }
-}
-
-export function redactSensitiveData(value, { redactEntireValue = false } = {}) {
-  if (redactEntireValue && (value === null || typeof value !== 'object')) return '[REDACTED]';
-  if (Array.isArray(value)) {
-    return value.map((entry) => redactSensitiveData(entry, { redactEntireValue }));
-  }
-  if (value && typeof value === 'object') {
-    return Object.fromEntries(Object.entries(value).map(([key, entry]) => [
-      key,
-      redactEntireValue || sensitiveKeyPattern.test(key)
-        ? '[REDACTED]'
-        : redactSensitiveData(entry, { redactEntireValue: false })
-    ]));
-  }
-  return value;
-}
 
 export function redactOperationResult(operationName, value) {
   return redactSensitiveData(value, {
@@ -241,27 +43,6 @@ export function isDestructiveOperation(operationName) {
 
 function isDangerousOperation(operationName) {
   return dangerousOperations.has(operationName) || /^(?:admin_|behat_|xmldb_)/.test(operationName);
-}
-
-export class MoodleClientError extends Error {
-  constructor(code, message, details = {}, cause = null) {
-    super(message, cause ? { cause } : undefined);
-    this.name = 'MoodleClientError';
-    this.code = code;
-    this.details = details;
-  }
-
-  toJSON({ includeDebug = false } = {}) {
-    const details = includeDebug
-      ? this.details
-      : Object.fromEntries(Object.entries(this.details).filter(([key]) => key !== 'debuginfo'));
-    return {
-      error: true,
-      code: this.code,
-      message: this.message,
-      details: redactSensitiveData(details)
-    };
-  }
 }
 
 export class MoodleConfigurationError extends MoodleClientError {
@@ -313,73 +94,30 @@ export class MoodleOperationUnavailableError extends MoodleClientError {
   }
 }
 
-export function normalizeClientError(error, fallbackCode = 'internal_error', details = {}) {
-  if (error instanceof MoodleClientError) {
-    return error;
-  }
-  if (error && typeof error.code === 'string' && error.code.trim() !== '') {
-    return new MoodleClientError(
-      error.code,
-      error.message || 'Unexpected Moodle client error.',
-      error.details && typeof error.details === 'object' ? error.details : details,
-      error
-    );
-  }
-  return new MoodleClientError(fallbackCode, error?.message || 'Unexpected Moodle client error.', details, error);
-}
+const coreErrors = Object.freeze({
+  configuration: (message, details = {}, cause = null) => new MoodleConfigurationError(message, details, cause),
+  validation: (message, details = {}, cause = null) => new MoodleValidationError(message, details, cause),
+  permission: (message, details = {}, cause = null) => new MoodlePermissionError(message, details, cause),
+  connection: (message, details = {}, cause = null) => new MoodleConnectionError(message, details, cause)
+});
 
 export function loadContractFromFile(contractPath = defaultContractPath) {
-  return JSON.parse(fs.readFileSync(contractPath, 'utf8').replace(/^\uFEFF/, ''));
-}
-
-function isLoopbackHostname(hostname) {
-  return hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '[::1]';
-}
-
-function collectSensitiveValues(value, inheritedSensitive = false, values = new Set()) {
-  if (Array.isArray(value)) {
-    value.forEach((entry) => collectSensitiveValues(entry, inheritedSensitive, values));
-  } else if (value && typeof value === 'object') {
-    Object.entries(value).forEach(([key, entry]) => {
-      collectSensitiveValues(entry, inheritedSensitive || sensitiveKeyPattern.test(key), values);
-    });
-  } else if (inheritedSensitive && value !== undefined && value !== null && String(value).length >= 4) {
-    values.add(String(value));
-  }
-  return values;
-}
-
-function redactTextValues(value, sensitiveValues) {
-  let result = value === undefined || value === null ? value : String(value);
-  if (typeof result !== 'string') return result;
-  for (const sensitiveValue of sensitiveValues) {
-    result = result.replaceAll(sensitiveValue, '[REDACTED]');
-  }
-  return result;
+  return JSON.parse(fs.readFileSync(contractPath, 'utf8').replace(/^﻿/, ''));
 }
 
 export function resolveMoodleUrl(baseUrl, relativePath, { allowInsecure = false } = {}) {
-  let resolved;
-  try {
-    resolved = new URL(baseUrl);
-  } catch (error) {
-    throw new MoodleConfigurationError('baseUrl must be a valid URL.', { parameter: 'baseUrl' }, error);
-  }
+  return resolveKernelMoodleUrl(baseUrl, relativePath, { allowInsecure, errors: coreErrors });
+}
 
-  if (resolved.username || resolved.password) {
-    throw new MoodleConfigurationError('baseUrl must not contain credentials.', { parameter: 'baseUrl' });
+/**
+ * Response-size limit for one operation: an explicit contract limit, the bulk
+ * class for export and bulk reads, or null for the transport default.
+ */
+export function operationResponseLimit(operation) {
+  if (Number.isSafeInteger(operation?.limits?.maximumResponseBytes)) {
+    return operation.limits.maximumResponseBytes;
   }
-  if (resolved.protocol !== 'https:' && !(resolved.protocol === 'http:' && (allowInsecure || isLoopbackHostname(resolved.hostname)))) {
-    throw new MoodleConfigurationError('baseUrl must use HTTPS. HTTP is allowed only for loopback hosts or with allowInsecure.', {
-      parameter: 'baseUrl',
-      protocol: resolved.protocol
-    });
-  }
-
-  resolved.search = '';
-  resolved.hash = '';
-  resolved.pathname = `${resolved.pathname.replace(/\/+$/, '')}/`;
-  return new URL(String(relativePath).replace(/^\/+/, ''), resolved);
+  return operation?.limits?.class === 'bulk' ? DEFAULT_LIMITS.maximumBulkResponseBytes : null;
 }
 
 function appendParameter(searchParameters, key, value) {
@@ -460,9 +198,10 @@ export class RestTransport {
     fetchImplementation = globalThis.fetch,
     allowInsecure = false,
     allowedFileRoots = [],
-    maximumResponseBytes = defaultMaximumResponseBytes,
-    maximumUploadBytes = defaultMaximumUploadBytes,
-    maximumDownloadBytes = defaultMaximumDownloadBytes
+    maximumResponseBytes,
+    maximumUploadBytes,
+    maximumDownloadBytes,
+    environment = {}
   } = {}) {
     if (!baseUrl) {
       throw new MoodleConfigurationError('baseUrl is required.', { parameter: 'baseUrl' });
@@ -476,23 +215,34 @@ export class RestTransport {
     if (typeof allowInsecure !== 'boolean') {
       throw new MoodleConfigurationError('allowInsecure must be a boolean.', { parameter: 'allowInsecure' });
     }
-    if (!Array.isArray(allowedFileRoots) || allowedFileRoots.some((root) => typeof root !== 'string' || !root)) {
-      throw new MoodleConfigurationError('allowedFileRoots must be an array of directories.', {
-        parameter: 'allowedFileRoots'
-      });
-    }
     this.baseUrl = resolveMoodleUrl(baseUrl, '.', { allowInsecure });
     this.endpoint = resolveMoodleUrl(baseUrl, 'webservice/rest/server.php', { allowInsecure });
+    this.allowInsecure = allowInsecure;
     this.token = token;
     this.timeoutMs = timeoutMs;
     this.fetchImplementation = fetchImplementation;
-    this.allowedFileRoots = allowedFileRoots.map((root) => path.resolve(root));
-    this.maximumResponseBytes = positiveByteLimit(maximumResponseBytes, 'maximumResponseBytes', defaultMaximumResponseBytes);
-    this.maximumUploadBytes = positiveByteLimit(maximumUploadBytes, 'maximumUploadBytes', defaultMaximumUploadBytes);
-    this.maximumDownloadBytes = positiveByteLimit(maximumDownloadBytes, 'maximumDownloadBytes', defaultMaximumDownloadBytes);
+    this.allowedFileRoots = normalizeAllowedFileRoots(allowedFileRoots, coreErrors);
+    const limit = (value, name) => resolveByteLimit(value, {
+      name,
+      fallback: DEFAULT_LIMITS[name],
+      environment,
+      errors: coreErrors
+    });
+    this.maximumResponseBytes = limit(maximumResponseBytes, 'maximumResponseBytes');
+    this.maximumUploadBytes = limit(maximumUploadBytes, 'maximumUploadBytes');
+    this.maximumDownloadBytes = limit(maximumDownloadBytes, 'maximumDownloadBytes');
+    this.explicitResponseLimit = maximumResponseBytes !== undefined
+      || Boolean(environment?.MOODLE_MAX_RESPONSE_BYTES);
+    this.siteMaximumUploadBytes = null;
   }
 
-  async callFunction(functionName, parameters = {}) {
+  responseLimit(requested) {
+    if (!Number.isSafeInteger(requested)) return this.maximumResponseBytes;
+    // A user-configured limit always wins; contract limits only raise the default.
+    return this.explicitResponseLimit ? this.maximumResponseBytes : Math.max(requested, this.maximumResponseBytes);
+  }
+
+  async callFunction(functionName, parameters = {}, { maximumResponseBytes } = {}) {
     const body = encodeMoodleParameters(parameters);
     body.set('wstoken', this.token);
     body.set('wsfunction', functionName);
@@ -517,15 +267,12 @@ export class RestTransport {
         status: response.status
       });
     }
-    assertResponseOrigin(response, this.endpoint);
+    assertResponseOrigin(response, this.endpoint, coreErrors);
 
-    let payload;
-    try {
-      payload = await parseLimitedJsonResponse(response, this.maximumResponseBytes, 'Moodle response');
-    } catch (error) {
-      if (error instanceof MoodleClientError) throw error;
-      throw new MoodleConnectionError('Moodle returned a non-JSON response.', { functionName }, error);
-    }
+    const payload = await parseLimitedJsonResponse(response, this.responseLimit(maximumResponseBytes), 'Moodle response', {
+      errors: coreErrors,
+      details: { functionName }
+    });
     if (payload && typeof payload === 'object' && (payload.exception || payload.errorcode)) {
       const sensitiveValues = collectSensitiveValues(parameters);
       sensitiveValues.add(String(this.token));
@@ -535,42 +282,32 @@ export class RestTransport {
   }
 
   async uploadDraftFile({ filePath, itemId = 0, draftPath = '/', filename = null }) {
-    let fileData;
-    try {
-      const realFilePath = await assertAllowedExistingFile(filePath, this.allowedFileRoots);
-      fileData = await readLimitedLocalFile(realFilePath, this.maximumUploadBytes);
-    } catch (error) {
-      if (error instanceof MoodleClientError) throw error;
-      throw new MoodleValidationError('The upload source file could not be read.', { filePath }, error);
-    }
-
-    const formData = new FormData();
-    formData.set('file_1', new Blob([fileData]), filename ?? path.basename(filePath));
-    const endpoint = new URL('webservice/upload.php', this.baseUrl);
-    endpoint.searchParams.set('token', this.token);
-    endpoint.searchParams.set('itemid', String(itemId));
-    endpoint.searchParams.set('filepath', draftPath);
-
-    let response;
-    try {
-      response = await this.fetchImplementation(endpoint, {
-        method: 'POST',
-        body: formData,
-        redirect: 'error',
-        signal: AbortSignal.timeout(this.timeoutMs)
-      });
-    } catch (error) {
-      throw new MoodleConnectionError('Unable to upload the file to Moodle.', {}, error);
+    const source = await openUploadSource(filePath, {
+      allowedFileRoots: this.allowedFileRoots,
+      maximumBytes: this.maximumUploadBytes,
+      siteMaximumBytes: this.siteMaximumUploadBytes,
+      errors: coreErrors
+    });
+    const { response, payload } = await postDraftUpload({
+      baseUrl: this.baseUrl,
+      token: this.token,
+      body: source.blob,
+      filename: filename ?? source.filename,
+      filepath: draftPath,
+      itemId,
+      timeoutMs: this.timeoutMs,
+      fetchImplementation: this.fetchImplementation,
+      allowInsecure: this.allowInsecure,
+      maximumResponseBytes: this.maximumResponseBytes,
+      errors: coreErrors
+    });
+    if (payload && !Array.isArray(payload) && (payload.exception || payload.errorcode || payload.error)) {
+      throw mapMoodleError(payload, { endpoint: 'webservice/upload.php' }, [String(this.token)]);
     }
     if (!response.ok) {
       throw new MoodleConnectionError(`Moodle returned HTTP ${response.status} while uploading a file.`, {
         status: response.status
       });
-    }
-    assertResponseOrigin(response, endpoint);
-    const payload = await parseLimitedJsonResponse(response, this.maximumResponseBytes, 'Moodle upload response');
-    if (payload && !Array.isArray(payload) && (payload.exception || payload.errorcode || payload.error)) {
-      throw mapMoodleError(payload, { endpoint: 'webservice/upload.php' }, [String(this.token)]);
     }
     if (!Array.isArray(payload) || !payload[0]) {
       throw new MoodleConnectionError('Moodle returned an unexpected file upload response.');
@@ -605,7 +342,7 @@ export class RestTransport {
     }
     sourceUrl.searchParams.set('token', this.token);
 
-    const resolvedDestination = await resolveAllowedDestination(destinationPath, this.allowedFileRoots);
+    const resolvedDestination = await resolveAllowedDestination(destinationPath, this.allowedFileRoots, coreErrors);
 
     let response;
     try {
@@ -622,41 +359,12 @@ export class RestTransport {
         status: response.status
       });
     }
-    assertResponseOrigin(response, sourceUrl);
-    assertContentLength(response, this.maximumDownloadBytes, 'Moodle file download');
+    assertResponseOrigin(response, sourceUrl, coreErrors);
 
-    const temporaryPath = path.join(
-      path.dirname(resolvedDestination),
-      `.${path.basename(resolvedDestination)}.moodle-core-${randomUUID()}.tmp`
-    );
-    const fileHandle = await fs.promises.open(temporaryPath, 'wx', 0o600);
-    let size = 0;
-    try {
-      if (response.body) {
-        const reader = response.body.getReader();
-        try {
-          while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
-            size += value.byteLength;
-            if (size > this.maximumDownloadBytes) {
-              await reader.cancel();
-              throw new MoodleConnectionError('Moodle file download exceeds the configured size limit.', {
-                maximumBytes: this.maximumDownloadBytes
-              });
-            }
-            await fileHandle.write(value);
-          }
-        } finally {
-          reader.releaseLock();
-        }
-      }
-    } catch (error) {
-      await fileHandle.close();
-      await fs.promises.rm(temporaryPath, { force: true });
-      throw error;
-    }
-    await fileHandle.close();
+    const temporaryPath = temporarySiblingPath(resolvedDestination, 'moodle-core');
+    const { size } = await streamResponseToFile(response, temporaryPath, {
+      maximumBytes: this.maximumDownloadBytes
+    });
 
     let existingStats = null;
     try {
@@ -3403,8 +3111,28 @@ export class MoodleClient {
     return (this.contract.operations ?? []).map((operation) => operation.name);
   }
 
+  rememberSiteLimits(payload) {
+    const siteLimit = Number(payload?.usermaxuploadfilesize);
+    if (Number.isSafeInteger(siteLimit) && siteLimit > 0 && 'siteMaximumUploadBytes' in this.transport) {
+      this.transport.siteMaximumUploadBytes = siteLimit;
+    }
+  }
+
+  scopedTransport(operation) {
+    const maximumResponseBytes = operationResponseLimit(operation);
+    if (maximumResponseBytes === null) return this.transport;
+    const transport = this.transport;
+    return Object.create(transport, {
+      callFunction: {
+        value: (functionName, parameters = {}, options = {}) =>
+          transport.callFunction(functionName, parameters, { maximumResponseBytes, ...options })
+      }
+    });
+  }
+
   async detectVersion() {
     const payload = await this.transport.callFunction('core_webservice_get_site_info');
+    this.rememberSiteLimits(payload);
     const detected = parseMoodleVersion(payload.release ?? payload.version);
     this.assertSupportedVersion(detected);
     this.moodleVersion = detected;
@@ -3460,6 +3188,7 @@ export class MoodleClient {
       const input = buildContractParameters(operation, parameters);
       const adapter = adapters[operationName] ?? contractAdapter(operation);
       const payload = await this.transport.callFunction(operation.moodleFunction, adapter.request(input));
+      this.rememberSiteLimits(payload);
       this.moodleVersion = parseMoodleVersion(payload.release ?? payload.version);
       this.assertSupportedVersion();
       return adapter.response(payload, input);
@@ -3488,11 +3217,12 @@ export class MoodleClient {
     }
     const input = buildContractParameters(operation, parameters);
     const adapter = adapters[operationName] ?? contractAdapter(operation);
+    const transport = this.scopedTransport(operation);
     if (adapter.execute) {
-      return adapter.execute(this.transport, input);
+      return adapter.execute(transport, input);
     }
     const request = adapter.request(input);
-    const payload = await this.transport.callFunction(operation.moodleFunction, request);
+    const payload = await transport.callFunction(operation.moodleFunction, request);
     return adapter.response(payload, input);
   }
 }
