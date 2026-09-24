@@ -86,7 +86,8 @@
     "coverage:audit": "node tools/audit-moodle-source.mjs",
     "check": "npm run contract:check && npm run types:check && npm run types:compile && npm test",
     "pack:check": "npm pack --dry-run",
-    "test:coverage": "node --test --experimental-test-coverage --test-coverage-lines=91 --test-coverage-include=cli/** --test-coverage-include=client/*.mjs --test-coverage-include=adapters/** --test-coverage-include=canonical/** --test-coverage-include=capabilities/** --test-coverage-include=profiles/** --test-coverage-include=workflows/** tests/*.test.mjs"
+    "test:coverage": "node --test --experimental-test-coverage --test-coverage-lines=91 --test-coverage-include=cli/** --test-coverage-include=client/*.mjs --test-coverage-include=adapters/** --test-coverage-include=canonical/** --test-coverage-include=capabilities/** --test-coverage-include=profiles/** --test-coverage-include=workflows/** tests/*.test.mjs",
+    "cassettes:record": "node tools/record-cassettes.mjs"
   },
   "keywords": [
     "moodle",

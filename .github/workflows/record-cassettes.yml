@@ -1,0 +1,68 @@
+name: Record cassettes
+
+on:
+  schedule:
+    - cron: '7 4 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  record:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        branch: ['4.5', '5.0', '5.1', '5.2', '5.3']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - id: lab
+        uses: gafapa/moodlia-test-lab/.github/actions/lab-up@main
+        with:
+          version: ${{ matrix.branch }}
+          variant: core
+      - name: Record Moodle ${{ matrix.branch }}
+        env:
+          MOODLE_BASE_URL: ${{ steps.lab.outputs.url }}
+          MOODLE_TOKEN: ${{ steps.lab.outputs.token }}
+        run: node tools/record-cassettes.mjs "${{ matrix.branch }}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cassettes-${{ matrix.branch }}
+          path: tests/cassettes/${{ matrix.branch }}
+      - if: always()
+        run: docker rm -f "${{ steps.lab.outputs.container }}"
+
+  pull-request:
+    needs: record
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: cassettes-*
+          path: downloaded
+      - name: Place cassettes
+        run: |
+          for directory in downloaded/cassettes-*; do
+            branch="${directory#downloaded/cassettes-}"
+            mkdir -p "tests/cassettes/$branch"
+            cp "$directory"/*.json "tests/cassettes/$branch/"
+          done
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm ci && node --test tests/cassettes.test.mjs
+      - uses: peter-evans/create-pull-request@v7
+        with:
+          branch: automation/cassettes
+          commit-message: Refresh recorded Moodle responses
+          title: Refresh recorded Moodle responses
+          body: Weekly re-recording of Core read responses from the moodlia-test-lab golden images.
