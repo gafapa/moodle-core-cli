@@ -53,6 +53,10 @@
       "types": "./cli/options.d.ts",
       "import": "./cli/options.mjs"
     },
+    "./type-generator": {
+      "types": "./client/operation-types-generator.d.ts",
+      "import": "./client/operation-types-generator.mjs"
+    },
     "./cli-runner": {
       "types": "./cli/runner.d.ts",
       "import": "./cli/moodle-core.mjs"
