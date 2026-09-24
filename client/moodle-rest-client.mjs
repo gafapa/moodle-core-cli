@@ -101,6 +101,15 @@ export const coreErrors = Object.freeze({
   connection: (message, details = {}, cause = null) => new MoodleConnectionError(message, details, cause)
 });
 
+// Some Moodle write functions report a rejected change as a warning instead of an
+// exception (for example core_course_update_courses with a shortname already in use).
+function rejectMoodleWarnings(payload, label) {
+  const warnings = Array.isArray(payload?.warnings) ? payload.warnings : [];
+  if (warnings.length === 0) return;
+  const summary = warnings.map((warning) => `${warning.warningcode ?? 'warning'}: ${warning.message ?? ''}`.trim()).join('; ');
+  throw coreErrors.validation(`Moodle rejected ${label}: ${summary}`, { moodle_warnings: warnings });
+}
+
 export function loadContractFromFile(contractPath = defaultContractPath) {
   return JSON.parse(fs.readFileSync(contractPath, 'utf8').replace(/^﻿/, ''));
 }
@@ -705,7 +714,10 @@ const adapters = {
   },
   update_course: {
     request: (input) => ({ courses: [{ id: input.course_id, fullname: input.fullname, shortname: input.shortname, categoryid: input.category_id, idnumber: input.idnumber, summary: input.summary, visible: input.visible, startdate: input.start_date, enddate: input.end_date }] }),
-    response: (_payload, input) => ({ updated: true, course_id: input.course_id })
+    response: (payload, input) => {
+      rejectMoodleWarnings(payload, `the update of course ${input.course_id}`);
+      return { updated: true, course_id: input.course_id };
+    }
   },
   delete_course: {
     request: (input) => ({ courseids: [input.course_id] }),
@@ -725,7 +737,10 @@ const adapters = {
   },
   update_user: {
     request: (input) => ({ users: [{ ...input, id: input.user_id, user_id: undefined, suspended: input.suspended }] }),
-    response: (_payload, input) => ({ updated: true, user_id: input.user_id })
+    response: (payload, input) => {
+      rejectMoodleWarnings(payload, `the update of user ${input.user_id}`);
+      return { updated: true, user_id: input.user_id };
+    }
   },
   delete_user: {
     request: (input) => ({ userids: [input.user_id] }),

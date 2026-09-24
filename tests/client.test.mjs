@@ -401,6 +401,24 @@ test('maps the complete course category write lifecycle', async () => {
   }), { deleted: true, category_id: 8, warnings: [] });
 });
 
+test('course and user updates fail when Moodle rejects the change with a warning', async () => {
+  const shortnameTaken = {
+    warnings: [{ item: 'course', itemid: 9, warningcode: 'shortnametaken', message: 'Short name is already used' }]
+  };
+  const transport = createTransport({
+    core_course_update_courses: (parameters) => (parameters.courses[0].id === 9 ? shortnameTaken : { warnings: [] }),
+    core_user_update_users: { warnings: [{ item: 'user', itemid: 5, warningcode: 'usernotupdated', message: 'Invalid email' }] }
+  });
+  const client = createMoodleClient({ transport, moodleVersion: '5.2' });
+
+  assert.deepEqual(await client.update_course({ course_id: 3, fullname: 'Ok' }), { updated: true, course_id: 3 });
+  await assert.rejects(client.update_course({ course_id: 9, shortname: 'TAKEN' }), (error) =>
+    error instanceof MoodleValidationError
+    && /Moodle rejected the update of course 9: shortnametaken: Short name is already used/.test(error.message)
+    && error.details.moodle_warnings[0].warningcode === 'shortnametaken');
+  await assert.rejects(client.update_user({ user_id: 5, email: 'bad' }), /usernotupdated: Invalid email/);
+});
+
 test('maps group detail and update operations', async () => {
   const transport = createTransport({
     core_group_get_groups(parameters) {

@@ -1,6 +1,14 @@
 # Changelog
 
-## 0.4.0 - unreleased
+## 0.4.1 - 2026-09-24
+
+- `update_course` and `update_user` now fail with `validation_error` when
+  Moodle rejects the change with a warning instead of an exception, for example
+  a course shortname that is already in use. Before, they reported
+  `updated: true` although nothing changed. The error message names Moodle's
+  warning codes and the details keep the warnings.
+
+## 0.4.0 - 2026-09-24
 
 Breaking changes:
 
