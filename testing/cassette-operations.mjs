@@ -1,9 +1,10 @@
 // The read operations recorded from, and replayed against, each Moodle branch.
 // Later steps may use earlier results, for example the lab source course id.
 
+// moodlia-test-lab names fixture courses after their site, for example M405CORE-SOURCE.
 function labSourceCourseId(results) {
-  const course = (results.courses ?? []).find((entry) => entry.shortname === 'LAB-SOURCE');
-  if (!course) throw new Error('The lab site has no LAB-SOURCE course.');
+  const course = (results.courses ?? []).find((entry) => /^M\d+[A-Z]+-SOURCE$/.test(entry.shortname ?? ''));
+  if (!course) throw new Error('The lab site has no <site>-SOURCE course.');
   return course.id;
 }
 
