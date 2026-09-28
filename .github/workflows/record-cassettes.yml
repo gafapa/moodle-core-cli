@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: '24'
       - id: lab
-        uses: gafapa/moodlia-test-lab/.github/actions/lab-up@main
+        uses: gafapa/moodlia-test-lab/.github/actions/lab-up@5bee2da096738e272359fb2692bb5f16c9a2819d # 2026-09-28: no cron, site-prefixed fixtures
         with:
           version: ${{ matrix.branch }}
           variant: core
@@ -37,12 +37,11 @@ jobs:
       - if: always()
         run: docker rm -f "${{ steps.lab.outputs.container }}"
 
-  pull-request:
+  # Checks the fresh recordings against the replay tests. The repository does not let
+  # Actions open pull requests: to refresh tests/cassettes, download the artifacts.
+  validate:
     needs: record
     runs-on: ubuntu-24.04
-    permissions:
-      contents: write
-      pull-requests: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
@@ -60,9 +59,3 @@ jobs:
         with:
           node-version: '24'
       - run: npm ci && node --test tests/cassettes.test.mjs
-      - uses: peter-evans/create-pull-request@v7
-        with:
-          branch: automation/cassettes
-          commit-message: Refresh recorded Moodle responses
-          title: Refresh recorded Moodle responses
-          body: Weekly re-recording of Core read responses from the moodlia-test-lab golden images.

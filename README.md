@@ -196,6 +196,13 @@ To audit a Moodle source checkout:
 npm run coverage:audit -- /path/to/moodle --version 5.3 --strict --require-all
 ```
 
+The test suite needs no Moodle site and no other repository. Recorded Moodle
+responses in `tests/cassettes/<branch>/` are replayed by
+`tests/cassettes.test.mjs`. The weekly `record-cassettes.yml` workflow records
+them again from `moodlia-test-lab` golden images (`lab-up`, pinned to a commit),
+checks them with the replay tests, and uploads them as `cassettes-<branch>`
+artifacts; copy those into `tests/cassettes/` to refresh them.
+
 Project documentation, variable names, function names, and source comments are written in English.
 
 ## Security
