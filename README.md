@@ -41,7 +41,18 @@ const moodle = createMoodleClient({
 
 const courses = await moodle.get_courses();
 
-const course = await moodle.create_course({
+```
+
+The client above is deliberately read-only. To create a course after reviewing the target, create a separate write-enabled client:
+
+```js
+const writer = createMoodleClient({
+  baseUrl: 'https://moodle.example.com',
+  token: process.env.MOODLE_TOKEN,
+  readOnly: false
+});
+
+const course = await writer.create_course({
   fullname: 'Introduction to Biology',
   shortname: 'BIO101',
   category_id: 3,
@@ -149,7 +160,7 @@ The version-specific audits currently prove:
 | 5.2 | 755 | 755 | 430 | 430 |
 | 5.3 beta | 760 | 760 | 431 | 431 |
 
-Moodle 5.3 support is based on the official `v5.3.0-beta` source snapshot and remains preliminary until Moodle publishes the stable branch.
+Moodle 5.3 support is based on the official `v5.3.0-beta` source snapshot and remains preliminary for later 5.3 releases until their source snapshots are audited; the existence of a stable upstream release does not extend this recorded qualification.
 
 Moodle can add site-specific functions through third-party or local plugins. Those functions are intentionally not discovered or called dynamically. Supporting one requires adding it to the static contract.
 
