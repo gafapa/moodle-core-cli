@@ -1,10 +1,16 @@
 # Moodle Core CLI
 
-Moodle Core CLI is a friendly Node.js client library and command-line interface for Moodle 4.5 and later core web services. The current release is verified through the official Moodle 5.3 beta source. It does not require a Moodle plugin and it does not expose arbitrary web service calls.
+Node.js client and command-line interface for standard Moodle web services, without an additional Moodle plugin.
 
-The package provides stable, friendly operations such as `create_course` while internally handling Moodle function names, nested REST parameters, version checks, and response normalization.
+[Status](#status) · [Getting started](#getting-started) · [Usage](#usage) · [Development](#development) · [Security and privacy](#security-and-privacy) · [Documentation](#documentation) · [License](#license)
 
-## Requirements
+## Status
+
+Implemented Node.js client and CLI. Package version: `0.4.1`. Compatibility evidence includes Moodle 5.3 beta source; it does not qualify every later Moodle release.
+
+## Getting started
+
+### Requirements
 
 - Node.js 22.13 or later.
 - Moodle 4.5 or later, through Moodle 5.3.
@@ -14,21 +20,15 @@ The package provides stable, friendly operations such as `create_course` while i
 
 Moodle version compatibility does not grant access by itself. The external service must expose each required function and the token user must have the corresponding capabilities.
 
-## Cross-site synchronization
-
-Course synchronization between Moodle sites is provided by the separate
-[`moodlia-sync`](https://www.npmjs.com/package/moodlia-sync) package, which
-builds on this client. Since 0.4.0 `moodle-core course sync` and
-`moodle-core sync ...` exit with code 3 and point there; `moodle-core-cli`
-itself has no runtime dependencies.
-
-## Installation
+### Installation
 
 ```bash
 npm install moodle-core-cli
 ```
 
-## Library usage
+## Usage
+
+### Library usage
 
 ```js
 import { createMoodleClient } from 'moodle-core-cli';
@@ -72,7 +72,7 @@ const moodle = createMoodleClient({
 
 All public operation methods use generated parameter and response types. The canonical source is [`contract/operations.json`](contract/operations.json).
 
-## CLI usage
+### CLI usage
 
 Use environment variables:
 
@@ -132,7 +132,7 @@ Secret-bearing operation results are redacted by default. Use `--show-secrets` o
 
 The CLI allows local files in the working directory and in the directories of files named on the command line (`--file-path`, `--destination-path`). Use `--file-root <paths>` to set the allowed roots explicitly. The library keeps local file access disabled unless `allowedFileRoots` is configured.
 
-## Size limits
+### Size limits
 
 | Limit | Default | Option | Environment variable |
 | --- | --- | --- | --- |
@@ -142,7 +142,7 @@ The CLI allows local files in the working directory and in the directories of fi
 
 A user-configured response limit always wins over the bulk default. Exceeding a limit fails with `payload_too_large` (exit code 2), whose details name the limit, the observed size, and the option that raises it.
 
-## API coverage
+### API coverage
 
 The canonical contract currently exposes 788 friendly operations. Its supported scope is:
 
@@ -181,7 +181,17 @@ moodle-core enrolments sync --apply-plan enrolments.plan.json --plan-digest "sha
 
 The progress workflow preserves denied or unavailable completion and grade reads as explicit unknown evidence. The Core completion repair command intentionally returns an exit-code-3 capability-gap plan because Moodle Core has no verified activity-completion configuration authoring API; it never fabricates a repair. Enrolment synchronization is intentionally add-only: it never removes existing users or roles, and applying requires the exact immutable plan digest.
 
-## Type generation
+### Cross-site synchronization
+
+Course synchronization between Moodle sites is provided by the separate
+[`moodlia-sync`](https://www.npmjs.com/package/moodlia-sync) package, which
+builds on this client. Since 0.4.0 `moodle-core course sync` and
+`moodle-core sync ...` exit with code 3 and point there; `moodle-core-cli`
+itself has no runtime dependencies.
+
+## Development
+
+### Type generation
 
 Parameter types are generated from the friendly contract. Response types are generated from Moodle's official `external_*` return descriptions and committed as a reproducible snapshot:
 
@@ -193,8 +203,6 @@ npm run types:compile
 ```
 
 The generator writes `client/generated/operation-types.d.ts`. Generated declarations must not be edited manually.
-
-## Development
 
 ```bash
 npm run check
@@ -216,7 +224,9 @@ artifacts; copy those into `tests/cassettes/` to refresh them.
 
 Project documentation, variable names, function names, and source comments are written in English.
 
-## Security
+## Security and privacy
+
+### Security
 
 - HTTPS is required except for loopback development sites.
 - Authenticated requests reject redirects instead of forwarding credentials.
@@ -231,3 +241,22 @@ Project documentation, variable names, function names, and source comments are w
 - Upload tokens travel in the request body, never in the URL.
 - Secret results and Moodle debug details are hidden by default in CLI output.
 - Write operations are never retried automatically.
+
+## Documentation
+
+- [Project Pages](https://gafapa.github.io/moodle-core-cli/)
+
+Build the repository documentation portal with `python tools/build-project-page.py`. Its status comes from this README; purpose and first steps are maintained in `docs/project-page.json`. The `pages.yml` workflow publishes the portal without deploying the application or changing `moodlia.com`.
+
+Standard Moodle REST operations; pair with [MoodlIA CLI](https://github.com/gafapa/moodlia-cli) for plugin-backed operations.
+
+- [Source code](https://github.com/gafapa/moodle-core-cli)
+- [Issue tracker](https://github.com/gafapa/moodle-core-cli/issues)
+- [MoodlIA website](https://moodlia.com)
+- [docs/API-COVERAGE.md](docs/API-COVERAGE.md)
+- [docs/moodle-setup.md](docs/moodle-setup.md)
+- [CHANGELOG.md](CHANGELOG.md)
+
+## License
+
+Released under the MIT License. See [LICENSE](LICENSE).
