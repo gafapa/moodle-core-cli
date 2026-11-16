@@ -32,6 +32,7 @@ jobs:
         run: node tools/record-cassettes.mjs "${{ matrix.branch }}"
       - uses: actions/upload-artifact@v4
         with:
+          retention-days: 14
           name: cassettes-${{ matrix.branch }}
           path: tests/cassettes/${{ matrix.branch }}
       - if: always()
